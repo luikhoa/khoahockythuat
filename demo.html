@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảng tin thử nghiệm — CyberShield</title>
+<style>
+  :root {
+    --nền: #f2f3f7;
+    --thẻ: #ffffff;
+    --viền: #dfe2ec;
+    --chữ: #1a1f33;
+    --mờ: #6b7392;
+    --nhấn: #2f5bea;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--nền);
+    color: var(--chữ);
+    font: 400 14.5px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 28px 16px 64px;
+  }
+  main { max-width: 620px; margin: 0 auto; }
+  header { margin-bottom: 22px; }
+  .eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.17em;
+    text-transform: uppercase; color: var(--mờ);
+  }
+  h1 { margin: 5px 0 4px; font-size: 24px; font-weight: 660; letter-spacing: -0.02em; }
+  header p { color: var(--mờ); font-size: 13px; }
+
+  .thử {
+    margin: 20px 0 26px; padding: 15px 16px;
+    background: var(--thẻ); border: 1px solid var(--viền); border-radius: 12px;
+  }
+  .thử label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+  .thử input {
+    width: 100%; padding: 9px 12px; font: inherit; font-size: 14px;
+    border: 1px solid var(--viền); border-radius: 8px; background: var(--nền);
+    color: var(--chữ);
+  }
+  .thử input:focus { outline: 2px solid var(--nhấn); outline-offset: 1px; }
+  #kết-quả { margin-top: 11px; font-size: 13px; min-height: 1.6em; color: var(--mờ); }
+  #kết-quả b { font-weight: 650; }
+  .v-an  { color: #0f8a5f; }
+  .v-xúc { color: #b06a00; }
+  .v-đe  { color: #c92a2a; }
+
+  article {
+    background: var(--thẻ); border: 1px solid var(--viền); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 11px;
+  }
+  .tên { font-weight: 620; font-size: 13.5px; }
+  .giờ { color: var(--mờ); font-size: 11.5px; margin-left: 7px; font-weight: 400; }
+  .bình-luận { margin-top: 7px; }
+  a { color: var(--nhấn); }
+  .ghi-chú {
+    margin: 26px 0 12px; font-size: 12px; color: var(--mờ);
+    border-top: 1px solid var(--viền); padding-top: 14px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Môi trường thử nghiệm</p>
+    <h1>Bảng tin giả lập</h1>
+    <p>Trang này mô phỏng một bảng tin mạng xã hội bằng dữ liệu tự viết, để thử extension mà không cần đăng nhập tài khoản thật.</p>
+  </header>
+
+  <section class="thử">
+    <label for="ô-thử">Gõ thử một câu bất kỳ</label>
+    <input id="ô-thử" type="text" placeholder="ví dụ: mai ra cổng trường tao đánh cho một trận" autocomplete="off">
+    <p id="kết-quả">Đang nạp mô hình…</p>
+  </section>
+
+  <article><p class="tên">Minh Anh<span class="giờ">2 phút</span></p>
+    <p class="bình-luận">nay ai trực nhật vậy mn ơi, mình quên mất lịch rồi</p></article>
+
+  <article><p class="tên">Người dùng ẩn danh<span class="giờ">4 phút</span></p>
+    <p class="bình-luận">m ngu như bò ấy, học mãi ko vô thì nghỉ đi cho đỡ tốn tiền</p></article>
+
+  <article><p class="tên">Hoàng Long<span class="giờ">7 phút</span></p>
+    <p class="bình-luận">ê thằng điên này lại quên mang vở nữa rồi hahaha, mai tao cho mượn</p></article>
+
+  <article><p class="tên">Tài khoản lạ<span class="giờ">9 phút</span></p>
+    <p class="bình-luận">mai ra cổng trường tao đánh cho một trận, đừng có trốn</p></article>
+
+  <article><p class="tên">Bảo Ngọc<span class="giờ">12 phút</span></p>
+    <p class="bình-luận">ai có đáp án bài 5 trang 42 ko cho mk xin vs, cảm ơn mn nhiều ạ</p></article>
+
+  <article><p class="tên">Tài khoản lạ<span class="giờ">15 phút</span></p>
+    <p class="bình-luận">n.g.u thì đừng có phát biểu, nghe mà ngứa tai</p></article>
+
+  <article><p class="tên">Quảng cáo<span class="giờ">18 phút</span></p>
+    <p class="bình-luận">Sự kiện tháng 7: nhận 5000 kim cương miễn phí, đăng nhập tại
+      <a href="https://garena-nhanqua-freefire.xyz/kimcuong">garena-nhanqua-freefire.xyz</a> nhanh tay nhé!</p></article>
+
+  <article><p class="tên">Thông báo<span class="giờ">21 phút</span></p>
+    <p class="bình-luận">Tài khoản của bạn cần xác minh gấp, truy cập
+      <a href="http://facebook-xacminh-taikhoan.tk/login">tại đây</a> nếu không sẽ bị khoá vĩnh viễn.</p></article>
+
+  <article><p class="tên">Thư viện trường<span class="giờ">30 phút</span></p>
+    <p class="bình-luận">Danh mục sách mới đã cập nhật, xem tại
+      <a href="https://vnexpress.net/tin-tuc-24h">trang tin</a> hoặc hỏi trực tiếp cô thủ thư.</p></article>
+
+  <p class="ghi-chú">Toàn bộ tên và nội dung ở trên là hư cấu, do nhóm nghiên cứu tự viết để kiểm thử.
+    Các liên kết đều không tồn tại thật.</p>
+</main>
+
+<script src="classifier.js"></script>
+<script src="linkcheck.js"></script>
+<script src="content.js"></script>
+<script>
+  // Ô thử trực tiếp — không thuộc extension, chỉ phục vụ trình diễn.
+  (async () => {
+    const ô = document.getElementById("ô-thử");
+    const ra = document.getElementById("kết-quả");
+    const lớp = { 0: "v-an", 1: "v-xúc", 2: "v-đe" };
+    let sẵn = false;
+    while (!sẵn) {
+      try { CyberShieldModel.predict("thử"); sẵn = true; }
+      catch { await new Promise(r => setTimeout(r, 120)); }
+    }
+    ra.textContent = "Mô hình đã sẵn sàng. Gõ để xem kết quả.";
+    ô.addEventListener("input", () => {
+      const t = ô.value.trim();
+      if (t.length < 8) { ra.textContent = "Gõ ít nhất 8 ký tự…"; ra.className = ""; return; }
+      const r = CyberShieldModel.predict(t);
+      ra.className = lớp[r.label];
+      ra.innerHTML = `<b>${r.name}</b> · độ tin cậy ${(r.confidence * 100).toFixed(1)}% ` +
+        `<span style="color:var(--mờ)">(an toàn ${(r.proba[0]*100).toFixed(0)}% · ` +
+        `xúc phạm ${(r.proba[1]*100).toFixed(0)}% · đe doạ ${(r.proba[2]*100).toFixed(0)}%)</span>`;
+    });
+  })();
+</script>
+</body>
+</html>
