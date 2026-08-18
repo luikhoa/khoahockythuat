@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "CyberShield for Teens",
+  "version": "1.0",
+  "description": "Làm mờ bình luận độc hại và cảnh báo liên kết đáng ngờ. Toàn bộ xử lý diễn ra trên máy bạn.",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*"
+  ],
+  "action": {
+    "default_title": "CyberShield",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["classifier.js", "linkcheck.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["model.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

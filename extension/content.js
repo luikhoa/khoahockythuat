@@ -1,15 +1,6 @@
-/**
- * content.js — Chạy trên mọi trang web.
- *
- * Ba bài toán hiệu năng phải giải, nếu không extension sẽ làm treo trang:
- *   1. Không quét lại toàn trang liên tục  -> MutationObserver + debounce 250ms
- *   2. Không phân loại lại câu đã gặp      -> cache theo nội dung đã chuẩn hoá
- *   3. Không chặn luồng vẽ giao diện       -> xử lý theo lô trong requestIdleCallback
- */
-
 (() => {
   const NGƯỠNG = 0.60;              // độ tin cậy tối thiểu mới can thiệp
-  const ĐỘ_DÀI_TỐI_THIỂU = 8;       // bỏ qua chuỗi quá ngắn ("ok", "hihi")
+  const ĐỘ_DÀI_TỐI_THIỂU = 2;       // bỏ qua chuỗi quá ngắn ("ok", "hihi")
   const BỎ_QUA = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "CODE", "PRE", "SVG"]);
 
   const cache = new Map();
@@ -23,6 +14,7 @@
     chrome.storage.local.set({ ["cs_" + ngày]: stats, cs_meta: CyberShieldModel.meta });
   }
   const lưuTrễ = debounce(lưuThốngKê, 1500);
+  const quétTrễ = debounce(() => quét(), 250);
 
   function debounce(fn, ms) {
     let id;
@@ -30,11 +22,12 @@
   }
 
   // ------------------------------------------------------------ phân loại
-  function phânLoại(text) {
-    const key = CyberShieldModel.normalize(text);
+  async function phânLoại(text) {
+    // const key = CyberShieldModel.normalize(text);
+    const key = text;
     if (key.length < ĐỘ_DÀI_TỐI_THIỂU) return null;
     if (cache.has(key)) return cache.get(key);
-    const r = CyberShieldModel.predict(text);
+    const r = await CyberShieldModel.predict(text);
     cache.set(key, r);
     if (cache.size > 4000) cache.delete(cache.keys().next().value);
     return r;
@@ -98,7 +91,6 @@
       acceptNode(el) {
         if (BỎ_QUA.has(el.tagName)) return NodeFilter.FILTER_REJECT;
         if (el.dataset && el.dataset.csDone) return NodeFilter.FILTER_REJECT;
-        if (el.isContentEditable) return NodeFilter.FILTER_REJECT;
         // chỉ lấy phần tử "lá văn bản": có chữ, và không có con nào cũng có chữ
         const text = el.textContent.trim();
         if (text.length < ĐỘ_DÀI_TỐI_THIỂU || text.length > 1200) return NodeFilter.FILTER_SKIP;
@@ -120,11 +112,11 @@
     let i = 0;
     const rảnh = window.requestIdleCallback || ((f) => setTimeout(() => f({ timeRemaining: () => 8 }), 0));
 
-    function lô(deadline) {
+    async function lô(deadline) {
       while (i < khối.length && deadline.timeRemaining() > 2) {
         const el = khối[i++];
         if (el.dataset.csDone) continue;
-        const kết = phânLoại(el.textContent);
+        const kết = await phânLoại(el.textContent);
         stats.scanned++;
         if (kết && kết.label !== 0 && kết.confidence >= NGƯỠNG) bọcNộiDung(el, kết);
         else el.dataset.csDone = "1";
@@ -135,8 +127,6 @@
     rảnh(lô);
     links.forEach(đánhDấuLink);
   }
-
-  const quétTrễ = debounce(() => quét(document.body), 250);
 
   // ------------------------------------------------------------- khởi động
   async function khởiĐộng() {

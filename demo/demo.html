@@ -119,14 +119,14 @@
     const lớp = { 0: "v-an", 1: "v-xúc", 2: "v-đe" };
     let sẵn = false;
     while (!sẵn) {
-      try { CyberShieldModel.predict("thử"); sẵn = true; }
+      try { await CyberShieldModel.predict("thử"); sẵn = true; }
       catch { await new Promise(r => setTimeout(r, 120)); }
     }
     ra.textContent = "Mô hình đã sẵn sàng. Gõ để xem kết quả.";
-    ô.addEventListener("input", () => {
+    ô.addEventListener("input", async () => {
       const t = ô.value.trim();
       if (t.length < 8) { ra.textContent = "Gõ ít nhất 8 ký tự…"; ra.className = ""; return; }
-      const r = CyberShieldModel.predict(t);
+      const r = await CyberShieldModel.predict(t);
       ra.className = lớp[r.label];
       ra.innerHTML = `<b>${r.name}</b> · độ tin cậy ${(r.confidence * 100).toFixed(1)}% ` +
         `<span style="color:var(--mờ)">(an toàn ${(r.proba[0]*100).toFixed(0)}% · ` +

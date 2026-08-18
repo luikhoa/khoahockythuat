@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Social Media</title>
+    <style>
+        /* CSS Reset cơ bản */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5; /* Màu nền xám nhạt giống Facebook */
+            color: #1c1e21;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Khung chứa bài viết */
+        .post-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Phần header của bài viết (Avatar + Tên) */
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .user-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .user-info span {
+            font-size: 13px;
+            color: #65676b;
+        }
+
+        /* Phần nội dung bài viết */
+        .post-content {
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            max-height: 400px;
+        }
+
+        /* Phần nút tương tác (Thích, Bình luận, Chia sẻ) */
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e4e6eb;
+            border-bottom: 1px solid #e4e6eb;
+            padding: 5px 0;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #65676b;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Phần danh sách bình luận */
+        .comments-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comment {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .comment .avatar {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+
+        .comment-box {
+            background-color: #f0f2f5;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 100%;
+        }
+
+        .comment-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+        }
+
+        /* Ô nhập bình luận mới */
+        .write-comment {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .write-comment input {
+            flex: 1;
+            border: none;
+            background-color: #f0f2f5;
+            padding: 10px 15px;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="post-container">
+        <!-- Header bài viết -->
+        <div class="post-header">
+            <img src="https://png.pngtree.com/png-vector/20250529/ourlarge/pngtree-smiling-brunette-avatar-png-image_16406545.png" alt="Avatar" class="avatar">
+            <div class="user-info">
+                <h3>Nguyễn Phương Trà</h3>
+                <span>Vừa xong • 🌎</span>
+            </div>
+        </div>
+
+        <!-- Nội dung bài viết -->
+        <div class="post-content">
+            <p>Cuối tuần trốn khỏi thành phố ồn ào để về với thiên nhiên. Không khí ở đây thực sự quá trong lành và bình yên! 🌲⛰️☁️</p>
+        </div>
+        
+        <!-- Hình ảnh đính kèm -->
+        <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcRaMEtfIqiqyEzXEvUg4f48Scr7xg6EtOfk5lYKEFHPUPUQIgz10qJE_FzYDsXeHl2XMPaOLpYL9WFXBwY" alt="Post Image" class="post-image">
+
+        <!-- Các nút tương tác -->
+        <div class="post-actions">
+            <button class="action-btn">👍 Thích</button>
+            <button class="action-btn">💬 Bình luận</button>
+            <button class="action-btn">↪️ Chia sẻ</button>
+        </div>
+
+        <!-- Khu vực bình luận -->
+        <div class="comments-section">
+            <div class="comment">
+                <img src="https://inkythuatso.com/uploads/images/2022/03/5-31-15-03-50.jpg" alt="Avatar 2" class="avatar">
+                <div class="comment-box">
+                    <div class="comment-name">Trần Hoàng Nam</div>
+                    <div class="comment-text">helloworld</div>
+                </div>
+            </div>
+
+            <div class="comment">
+                <img src="https://png.pngtree.com/png-vector/20250529/ourlarge/pngtree-smiling-brunette-avatar-png-image_16406545.png" alt="Avatar 1" class="avatar">
+                <div class="comment-box">
+                    <div class="comment-name">Nguyễn Phương Trà</div>
+                    <div class="comment-text">Ở Tà Xùa nha Nam ơi, săn mây siêu đỉnh luôn!, helloworld</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ô viết bình luận -->
+        <div class="write-comment">
+            <img src="https://inkythuatso.com/uploads/images/2022/03/5-31-15-03-50.jpg" alt="My Avatar" class="avatar">
+            <input type="text" placeholder="Viết bình luận công khai...">
+        </div>
+    </div>
+
+</body>
+</html>

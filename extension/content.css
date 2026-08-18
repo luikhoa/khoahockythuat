@@ -1,0 +1,71 @@
+/* content.css — Lớp can thiệp hiển thị.
+   Nguyên tắc: che, không xoá. Học sinh luôn có quyền bấm "Vẫn xem".
+   Mọi selector đều có tiền tố .cs- để không đụng vào CSS của trang gốc. */
+
+.cs-blur {
+  filter: blur(6px) saturate(0.4) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+  transition: filter 160ms ease-out;
+}
+
+.cs-badge {
+  position: absolute;
+  inset: auto auto 4px 4px;
+  z-index: 2147483000;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 8px);
+  padding: 5px 6px 5px 11px;
+  border-radius: 999px;
+  font: 500 12px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: 0.01em;
+  color: #10162b;
+  box-shadow: 0 2px 10px rgb(16 22 43 / 0.22);
+  pointer-events: auto;
+}
+
+.cs-badge.cs-toxic  { background: #ffd58a; }
+.cs-badge.cs-threat { background: #ff9f9f; }
+
+.cs-badge-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-reveal {
+  flex: none;
+  padding: 3px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: #10162b;
+  color: #f4f6fd;
+  font: 600 11px/1.4 inherit;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.cs-reveal:hover  { background: #232d4f; }
+.cs-reveal:focus-visible { outline: 2px solid #10162b; outline-offset: 2px; }
+
+/* --- liên kết đáng ngờ ---------------------------------------------- */
+.cs-link {
+  text-decoration: underline wavy 1.5px !important;
+  text-underline-offset: 3px;
+}
+
+.cs-link-warn   { text-decoration-color: #d98a12 !important; }
+.cs-link-danger { text-decoration-color: #e03131 !important; }
+
+.cs-link::after {
+  content: "⚠";
+  margin-inline-start: 4px;
+  font-size: 0.85em;
+  vertical-align: baseline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-blur { transition: none; }
+}
