@@ -7,7 +7,7 @@ Hợp đồng I/O phải khớp content.js:
 Input  : text thô từ DOM (el.textContent.trim()), chưa normalize.
 Output : Prediction(label, name, confidence, proba)
 """
-from typing import Literal
+from typing import Literal, List
 
 from pydantic import BaseModel, Field
 
@@ -19,7 +19,7 @@ class Prediction(BaseModel):
     label: Label = Field(description="0 = an toàn, 1 = xúc phạm, 2 = đe doạ")
     name: str = Field(description='Tên lớp: "an toàn" | "xúc phạm" | "đe doạ"')
     confidence: float = Field(ge=0.0, le=1.0, description="max(proba)")
-    proba: list[float] = Field(
+    proba: List[float] = Field(
         min_length=3,
         max_length=3,
         description="softmax 3 lớp [p0, p1, p2], tổng ≈ 1",
@@ -57,7 +57,7 @@ def predict(text: str) -> Prediction:
         label=2,
         name=LABELS[2],
         confidence=0.79,
-        proba=[0, 0.4, 0.7],
+        proba=[0, 0.4, 0.6],
     )
     no_blur = Prediction(
         label=0,

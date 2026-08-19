@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .predictor import Prediction, predict
+from predictor import Prediction, predict
 
 app = FastAPI()
 app.add_middleware(
