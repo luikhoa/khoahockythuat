@@ -108,25 +108,39 @@
     Các liên kết đều không tồn tại thật.</p>
 </main>
 
-<script src="classifier.js"></script>
-<script src="linkcheck.js"></script>
-<script src="content.js"></script>
+<!-- Bundle đã build từ extension/src (xem extension/build.js) — gồm cả
+     linkcheck + gọi backend, tự quét trang này y hệt như khi cài extension
+     thật. Phải chạy `npm run build` trong extension/ trước khi mở trang này. -->
+<script src="../extension/dist/content.js"></script>
 <script>
   // Ô thử trực tiếp — không thuộc extension, chỉ phục vụ trình diễn.
+  // Gọi thẳng backend (giống hệt lib/api.ts's predict()) vì content.js đã
+  // build không còn lộ CyberShieldModel ra ngoài (chạy trong IIFE riêng).
   (async () => {
+    const BACKEND = "http://127.0.0.1:8000";
+    async function predict(text) {
+      const res = await fetch(`${BACKEND}/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: text }),
+      });
+      if (!res.ok) throw new Error(`Backend returned an error: ${res.status}`);
+      return res.json();
+    }
+
     const ô = document.getElementById("ô-thử");
     const ra = document.getElementById("kết-quả");
     const lớp = { 0: "v-an", 1: "v-xúc", 2: "v-đe" };
     let sẵn = false;
     while (!sẵn) {
-      try { await CyberShieldModel.predict("thử"); sẵn = true; }
+      try { await predict("thử"); sẵn = true; }
       catch { await new Promise(r => setTimeout(r, 120)); }
     }
-    ra.textContent = "Mô hình đã sẵn sàng. Gõ để xem kết quả.";
+    ra.textContent = "Backend đã sẵn sàng. Gõ để xem kết quả.";
     ô.addEventListener("input", async () => {
       const t = ô.value.trim();
       if (t.length < 8) { ra.textContent = "Gõ ít nhất 8 ký tự…"; ra.className = ""; return; }
-      const r = await CyberShieldModel.predict(t);
+      const r = await predict(t);
       ra.className = lớp[r.label];
       ra.innerHTML = `<b>${r.name}</b> · độ tin cậy ${(r.confidence * 100).toFixed(1)}% ` +
         `<span style="color:var(--mờ)">(an toàn ${(r.proba[0]*100).toFixed(0)}% · ` +

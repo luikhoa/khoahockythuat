@@ -1,0 +1,15 @@
+{
+  "name": "cybershield-extension",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CyberShield for Teens — extension frontend (TypeScript source, esbuild build).",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.270",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>CyberShield</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <p class="nhãn-nhỏ">Hôm nay</p>
+  <h1>Tấm chắn đang bật</h1>
+  <p class="phụ" id="mô-hình">Đang nạp mô hình…</p>
+
+  <div class="thanh" id="thanh">
+    <i class="an"  style="width:100%"></i>
+    <i class="xúc" style="width:0"></i>
+    <i class="đe"  style="width:0"></i>
+  </div>
+  <div class="chú">
+    <span class="l-an">An toàn</span>
+    <span class="l-xúc">Xúc phạm</span>
+    <span class="l-đe">Đe doạ</span>
+  </div>
+
+  <div class="lưới">
+    <div class="ô"><div class="số" id="s-quét">0</div><div class="nhãn-nhỏ">Đoạn đã đọc</div></div>
+    <div class="ô"><div class="số" id="s-che">0</div><div class="nhãn-nhỏ">Đã làm mờ</div></div>
+    <div class="ô"><div class="số" id="s-link">0</div><div class="nhãn-nhỏ">Link đáng ngờ</div></div>
+    <div class="ô"><div class="số" id="s-mở">0</div><div class="nhãn-nhỏ">Bạn chọn xem</div></div>
+  </div>
+
+  <footer>
+    <span id="phiên-bản">CyberShield 1.0</span>
+    <button id="xoá" type="button">Xoá thống kê</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

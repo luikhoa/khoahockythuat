@@ -1,0 +1,97 @@
+:root {
+  --mực:    #0d1226;
+  --tấm:    #161d3a;
+  --viền:   #26305a;
+  --chữ:    #e9edfb;
+  --mờ:     #8f9ac4;
+  --an:     #56e0a8;
+  --xúc:    #ffc861;
+  --đe:     #ff7b7b;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  width: 320px;
+  padding: 18px 18px 14px;
+  background: var(--mực);
+  color: var(--chữ);
+  font: 400 13px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.nhãn-nhỏ {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mờ);
+}
+h1 {
+  margin: 6px 0 2px;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.phụ { color: var(--mờ); font-size: 11.5px; }
+
+/* Thanh chắn: tỉ lệ nội dung đã che trên tổng số đã quét */
+.thanh {
+  display: flex;
+  height: 7px;
+  margin: 16px 0 6px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--viền);
+}
+.thanh i { display: block; height: 100%; }
+.thanh .an  { background: var(--an); }
+.thanh .xúc { background: var(--xúc); }
+.thanh .đe  { background: var(--đe); }
+
+.chú { display: flex; gap: 13px; font-size: 11px; color: var(--mờ); }
+.chú span::before {
+  content: "";
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-right: 5px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.chú .l-an::before  { background: var(--an); }
+.chú .l-xúc::before { background: var(--xúc); }
+.chú .l-đe::before  { background: var(--đe); }
+
+.lưới {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 16px 0 14px;
+}
+.ô {
+  padding: 11px 12px;
+  border: 1px solid var(--viền);
+  border-radius: 10px;
+  background: var(--tấm);
+}
+.số { font-size: 21px; font-weight: 640; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.ô .nhãn-nhỏ { font-size: 9.5px; letter-spacing: 0.12em; }
+
+footer {
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid var(--viền);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+  color: var(--mờ);
+}
+button {
+  padding: 5px 11px;
+  border: 1px solid var(--viền);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--mờ);
+  font: inherit;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+button:hover { color: var(--chữ); border-color: var(--mờ); }
+button:focus-visible { outline: 2px solid var(--an); outline-offset: 2px; }
