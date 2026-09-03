@@ -27,7 +27,13 @@
     const key = text;
     if (key.length < ĐỘ_DÀI_TỐI_THIỂU) return null;
     if (cache.has(key)) return cache.get(key);
-    const r = await CyberShieldModel.predict(text);
+    let r;
+    try {
+      r = await CyberShieldModel.predict(text);
+    } catch (err) {
+      console.warn("[CyberShield] Backend không phản hồi, bỏ qua đoạn này:", err);
+      return null;
+    }
     cache.set(key, r);
     if (cache.size > 4000) cache.delete(cache.keys().next().value);
     return r;
@@ -135,7 +141,7 @@
       : "model.json";                       // để chạy được cả trong demo.html
     const meta = await CyberShieldModel.load(url);
     sẵnSàng = true;
-    console.log(`[CyberShield] Đã nạp mô hình "${meta["phương_án"]}" — macro-F1 = ${meta.macro_f1_cv}. Xử lý hoàn toàn tại máy.`);
+    console.log(`[CyberShield] Đã nạp thông tin mô hình "${meta["phương_án"]}" — macro-F1 = ${meta.macro_f1_cv}. Phân loại chạy qua backend.`);
 
     quét(document.body);
 

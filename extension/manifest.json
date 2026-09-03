@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CyberShield for Teens",
   "version": "1.0",
-  "description": "Làm mờ bình luận độc hại và cảnh báo liên kết đáng ngờ. Toàn bộ xử lý diễn ra trên máy bạn.",
+  "description": "Làm mờ bình luận độc hại và cảnh báo liên kết đáng ngờ.",
   "permissions": [
     "storage",
     "scripting",

@@ -1,16 +1,12 @@
 /**
- * classifier.js — Chạy lại y hệt pipeline scikit-learn, nhưng bằng JavaScript.
+ * classifier.js — Cầu nối giữa content script và backend AI.
  *
- * Vì sao không gọi API về server?
- *   Nếu gửi text về server thì mọi bình luận, tin nhắn học sinh nhìn thấy đều
- *   rời khỏi máy các em. Logistic Regression chỉ là phép nhân–cộng vector, nên
- *   ta xuất tham số ra model.json và tính ngay tại chỗ. Không có dữ liệu nào
- *   rời khỏi trình duyệt, và không cần server để chấm thi.
+ * predict() gửi text tới backend (POST http://127.0.0.1:8000/predict, xem
+ * backend/predictor.py) để phân loại; việc suy luận không còn chạy trong
+ * trình duyệt.
  *
- * Ba bước phải khớp TUYỆT ĐỐI với train.py:
- *   normalize()  ==  hàm normalize() trong train.py
- *   charNgrams() ==  TfidfVectorizer(analyzer='char', ngram_range=(2,5))
- *   tfidf + softmax == LogisticRegression.predict_proba()
+ * model.json vẫn được tải để lấy thông tin mô tả mô hình (phiên bản,
+ * macro-F1 lúc huấn luyện) hiển thị trong popup — không dùng để suy luận.
  */
 
 const CyberShieldModel = (() => {
