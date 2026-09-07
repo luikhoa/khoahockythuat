@@ -3,20 +3,20 @@
  * backend. Phải khớp với các Pydantic model trong backend/server.py.
  */
 
-export type Label = 0 | 1 | 2;
+export type Label = 0 | 1;
 
 export interface Prediction {
   label: Label;
   name: string;
   confidence: number;
-  proba: [number, number, number];
+  proba: [number, number];
 }
 
 export interface ModelMeta {
   "phiên_bản": string;
   "phương_án": string;
   macro_f1_cv: number;
-  "nhãn": [string, string, string];
+  "nhãn": [string, string];
   ngram: [number, number];
   analyzer: "char" | "word";
 }

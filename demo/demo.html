@@ -130,7 +130,10 @@
 
     const ô = document.getElementById("ô-thử");
     const ra = document.getElementById("kết-quả");
-    const lớp = { 0: "v-an", 1: "v-xúc", 2: "v-đe" };
+    // Nhãn hiển thị tương ứng với mảng proba nhị phân [p0, p1] trả về từ backend.
+    // Không còn nhãn "đe doạ" (proba[2]) kể từ khi chuyển sang Binary Classification.
+    const lớp = { 0: "v-an", 1: "v-xúc" };
+    const NHÃN = ["an toàn", "xúc phạm"];
     let sẵn = false;
     while (!sẵn) {
       try { await predict("thử"); sẵn = true; }
@@ -142,9 +145,14 @@
       if (t.length < 8) { ra.textContent = "Gõ ít nhất 8 ký tự…"; ra.className = ""; return; }
       const r = await predict(t);
       ra.className = lớp[r.label];
+      // Đồng nhất 1 chữ số thập phân giữa confidence và từng thành phần proba
+      // (trước đây confidence dùng toFixed(1) nhưng proba dùng toFixed(0),
+      // gây lệch số làm tròn — "90.6%" ngoài nhưng "91%" bên trong).
+      const chiTiết = r.proba
+        .map((p, i) => `${NHÃN[i] ?? "khác"} ${(p * 100).toFixed(1)}%`)
+        .join(" · ");
       ra.innerHTML = `<b>${r.name}</b> · độ tin cậy ${(r.confidence * 100).toFixed(1)}% ` +
-        `<span style="color:var(--mờ)">(an toàn ${(r.proba[0]*100).toFixed(0)}% · ` +
-        `xúc phạm ${(r.proba[1]*100).toFixed(0)}% · đe doạ ${(r.proba[2]*100).toFixed(0)}%)</span>`;
+        `<span style="color:var(--mờ)">(${chiTiết})</span>`;
     });
   })();
 </script>
