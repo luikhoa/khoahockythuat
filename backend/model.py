@@ -4,13 +4,13 @@ import torch
 import torch.nn as nn
 from transformers import AutoModel, AutoTokenizer, PreTrainedTokenizer
 
-from config import HIDDEN_DIM, MAX_LENGTH, MODEL_NAME, NUM_LABELS, DROPOUT
+from config import DROPOUT, HIDDEN_DIM, MAX_LENGTH, MODEL_NAME, NUM_LABELS
 
 
 @dataclass
 class ModelConfig:
     pretrained_name: str = MODEL_NAME
-    num_labels: int = NUM_LABELS
+    num_labels: int = 2  # Chỉ giữ 2 lớp: 0 - An toàn, 1 - Độc hại
     max_length: int = MAX_LENGTH
     hidden_dim: int = HIDDEN_DIM
     dropout: float = DROPOUT

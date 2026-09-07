@@ -14,11 +14,15 @@ const NGƯỠNG = 0.6; // độ tin cậy tối thiểu mới can thiệp
 const ĐỘ_DÀI_TỐI_THIỂU = 2; // bỏ qua chuỗi quá ngắn ("ok", "hihi")
 const BỎ_QUA = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "CODE", "PRE", "SVG"]);
 const BACKEND = "http://127.0.0.1:8000";
+
+// Tên hiển thị tương ứng với mảng proba 2 lớp [p0, p1]
+const LABELS = ["an toàn", "xúc phạm"];
+
 // ánh xạ field trong `stats` (local) -> loại sự kiện mà POST /events chấp nhận
 const LOẠI_SỰ_KIỆN: Record<keyof StatsSnapshot, EventType> = {
   scanned: "scanned",
   toxic: "toxic",
-  threat: "threat",
+  threat: "threat", // Giữ để tương thích schema gửi event
   links: "link",
   revealed: "revealed",
 };
@@ -36,8 +40,6 @@ function lưuThốngKê(): void {
   gửiSựKiện();
 }
 
-// Gửi phần tăng thêm (delta) kể từ lần gửi trước lên backend, theo cùng
-// nhịp debounce với chrome.storage.local — không gọi mạng theo từng câu.
 function gửiSựKiện(): void {
   (Object.keys(LOẠI_SỰ_KIỆN) as (keyof StatsSnapshot)[]).forEach((field) => {
     const delta = stats[field] - đãGửi[field];
@@ -49,7 +51,7 @@ function gửiSựKiện(): void {
       body: JSON.stringify({ type: LOẠI_SỰ_KIỆN[field], count: delta }),
     })
       .then((res) => { if (res.ok) đãGửi[field] = giáTrịHiệnTại; })
-      .catch(() => {}); // backend lỗi -> giữ nguyên đãGửi[field], delta sẽ được gộp và thử lại ở lần flush sau
+      .catch(() => {});
   });
 }
 
@@ -89,14 +91,22 @@ function bọcNộiDung(el: HTMLElement, kết: Prediction): void {
   if (el.dataset.csDone) return;
   el.dataset.csDone = "1";
 
-  const mức = kết.label === 2 ? "threat" : "toxic";
-  el.classList.add("cs-blur", "cs-" + mức);
+  // Bài toán 2 lớp nhị phân: kết.label !== 0 mặc định là toxic
+  el.classList.add("cs-blur", "cs-toxic");
+
+  // Giữ 1 chữ số thập phân cho độ tin cậy để đồng nhất với backend
+  const confidencePct = (kết.confidence * 100).toFixed(1);
+
+  // Tạo chuỗi chi tiết động theo mảng proba 2 lớp [p0, p1]
+  const chiTiếtProba = kết.proba && kết.proba.length >= 2
+    ? ` (${kết.proba.map((p, i) => `${LABELS[i] || 'khác'} ${(p * 100).toFixed(1)}%`).join(' · ')})`
+    : '';
 
   const nhãn = document.createElement("div");
-  nhãn.className = "cs-badge cs-" + mức;
+  nhãn.className = "cs-badge cs-toxic";
   nhãn.innerHTML =
-    `<span class="cs-badge-text">Nội dung có thể ${kết.label === 2 ? "mang tính đe doạ" : "gây tổn thương"}` +
-    ` · ${Math.round(kết.confidence * 100)}%</span>` +
+    `<span class="cs-badge-text">Nội dung có thể gây tổn thương` +
+    ` · độ tin cậy ${confidencePct}%${chiTiếtProba}</span>` +
     `<button class="cs-reveal" type="button">Vẫn xem</button>`;
 
   nhãn.querySelector(".cs-reveal")!.addEventListener("click", (e) => {
@@ -110,7 +120,7 @@ function bọcNộiDung(el: HTMLElement, kết: Prediction): void {
   if (bọc && getComputedStyle(bọc).position === "static") bọc.style.position = "relative";
   (bọc || el).appendChild(nhãn);
 
-  if (kết.label === 2) stats.threat++; else stats.toxic++;
+  stats.toxic++;
   lưuTrễ();
 }
 
@@ -143,7 +153,6 @@ function thuThậpKhối(gốc: Node): HTMLElement[] {
       const el = node as HTMLElement;
       if (BỎ_QUA.has(el.tagName)) return NodeFilter.FILTER_REJECT;
       if (el.dataset && el.dataset.csDone) return NodeFilter.FILTER_REJECT;
-      // chỉ lấy phần tử "lá văn bản": có chữ, và không có con nào cũng có chữ
       const text = el.textContent!.trim();
       if (text.length < ĐỘ_DÀI_TỐI_THIỂU || text.length > 1200) return NodeFilter.FILTER_SKIP;
       for (const c of Array.from(el.children)) {
@@ -189,7 +198,7 @@ function quét(gốc: HTMLElement = document.body): void {
 async function khởiĐộng(): Promise<void> {
   const url = typeof chrome !== "undefined" && chrome.runtime
     ? chrome.runtime.getURL("model.json")
-    : "../extension/model.json"; // để chạy được cả trong demo/demo.html (xem thư mục demo/)
+    : "../extension/model.json";
   const meta = await CyberShieldModel.load(url);
   sẵnSàng = true;
   console.log(`[CyberShield] Đã nạp thông tin mô hình "${meta["phương_án"]}" — macro-F1 = ${meta.macro_f1_cv}. Phân loại chạy qua backend.`);
