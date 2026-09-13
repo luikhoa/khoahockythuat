@@ -5,11 +5,17 @@
   "description": "CyberShield for Teens — extension frontend (TypeScript source, esbuild build).",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "node build.js"
+    "build": "node build.js",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "verify": "npm run typecheck && npm test && npm run build"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/chrome": "^0.0.270",
     "esbuild": "^0.23.0",
-    "typescript": "^5.5.0"
+    "jsdom": "^25.0.1",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
   }
 }

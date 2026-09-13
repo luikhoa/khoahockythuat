@@ -32,6 +32,24 @@ export interface StatsSnapshot {
 /** Khớp EventRequest.type trong backend/server.py (POST /events). */
 export type EventType = "scanned" | "toxic" | "threat" | "link" | "revealed";
 
+export interface EventPayload {
+  type: EventType;
+  count: number;
+  ts?: string;
+}
+
+export type BackendMessage =
+  | { type: "health" }
+  | { type: "predict"; content: string }
+  | { type: "stats"; range: "day" | "week" }
+  | { type: "event"; event: EventPayload };
+
+export type BackendErrorKind = "timeout" | "network" | "http" | "invalid-response";
+
+export type BackendResponse<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: { kind: BackendErrorKind; retryable: boolean } };
+
 export type LinkLevel = "an toàn" | "nghi ngờ" | "nguy hiểm";
 
 export interface LinkCheckResult {

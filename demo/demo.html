@@ -69,7 +69,7 @@
   </header>
 
   <section class="thử">
-    <label for="ô-thử">Gõ thử một câu bất kỳ</label>
+    <label for="ô-thử">API tester riêng (bản nháp này không được extension quét)</label>
     <input id="ô-thử" type="text" placeholder="ví dụ: mai ra cổng trường tao đánh cho một trận" autocomplete="off">
     <p id="kết-quả">Đang nạp mô hình…</p>
   </section>
@@ -104,6 +104,10 @@
     <p class="bình-luận">Danh mục sách mới đã cập nhật, xem tại
       <a href="https://vnexpress.net/tin-tuc-24h">trang tin</a> hoặc hỏi trực tiếp cô thủ thư.</p></article>
 
+  <article id="fixture-động"><p class="tên">Fixture DOM động<span class="giờ">tự động</span></p>
+    <p id="nội-dung-thay-đổi" class="bình-luận">Nội dung có sẵn để kiểm tra lần quét đầu tiên.</p>
+    <div id="tin-nhắn-mới"></div></article>
+
   <p class="ghi-chú">Toàn bộ tên và nội dung ở trên là hư cấu, do nhóm nghiên cứu tự viết để kiểm thử.
     Các liên kết đều không tồn tại thật.</p>
 </main>
@@ -134,12 +138,7 @@
     // Không còn nhãn "đe doạ" (proba[2]) kể từ khi chuyển sang Binary Classification.
     const lớp = { 0: "v-an", 1: "v-xúc" };
     const NHÃN = ["an toàn", "xúc phạm"];
-    let sẵn = false;
-    while (!sẵn) {
-      try { await predict("thử"); sẵn = true; }
-      catch { await new Promise(r => setTimeout(r, 120)); }
-    }
-    ra.textContent = "Backend đã sẵn sàng. Gõ để xem kết quả.";
+    ra.textContent = "Gõ ít nhất 8 ký tự để gọi API tester.";
     ô.addEventListener("input", async () => {
       const t = ô.value.trim();
       if (t.length < 8) { ra.textContent = "Gõ ít nhất 8 ký tự…"; ra.className = ""; return; }
@@ -155,6 +154,17 @@
         `<span style="color:var(--mờ)">(${chiTiết})</span>`;
     });
   })();
+
+  setTimeout(() => {
+    const message = document.createElement("p");
+    message.className = "bình-luận";
+    message.textContent = "Tin nhắn được append sau một giây để kiểm tra observer.";
+    document.getElementById("tin-nhắn-mới").appendChild(message);
+  }, 1000);
+  setTimeout(() => {
+    document.getElementById("nội-dung-thay-đổi").textContent =
+      "Text của node cũ đã được thay đổi để kiểm tra characterData và childList.";
+  }, 2000);
 </script>
 </body>
 </html>

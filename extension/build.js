@@ -1,4 +1,4 @@
-// build.js — Đóng gói các entry point content script + popup bằng esbuild,
+// build.js — Đóng gói các entry point content script + popup + background bằng esbuild,
 // và sao chép popup.html/styles.css (không qua build, chỉ copy nguyên) vào
 // dist/ để cùng nằm cạnh popup.js đã build.
 // Không cần Tailwind/PostCSS — CSS trong dự án này luôn viết tay (xem plan.md).
@@ -13,6 +13,7 @@ esbuild
     entryPoints: {
       content: "src/content/content.ts",
       popup: "src/popup/popup.ts",
+      background: "src/background.ts",
     },
     bundle: true,
     outdir: "dist",

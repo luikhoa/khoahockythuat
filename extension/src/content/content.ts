@@ -1,226 +1,278 @@
-/**
- * content.ts — Chạy trên mọi trang web.
- *
- * Ba bài toán hiệu năng phải giải, nếu không extension sẽ làm treo trang:
- *   1. Không quét lại toàn trang liên tục  -> MutationObserver + debounce 250ms
- *   2. Không phân loại lại câu đã gặp      -> cache theo nội dung đã chuẩn hoá
- *   3. Không chặn luồng vẽ giao diện       -> xử lý theo lô trong requestIdleCallback
- */
+/** Quét nội dung đã hiển thị, phân loại qua service worker và theo dõi DOM động. */
 import { CyberShieldModel } from "../lib/api";
 import { CyberShieldLink } from "../lib/linkcheck";
 import type { EventType, Prediction, StatsSnapshot } from "../lib/types";
 
-const NGƯỠNG = 0.6; // độ tin cậy tối thiểu mới can thiệp
-const ĐỘ_DÀI_TỐI_THIỂU = 2; // bỏ qua chuỗi quá ngắn ("ok", "hihi")
+const NGƯỠNG = 0.6;
+const ĐỘ_DÀI_TỐI_THIỂU = 2;
+const ĐỘ_DÀI_TỐI_ĐA = 1200;
 const BỎ_QUA = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "CODE", "PRE", "SVG"]);
-const BACKEND = "http://127.0.0.1:8000";
-
-// Tên hiển thị tương ứng với mảng proba 2 lớp [p0, p1]
+const NHỊP_THỬ_LẠI = [1_000, 5_000, 15_000, 30_000];
 const LABELS = ["an toàn", "xúc phạm"];
 
-// ánh xạ field trong `stats` (local) -> loại sự kiện mà POST /events chấp nhận
 const LOẠI_SỰ_KIỆN: Record<keyof StatsSnapshot, EventType> = {
-  scanned: "scanned",
-  toxic: "toxic",
-  threat: "threat", // Giữ để tương thích schema gửi event
-  links: "link",
-  revealed: "revealed",
+  scanned: "scanned", toxic: "toxic", threat: "threat", links: "link", revealed: "revealed",
 };
-
 const cache = new Map<string, Prediction>();
+const đangGọi = new Map<string, Promise<Prediction>>();
+const textĐãXửLý = new WeakMap<HTMLElement, string>();
+const linkĐãXửLý = new WeakMap<HTMLAnchorElement, string>();
+const badgeTheoElement = new WeakMap<HTMLElement, HTMLElement>();
+const linkHandler = new WeakMap<HTMLAnchorElement, EventListener>();
+const hàngĐợi = new Set<HTMLElement>();
 const stats: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
 const đãGửi: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
-let sẵnSàng = false;
+let đangXửLý = false;
+let hẹnThửLại: ReturnType<typeof setTimeout> | undefined;
+let lầnThửLại = 0;
+let chuỗiGửiSựKiện = Promise.resolve();
+let observer: MutationObserver | undefined;
+let đãKhởiĐộng = false;
 
-// ------------------------------------------------------------ thống kê
-function lưuThốngKê(): void {
-  if (typeof chrome === "undefined" || !chrome.storage) return;
-  const ngày = new Date().toISOString().slice(0, 10);
-  chrome.storage.local.set({ ["cs_" + ngày]: stats, cs_meta: CyberShieldModel.meta });
-  gửiSựKiện();
+export function fingerprint(raw: string): string {
+  return raw.trim().replace(/\s+/g, " ");
+}
+
+function bịLoại(el: HTMLElement): boolean {
+  if (BỎ_QUA.has(el.tagName) || el.closest("[data-cs-ui]")) return true;
+  if (el.closest("input, textarea, [contenteditable]:not([contenteditable='false'])")) return true;
+  if (el.closest("[hidden], [aria-hidden='true']")) return true;
+  for (let node: HTMLElement | null = el; node; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") return true;
+  }
+  return false;
+}
+
+function làKhốiVănBản(el: HTMLElement): boolean {
+  if (bịLoại(el)) return false;
+  const text = fingerprint(el.textContent ?? "");
+  if (text.length < ĐỘ_DÀI_TỐI_THIỂU || text.length > ĐỘ_DÀI_TỐI_ĐA) return false;
+  return !Array.from(el.children).some((child) => fingerprint(child.textContent ?? "").length >= ĐỘ_DÀI_TỐI_THIỂU);
+}
+
+export function thuThậpKhối(gốc: Node): HTMLElement[] {
+  const kếtQuả: HTMLElement[] = [];
+  if (gốc instanceof HTMLElement && làKhốiVănBản(gốc)) kếtQuả.push(gốc);
+  const walker = document.createTreeWalker(gốc, NodeFilter.SHOW_ELEMENT, {
+    acceptNode(node) {
+      const el = node as HTMLElement;
+      if (BỎ_QUA.has(el.tagName) || el.matches("[data-cs-ui], [hidden], [aria-hidden='true']")) return NodeFilter.FILTER_REJECT;
+      return làKhốiVănBản(el) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    },
+  });
+  let node: Node | null;
+  while ((node = walker.nextNode())) kếtQuả.push(node as HTMLElement);
+  return kếtQuả;
+}
+
+function predictionHợpLệ(value: Prediction): boolean {
+  return (value.label === 0 || value.label === 1) && Number.isFinite(value.confidence)
+    && value.confidence >= 0 && value.confidence <= 1 && Array.isArray(value.proba)
+    && value.proba.length === 2 && value.proba.every((p) => Number.isFinite(p) && p >= 0 && p <= 1);
+}
+
+async function phânLoại(text: string): Promise<Prediction> {
+  const đãCache = cache.get(text);
+  if (đãCache) return đãCache;
+  const hiệnCó = đangGọi.get(text);
+  if (hiệnCó) return hiệnCó;
+  const promise = CyberShieldModel.predict(text).then((result) => {
+    if (!predictionHợpLệ(result)) throw new Error("invalid-response");
+    cache.set(text, result);
+    if (cache.size > 4000) {
+      const đầu = cache.keys().next().value;
+      if (đầu !== undefined) cache.delete(đầu);
+    }
+    return result;
+  }).finally(() => đangGọi.delete(text));
+  đangGọi.set(text, promise);
+  return promise;
 }
 
 function gửiSựKiện(): void {
-  (Object.keys(LOẠI_SỰ_KIỆN) as (keyof StatsSnapshot)[]).forEach((field) => {
-    const delta = stats[field] - đãGửi[field];
-    if (delta <= 0) return;
-    const giáTrịHiệnTại = stats[field];
-    fetch(`${BACKEND}/events`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: LOẠI_SỰ_KIỆN[field], count: delta }),
-    })
-      .then((res) => { if (res.ok) đãGửi[field] = giáTrịHiệnTại; })
-      .catch(() => {});
-  });
+  chuỗiGửiSựKiện = chuỗiGửiSựKiện.then(async () => {
+    for (const field of Object.keys(LOẠI_SỰ_KIỆN) as (keyof StatsSnapshot)[]) {
+      const delta = stats[field] - đãGửi[field];
+      if (delta <= 0) continue;
+      let cònLại = delta;
+      while (cònLại > 0) {
+        const count = Math.min(cònLại, 10_000);
+        await CyberShieldModel.event({ type: LOẠI_SỰ_KIỆN[field], count });
+        đãGửi[field] += count;
+        cònLại -= count;
+      }
+    }
+  }).catch(() => undefined);
 }
 
-function debounce<A extends unknown[]>(fn: (...args: A) => void, ms: number): (...args: A) => void {
+function lưuThốngKê(): void {
+  if (typeof chrome !== "undefined" && chrome.storage) {
+    const ngày = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
+    chrome.storage.local.set({ ["cs_" + ngày]: stats, cs_meta: CyberShieldModel.meta });
+  }
+  gửiSựKiện();
+}
+
+function debounce(fn: () => void, ms: number): () => void {
   let id: ReturnType<typeof setTimeout>;
-  return (...a: A) => {
-    clearTimeout(id);
-    id = setTimeout(() => fn(...a), ms);
-  };
+  return () => { clearTimeout(id); id = setTimeout(fn, ms); };
 }
-
 const lưuTrễ = debounce(lưuThốngKê, 1500);
-const quétTrễ = debounce(() => quét(), 250);
 
-// ------------------------------------------------------------ phân loại
-async function phânLoại(text: string): Promise<Prediction | null> {
-  const key = text;
-  if (key.length < ĐỘ_DÀI_TỐI_THIỂU) return null;
-  if (cache.has(key)) return cache.get(key) ?? null;
-  let r: Prediction;
-  try {
-    r = await CyberShieldModel.predict(text);
-  } catch (err) {
-    console.warn("[CyberShield] Backend không phản hồi, bỏ qua đoạn này:", err);
-    return null;
-  }
-  cache.set(key, r);
-  if (cache.size > 4000) {
-    const đầu = cache.keys().next().value;
-    if (đầu !== undefined) cache.delete(đầu);
-  }
-  return r;
+function bỏCanThiệp(el: HTMLElement): void {
+  el.classList.remove("cs-blur", "cs-toxic");
+  badgeTheoElement.get(el)?.remove();
+  badgeTheoElement.delete(el);
 }
 
-// ------------------------------------------------------- can thiệp DOM
 function bọcNộiDung(el: HTMLElement, kết: Prediction): void {
-  if (el.dataset.csDone) return;
-  el.dataset.csDone = "1";
-
-  // Bài toán 2 lớp nhị phân: kết.label !== 0 mặc định là toxic
+  bỏCanThiệp(el);
   el.classList.add("cs-blur", "cs-toxic");
-
-  // Giữ 1 chữ số thập phân cho độ tin cậy để đồng nhất với backend
   const confidencePct = (kết.confidence * 100).toFixed(1);
-
-  // Tạo chuỗi chi tiết động theo mảng proba 2 lớp [p0, p1]
-  const chiTiếtProba = kết.proba && kết.proba.length >= 2
-    ? ` (${kết.proba.map((p, i) => `${LABELS[i] || 'khác'} ${(p * 100).toFixed(1)}%`).join(' · ')})`
-    : '';
-
+  const chiTiếtProba = ` (${kết.proba.map((p, i) => `${LABELS[i] ?? "khác"} ${(p * 100).toFixed(1)}%`).join(" · ")})`;
   const nhãn = document.createElement("div");
+  nhãn.dataset.csUi = "badge";
   nhãn.className = "cs-badge cs-toxic";
-  nhãn.innerHTML =
-    `<span class="cs-badge-text">Nội dung có thể gây tổn thương` +
-    ` · độ tin cậy ${confidencePct}%${chiTiếtProba}</span>` +
-    `<button class="cs-reveal" type="button">Vẫn xem</button>`;
-
-  nhãn.querySelector(".cs-reveal")!.addEventListener("click", (e) => {
-    e.stopPropagation(); e.preventDefault();
-    el.classList.remove("cs-blur");
-    nhãn.remove();
-    stats.revealed++; lưuTrễ();
+  const môTả = document.createElement("span");
+  môTả.className = "cs-badge-text";
+  môTả.textContent = `Nội dung có thể gây tổn thương · độ tin cậy ${confidencePct}%${chiTiếtProba}`;
+  const nút = document.createElement("button");
+  nút.className = "cs-reveal";
+  nút.type = "button";
+  nút.textContent = "Vẫn xem";
+  nút.addEventListener("click", (event) => {
+    event.stopPropagation(); event.preventDefault(); bỏCanThiệp(el); stats.revealed++; lưuTrễ();
   });
-
+  nhãn.append(môTả, nút);
   const bọc = el.parentElement;
   if (bọc && getComputedStyle(bọc).position === "static") bọc.style.position = "relative";
-  (bọc || el).appendChild(nhãn);
-
+  (bọc ?? el).appendChild(nhãn);
+  badgeTheoElement.set(el, nhãn);
   stats.toxic++;
   lưuTrễ();
 }
 
 function đánhDấuLink(a: HTMLAnchorElement): void {
-  if (a.dataset.csDone) return;
-  a.dataset.csDone = "1";
-  const kq = CyberShieldLink.check(a.href);
-  if (kq.level === "an toàn") return;
-
-  a.classList.add("cs-link", "cs-link-" + (kq.level === "nguy hiểm" ? "danger" : "warn"));
-  a.title = `CyberShield — liên kết ${kq.level}:\n• ${kq.reasons.join("\n• ")}`;
-
-  a.addEventListener("click", (e) => {
-    const ok = confirm(
-      `Liên kết này ${kq.level.toUpperCase()}.\n\n` +
-      `Đích đến: ${a.hostname}\n\nDấu hiệu phát hiện:\n• ${kq.reasons.join("\n• ")}\n\n` +
-      `Bấm OK nếu bạn chắc chắn muốn mở.`
-    );
-    if (!ok) { e.preventDefault(); e.stopPropagation(); }
-  }, true);
-
-  stats.links++; lưuTrễ();
+  if (bịLoại(a)) return;
+  const url = a.href;
+  if (linkĐãXửLý.get(a) === url) return;
+  const cũ = linkHandler.get(a);
+  if (cũ) a.removeEventListener("click", cũ, true);
+  a.classList.remove("cs-link", "cs-link-warn", "cs-link-danger");
+  a.removeAttribute("title");
+  linkHandler.delete(a);
+  const kếtQuả = CyberShieldLink.check(url);
+  linkĐãXửLý.set(a, url);
+  if (kếtQuả.level === "an toàn") return;
+  a.classList.add("cs-link", "cs-link-" + (kếtQuả.level === "nguy hiểm" ? "danger" : "warn"));
+  a.title = `CyberShield — liên kết ${kếtQuả.level}:\n• ${kếtQuả.reasons.join("\n• ")}`;
+  const handler: EventListener = (event) => {
+    const ok = confirm(`Liên kết này ${kếtQuả.level.toUpperCase()}.\n\nĐích đến: ${a.hostname}\n\nDấu hiệu phát hiện:\n• ${kếtQuả.reasons.join("\n• ")}\n\nBấm OK nếu bạn chắc chắn muốn mở.`);
+    if (!ok) { event.preventDefault(); event.stopPropagation(); }
+  };
+  a.addEventListener("click", handler, true);
+  linkHandler.set(a, handler);
+  stats.links++;
+  lưuTrễ();
 }
 
-// ------------------------------------------------------------- duyệt DOM
-function thuThậpKhối(gốc: Node): HTMLElement[] {
-  const ra: HTMLElement[] = [];
-  const walker = document.createTreeWalker(gốc, NodeFilter.SHOW_ELEMENT, {
-    acceptNode(node) {
-      const el = node as HTMLElement;
-      if (BỎ_QUA.has(el.tagName)) return NodeFilter.FILTER_REJECT;
-      if (el.dataset && el.dataset.csDone) return NodeFilter.FILTER_REJECT;
-      const text = el.textContent!.trim();
-      if (text.length < ĐỘ_DÀI_TỐI_THIỂU || text.length > 1200) return NodeFilter.FILTER_SKIP;
-      for (const c of Array.from(el.children)) {
-        if (c.textContent!.trim().length >= ĐỘ_DÀI_TỐI_THIỂU) return NodeFilter.FILTER_SKIP;
+function lênLịchThửLại(): void {
+  if (hẹnThửLại !== undefined) return;
+  const delay = NHỊP_THỬ_LẠI[Math.min(lầnThửLại, NHỊP_THỬ_LẠI.length - 1)];
+  hẹnThửLại = setTimeout(async () => {
+    hẹnThửLại = undefined;
+    try { await CyberShieldModel.health(); lầnThửLại = 0; xửLýHàngĐợi(); }
+    catch { lầnThửLại++; lênLịchThửLại(); }
+  }, delay);
+}
+
+async function chạyHàngĐợi(): Promise<void> {
+  if (đangXửLý) return;
+  đangXửLý = true;
+  try {
+    while (hàngĐợi.size > 0) {
+      const el = hàngĐợi.values().next().value as HTMLElement;
+      hàngĐợi.delete(el);
+      if (!el.isConnected || !làKhốiVănBản(el)) continue;
+      const key = fingerprint(el.textContent ?? "");
+      const trước = textĐãXửLý.get(el);
+      if (trước === key) continue;
+      if (trước !== undefined) bỏCanThiệp(el);
+      let kết: Prediction;
+      try { kết = await phânLoại(key); }
+      catch (error) {
+        hàngĐợi.add(el);
+        console.warn("[CyberShield] Backend chưa sẵn sàng; sẽ thử lại.", error);
+        lênLịchThửLại();
+        return;
       }
-      return NodeFilter.FILTER_ACCEPT;
-    },
+      if (!el.isConnected || !làKhốiVănBản(el) || fingerprint(el.textContent ?? "") !== key) {
+        if (el.isConnected) hàngĐợi.add(el);
+        continue;
+      }
+      textĐãXửLý.set(el, key);
+      stats.scanned++;
+      if (kết.label !== 0 && kết.confidence >= NGƯỠNG) bọcNộiDung(el, kết);
+      lưuTrễ();
+    }
+  } finally { đangXửLý = false; }
+}
+
+function xửLýHàngĐợi(): void { queueMicrotask(() => void chạyHàngĐợi()); }
+
+export function quét(gốc: Node = document.body): void {
+  if (!gốc || gốc.nodeType !== Node.ELEMENT_NODE) return;
+  for (const el of thuThậpKhối(gốc)) hàngĐợi.add(el);
+  if (gốc instanceof HTMLAnchorElement && gốc.matches("a[href]")) đánhDấuLink(gốc);
+  if (gốc instanceof Element) gốc.querySelectorAll<HTMLAnchorElement>("a[href]").forEach(đánhDấuLink);
+  xửLýHàngĐợi();
+}
+
+function quanSát(body: HTMLElement): void {
+  observer = new MutationObserver((records) => {
+    for (const record of records) {
+      if (record.type === "attributes" && record.target instanceof HTMLAnchorElement) { đánhDấuLink(record.target); continue; }
+      if (record.type === "characterData") {
+        const parent = record.target.parentElement;
+        if (parent && !parent.closest("[data-cs-ui]")) quét(parent);
+        continue;
+      }
+      for (const node of Array.from(record.addedNodes)) {
+        const root = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+        if (root && (!(root instanceof Element) || !root.closest("[data-cs-ui]"))) quét(root);
+      }
+    }
   });
-  let n: Node | null;
-  while ((n = walker.nextNode())) ra.push(n as HTMLElement);
-  return ra;
+  observer.observe(body, { childList: true, characterData: true, attributes: true, attributeFilter: ["href"], subtree: true });
 }
 
-function quét(gốc: HTMLElement = document.body): void {
-  if (!sẵnSàng || !gốc || gốc.nodeType !== 1) return;
-
-  const khối = thuThậpKhối(gốc);
-  const links = gốc.querySelectorAll ? gốc.querySelectorAll<HTMLAnchorElement>("a[href]") : [];
-
-  let i = 0;
-  const rảnh: (cb: IdleRequestCallback) => number =
-    window.requestIdleCallback || ((f) => window.setTimeout(() => f({ didTimeout: false, timeRemaining: () => 8 }), 0));
-
-  function lô(deadline: IdleDeadline): void {
-    (async () => {
-      while (i < khối.length && deadline.timeRemaining() > 2) {
-        const el = khối[i++];
-        if (el.dataset.csDone) continue;
-        const kết = await phânLoại(el.textContent ?? "");
-        stats.scanned++;
-        if (kết && kết.label !== 0 && kết.confidence >= NGƯỠNG) bọcNộiDung(el, kết);
-        else el.dataset.csDone = "1";
-      }
-      if (i < khối.length) rảnh(lô);
-      else lưuTrễ();
-    })();
-  }
-  rảnh(lô);
-  links.forEach(đánhDấuLink);
-}
-
-// ------------------------------------------------------------- khởi động
 async function khởiĐộng(): Promise<void> {
-  const url = typeof chrome !== "undefined" && chrome.runtime
-    ? chrome.runtime.getURL("model.json")
-    : "../extension/model.json";
-  const meta = await CyberShieldModel.load(url);
-  sẵnSàng = true;
-  console.log(`[CyberShield] Đã nạp thông tin mô hình "${meta["phương_án"]}" — macro-F1 = ${meta.macro_f1_cv}. Phân loại chạy qua backend.`);
-
+  if (!document.body || đãKhởiĐộng) return;
+  đãKhởiĐộng = true;
+  quanSát(document.body);
   quét(document.body);
-
-  new MutationObserver((ds) => {
-    for (const d of ds) if (d.addedNodes.length) { quétTrễ(); return; }
-  }).observe(document.body, { childList: true, subtree: true });
+  const url = typeof chrome !== "undefined" && chrome.runtime?.id ? chrome.runtime.getURL("model.json") : "../extension/model.json";
+  try {
+    const meta = await CyberShieldModel.load(url);
+    if (typeof chrome !== "undefined" && chrome.storage) chrome.storage.local.set({ cs_meta: meta });
+    console.log(`[CyberShield] Metadata: ${meta["phương_án"]} · macro-F1 ${meta.macro_f1_cv}`);
+  } catch (error) { console.warn("[CyberShield] Không tải được metadata; việc quét vẫn tiếp tục.", error); }
 }
 
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", khởiĐộng);
-else khởiĐộng();
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => void khởiĐộng(), { once: true });
+else void khởiĐộng();
 
 declare global {
-  interface Window {
-    CyberShield: {
-      quét: typeof quét;
-      stats: () => StatsSnapshot;
-      cache: Map<string, Prediction>;
-    };
-  }
+  interface Window { CyberShield: { quét: typeof quét; stats: () => StatsSnapshot; cache: Map<string, Prediction>; dừng: () => void }; }
 }
-
-window.CyberShield = { quét, stats: () => stats, cache };
+window.CyberShield = {
+  quét,
+  stats: () => ({ ...stats }),
+  cache,
+  dừng: () => {
+    observer?.disconnect();
+    if (hẹnThửLại !== undefined) clearTimeout(hẹnThửLại);
+    hàngĐợi.clear();
+  },
+};

@@ -11,20 +11,20 @@ from predictor import Prediction, predict
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8080", "http://127.0.0.1:8080"],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
 
 
 class TextRequest(BaseModel):
-    content: str
+    content: str = Field(min_length=1, max_length=1200)
 
 
 class EventRequest(BaseModel):
     """Một lần tăng bộ đếm thống kê — không có text/nội dung, không có PII."""
     type: Literal["scanned", "toxic", "threat", "link", "revealed"]
-    count: int = Field(default=1, ge=1)
+    count: int = Field(default=1, ge=1, le=10_000)
     ts: Optional[str] = None
 
 

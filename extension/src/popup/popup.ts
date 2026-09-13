@@ -3,9 +3,9 @@
  * cục bộ chỉ khi backend không phản hồi (offline, chưa chạy uvicorn, v.v.).
  */
 import type { ModelMeta, StatsSnapshot } from "../lib/types";
+import { CyberShieldModel } from "../lib/api";
 
-const BACKEND = "http://127.0.0.1:8000";
-const khoáHômNay = "cs_" + new Date().toISOString().slice(0, 10);
+const khoáHômNay = "cs_" + new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
 const rỗng: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
 
 function vẽ(s: StatsSnapshot, meta: ModelMeta | null | undefined): void {
@@ -37,9 +37,7 @@ function đọcCụcBộ(callback: (s: StatsSnapshot, meta?: ModelMeta) => void)
 async function tải(): Promise<void> {
   chrome.storage.local.get(["cs_meta"], async (d) => {
     try {
-      const res = await fetch(`${BACKEND}/stats?range=day`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const s = (await res.json()) as StatsSnapshot;
+      const s = await CyberShieldModel.stats("day");
       vẽ(s, d.cs_meta as ModelMeta | undefined);
     } catch {
       đọcCụcBộ(vẽ);
