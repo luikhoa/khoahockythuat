@@ -1,0 +1,307 @@
+{
+  "total_cases": 1000,
+  "counts_by_category": {
+    "positive": 400,
+    "negative": 400,
+    "edge": 100,
+    "stress": 100
+  },
+  "latency": {
+    "positive": {
+      "count": 400,
+      "avg_ms": 15.03,
+      "median_ms": 14.6,
+      "p95_ms": 17.42,
+      "max_ms": 54.41,
+      "min_ms": 12.57
+    },
+    "negative": {
+      "count": 400,
+      "avg_ms": 13.88,
+      "median_ms": 13.81,
+      "p95_ms": 14.75,
+      "max_ms": 36.97,
+      "min_ms": 12.2
+    },
+    "edge": {
+      "count": 100,
+      "avg_ms": 19.74,
+      "median_ms": 14.79,
+      "p95_ms": 49.85,
+      "max_ms": 79.53,
+      "min_ms": 12.79
+    },
+    "stress": {
+      "count": 100,
+      "avg_ms": 14.5,
+      "median_ms": 0.63,
+      "p95_ms": 47.32,
+      "max_ms": 378.7,
+      "min_ms": 0.28
+    }
+  },
+  "latency_overall": {
+    "count": 1000,
+    "avg_ms": 14.99,
+    "median_ms": 14.07,
+    "p95_ms": 17.89,
+    "max_ms": 378.7,
+    "min_ms": 0.28
+  },
+  "classification_metrics": {
+    "labeled_cases": 800,
+    "tp": 140,
+    "fp": 0,
+    "tn": 400,
+    "fn": 260,
+    "unparsed_or_error": 0,
+    "accuracy": 0.675,
+    "precision": 1.0,
+    "recall": 0.35,
+    "f1_score": 0.5185
+  },
+  "positive_bypass_by_obfuscation": {
+    "raw": {
+      "total": 40,
+      "bypassed": 12,
+      "bypass_rate_pct": 30.0
+    },
+    "leetspeak": {
+      "total": 40,
+      "bypassed": 25,
+      "bypass_rate_pct": 62.5
+    },
+    "dot_separated": {
+      "total": 40,
+      "bypassed": 36,
+      "bypass_rate_pct": 90.0
+    },
+    "star_separated": {
+      "total": 40,
+      "bypassed": 40,
+      "bypass_rate_pct": 100.0
+    },
+    "underscore_separated": {
+      "total": 40,
+      "bypassed": 13,
+      "bypass_rate_pct": 32.5
+    },
+    "no_diacritics": {
+      "total": 40,
+      "bypassed": 30,
+      "bypass_rate_pct": 75.0
+    },
+    "zero_width_space": {
+      "total": 40,
+      "bypassed": 40,
+      "bypass_rate_pct": 100.0
+    },
+    "homoglyph": {
+      "total": 40,
+      "bypassed": 17,
+      "bypass_rate_pct": 42.5
+    },
+    "teencode": {
+      "total": 40,
+      "bypassed": 12,
+      "bypass_rate_pct": 30.0
+    },
+    "mixed_case_punct": {
+      "total": 40,
+      "bypassed": 35,
+      "bypass_rate_pct": 87.5
+    }
+  },
+  "negative_false_positive_by_subtype": {
+    "academic_trigger_word": {
+      "total": 200,
+      "false_positive": 0,
+      "fp_rate_pct": 0.0
+    },
+    "benign_plain": {
+      "total": 200,
+      "false_positive": 0,
+      "fp_rate_pct": 0.0
+    }
+  },
+  "edge_robustness": {
+    "one_char": {
+      "total": 20,
+      "http_200": 20,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 0
+    },
+    "super_long": {
+      "total": 20,
+      "http_200": 20,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 0
+    },
+    "unicode_emoji": {
+      "total": 20,
+      "http_200": 20,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 0
+    },
+    "empty_payload": {
+      "total": 20,
+      "http_200": 20,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 0
+    },
+    "html_js_injection": {
+      "total": 20,
+      "http_200": 20,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 0
+    }
+  },
+  "stress_robustness": {
+    "malformed_json": {
+      "total": 25,
+      "http_200": 0,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 25
+    },
+    "wrong_content_type": {
+      "total": 25,
+      "http_200": 9,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 16
+    },
+    "oversized_or_bad_type": {
+      "total": 25,
+      "http_200": 16,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 9
+    },
+    "missing_header_or_auth": {
+      "total": 25,
+      "http_200": 23,
+      "5xx": 0,
+      "conn_error": 0,
+      "4xx": 2
+    }
+  },
+  "worst_failures": {
+    "false_negatives_top15": [
+      {
+        "id": "POS-0061",
+        "subtype": "raw",
+        "text": "đồ vô học",
+        "predicted_label": 0,
+        "confidence": 0.6021
+      },
+      {
+        "id": "POS-0062",
+        "subtype": "leetspeak",
+        "text": "đồ vô học",
+        "predicted_label": 0,
+        "confidence": 0.6021
+      },
+      {
+        "id": "POS-0069",
+        "subtype": "teencode",
+        "text": "đồ vô học",
+        "predicted_label": 0,
+        "confidence": 0.6021
+      },
+      {
+        "id": "POS-0306",
+        "subtype": "no_diacritics",
+        "text": "may ngu vai lon",
+        "predicted_label": 0,
+        "confidence": 0.6021
+      },
+      {
+        "id": "POS-0373",
+        "subtype": "dot_separated",
+        "text": "đ.ị.t. . .c.o.n. . .m.ẹ. . .m.à.y. . .l.u.ô.n",
+        "predicted_label": 0,
+        "confidence": 0.6031
+      },
+      {
+        "id": "POS-0143",
+        "subtype": "dot_separated",
+        "text": "đ.ồ. . .p.h.ả.n. . .b.ộ.i. . .b.ẩ.n. . .t.h.ỉ.u",
+        "predicted_label": 0,
+        "confidence": 0.604
+      },
+      {
+        "id": "POS-0145",
+        "subtype": "underscore_separated",
+        "text": "đồ_phản_bội_bẩn_thỉu",
+        "predicted_label": 0,
+        "confidence": 0.604
+      },
+      {
+        "id": "POS-0046",
+        "subtype": "no_diacritics",
+        "text": "do rac ruoi vo dung",
+        "predicted_label": 0,
+        "confidence": 0.6041
+      },
+      {
+        "id": "POS-0189",
+        "subtype": "teencode",
+        "text": "clgt z trời",
+        "predicted_label": 0,
+        "confidence": 0.6056
+      },
+      {
+        "id": "POS-0300",
+        "subtype": "mixed_case_punct",
+        "text": "!!ĐéO Ai tHèM ChƠi vỚi mÀy!!",
+        "predicted_label": 0,
+        "confidence": 0.6108
+      },
+      {
+        "id": "POS-0196",
+        "subtype": "no_diacritics",
+        "text": "cut me may di",
+        "predicted_label": 0,
+        "confidence": 0.6122
+      },
+      {
+        "id": "POS-0216",
+        "subtype": "no_diacritics",
+        "text": "thang oc lon",
+        "predicted_label": 0,
+        "confidence": 0.6138
+      },
+      {
+        "id": "POS-0298",
+        "subtype": "homoglyph",
+        "text": "đéо аi thèm сhơi với mày",
+        "predicted_label": 0,
+        "confidence": 0.6154
+      },
+      {
+        "id": "POS-0225",
+        "subtype": "underscore_separated",
+        "text": "con_quỷ_cái",
+        "predicted_label": 0,
+        "confidence": 0.6175
+      },
+      {
+        "id": "POS-0393",
+        "subtype": "dot_separated",
+        "text": "đ.ồ. . .r.á.c. . .r.ư.ở.i. . .c.ủ.a. . .x.ã. . .h.ộ.i",
+        "predicted_label": 0,
+        "confidence": 0.6196
+      }
+    ],
+    "false_positives_top15": [],
+    "server_5xx_errors": [],
+    "connection_errors": []
+  },
+  "total_wall_time_sec": 15.01
+}

@@ -22,6 +22,12 @@ LABELS = ("an toàn", "độc hại")
 Label = Literal[0, 1]
 
 MODEL_PATH = Path(__file__).resolve().parent / "offensive_classifier.pkl"
+# Bản snapshot tokenizer đi kèm lúc train (Kaggle) — ưu tiên load offline từ
+# đây để không phải tải lại từ HF Hub mỗi lần khởi động backend.
+LOCAL_TOKENIZER_DIR = (
+    Path(__file__).resolve().parent.parent
+    / "phobert_experiment_complete" / "artifacts" / "models" / "phobert_offensive_classifier"
+)
 NGƯỠNG_ĐỘC_HẠI = 0.4  # p1 >= ngưỡng này -> label 1, tối ưu recall
 
 
@@ -62,8 +68,15 @@ def _load() -> None:
     artifact = joblib.load(MODEL_PATH)
     cfg: ModelConfig = artifact.cfg
 
+    # Ưu tiên: (1) snapshot tokenizer offline đi kèm repo, (2) tokenizer_dir
+    # ghi trong artifact (path Kaggle, hầu như không tồn tại ở máy chạy
+    # backend), (3) tải lại đúng tokenizer gốc từ HF Hub (cfg.pretrained_name).
     tokenizer_dir = Path(str(getattr(artifact, "tokenizer_dir", "")))
-    if tokenizer_dir.is_dir():
+    if LOCAL_TOKENIZER_DIR.is_dir():
+        from transformers import AutoTokenizer
+
+        tokenizer = AutoTokenizer.from_pretrained(str(LOCAL_TOKENIZER_DIR), use_fast=False)
+    elif tokenizer_dir.is_dir():
         from transformers import AutoTokenizer
 
         tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_dir), use_fast=False)

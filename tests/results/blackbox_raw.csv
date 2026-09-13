@@ -1,0 +1,1001 @@
+id,category,subtype,expected_label,predicted_label,confidence,status_code,latency_ms,error,content_preview
+POS-0001,positive,raw,1,1,0.5899,200,54.41,,đồ ngu như bò
+POS-0002,positive,leetspeak,1,1,0.5899,200,19.12,,đồ ngu như bò
+POS-0003,positive,dot_separated,1,0,0.6609,200,20.76,,đ.ồ. . .n.g.u. . .n.h.ư. . .b.ò
+POS-0004,positive,star_separated,1,0,0.7955,200,15.85,,đ*ồ* *n*g*u* *n*h*ư* *b*ò
+POS-0005,positive,underscore_separated,1,1,0.6505,200,14.87,,đồ_ngu_như_bò
+POS-0006,positive,no_diacritics,1,0,0.6302,200,15.43,,do ngu nhu bo
+POS-0007,positive,zero_width_space,1,0,0.7416,200,14.37,,đ​ồ​ ​n​g​u​ ​n​h​ư​ ​b​ò
+POS-0008,positive,homoglyph,1,1,0.5899,200,13.65,,đồ ngu như bò
+POS-0009,positive,teencode,1,1,0.5899,200,14.62,,đồ ngu như bò
+POS-0010,positive,mixed_case_punct,1,0,0.7034,200,15.03,,!!Đồ nGu nHư bÒ!!
+POS-0011,positive,raw,1,1,0.4817,200,16.43,,thằng khốn nạn
+POS-0012,positive,leetspeak,1,0,0.8019,200,14.04,,7hằng khốn nạn
+POS-0013,positive,dot_separated,1,0,0.678,200,14.69,,t.h.ằ.n.g. . .k.h.ố.n. . .n.ạ.n
+POS-0014,positive,star_separated,1,0,0.7618,200,13.71,,t*h*ằ*n*g* *k*h*ố*n* *n*ạ*n
+POS-0015,positive,underscore_separated,1,1,0.6396,200,15.5,,thằng_khốn_nạn
+POS-0016,positive,no_diacritics,1,0,0.7726,200,15.39,,thang khon nan
+POS-0017,positive,zero_width_space,1,0,0.7028,200,14.4,,t​h​ằ​n​g​ ​k​h​ố​n​ ​n​ạ​n
+POS-0018,positive,homoglyph,1,1,0.4817,200,14.86,,thằng khốn nạn
+POS-0019,positive,teencode,1,1,0.4817,200,14.22,,thằng khốn nạn
+POS-0020,positive,mixed_case_punct,1,0,0.7482,200,16.25,,!!ThẰnG KhỐn nẠn!!
+POS-0021,positive,raw,1,1,0.5436,200,14.08,,con điên này
+POS-0022,positive,leetspeak,1,0,0.8072,200,15.05,,c0n đ1ên này
+POS-0023,positive,dot_separated,1,0,0.7019,200,14.59,,c.o.n. . .đ.i.ê.n. . .n.à.y
+POS-0024,positive,star_separated,1,0,0.8458,200,14.14,,c*o*n* *đ*i*ê*n* *n*à*y
+POS-0025,positive,underscore_separated,1,0,0.7782,200,15.06,,con_điên_này
+POS-0026,positive,no_diacritics,1,0,0.7481,200,14.88,,con dien nay
+POS-0027,positive,zero_width_space,1,0,0.7278,200,13.88,,c​o​n​ ​đ​i​ê​n​ ​n​à​y
+POS-0028,positive,homoglyph,1,0,0.6422,200,14.1,,соn điên này
+POS-0029,positive,teencode,1,1,0.5436,200,15.12,,con điên này
+POS-0030,positive,mixed_case_punct,1,0,0.8302,200,13.68,,!!CoN ĐiÊn nÀy!!
+POS-0031,positive,raw,1,1,0.4064,200,14.61,,óc chó thật sự
+POS-0032,positive,leetspeak,1,0,0.6775,200,15.2,,óc chó 7hậ7 5ự
+POS-0033,positive,dot_separated,1,0,0.6446,200,14.74,,ó.c. . .c.h.ó. . .t.h.ậ.t. . .s.ự
+POS-0034,positive,star_separated,1,0,0.7705,200,13.93,,ó*c* *c*h*ó* *t*h*ậ*t* *s*ự
+POS-0035,positive,underscore_separated,1,0,0.6981,200,14.21,,óc_chó_thật_sự
+POS-0036,positive,no_diacritics,1,0,0.8197,200,14.58,,oc cho that su
+POS-0037,positive,zero_width_space,1,0,0.7504,200,14.08,,ó​c​ ​c​h​ó​ ​t​h​ậ​t​ ​s​ự
+POS-0038,positive,homoglyph,1,0,0.7643,200,14.83,,óс сhó thật sự
+POS-0039,positive,teencode,1,1,0.4064,200,14.18,,óc chó thật sự
+POS-0040,positive,mixed_case_punct,1,0,0.7951,200,13.8,,!!Óc cHó tHậT Sự!!
+POS-0041,positive,raw,1,1,0.4007,200,15.73,,đồ rác rưởi vô dụng
+POS-0042,positive,leetspeak,1,0,0.6981,200,15.13,,đồ rác rưở1 vô dụng
+POS-0043,positive,dot_separated,1,0,0.6365,200,17.42,,đ.ồ. . .r.á.c. . .r.ư.ở.i. . .v.ô. . .d.ụ.n.g
+POS-0044,positive,star_separated,1,0,0.7474,200,16.43,,đ*ồ* *r*á*c* *r*ư*ở*i* *v*ô* *d*ụ*n*g
+POS-0045,positive,underscore_separated,1,1,0.4063,200,15.46,,đồ_rác_rưởi_vô_dụng
+POS-0046,positive,no_diacritics,1,0,0.6041,200,15.22,,do rac ruoi vo dung
+POS-0047,positive,zero_width_space,1,0,0.6927,200,17.19,,đ​ồ​ ​r​á​c​ ​r​ư​ở​i​ ​v​ô​ ​d​ụ​n​g
+POS-0048,positive,homoglyph,1,1,0.4555,200,14.0,,đồ ráс rưởi vô dụng
+POS-0049,positive,teencode,1,1,0.4007,200,14.5,,đồ rác rưởi vô dụng
+POS-0050,positive,mixed_case_punct,1,0,0.64,200,16.2,,!!Đồ rÁc rƯởI Vô dỤnG!!
+POS-0051,positive,raw,1,0,0.7384,200,14.87,,mất dạy vừa thôi
+POS-0052,positive,leetspeak,1,0,0.8425,200,13.79,,mấ7 dạy vừ4 7hô1
+POS-0053,positive,dot_separated,1,0,0.6692,200,14.59,,m.ấ.t. . .d.ạ.y. . .v.ừ.a. . .t.h.ô.i
+POS-0054,positive,star_separated,1,0,0.8133,200,14.05,,m*ấ*t* *d*ạ*y* *v*ừ*a* *t*h*ô*i
+POS-0055,positive,underscore_separated,1,1,0.4918,200,14.84,,mất_dạy_vừa_thôi
+POS-0056,positive,no_diacritics,1,0,0.6877,200,14.91,,mat day vua thoi
+POS-0057,positive,zero_width_space,1,0,0.7358,200,13.34,,m​ấ​t​ ​d​ạ​y​ ​v​ừ​a​ ​t​h​ô​i
+POS-0058,positive,homoglyph,1,0,0.7017,200,14.56,,mất dạy vừа thôi
+POS-0059,positive,teencode,1,0,0.7384,200,13.16,,mất dạy vừa thôi
+POS-0060,positive,mixed_case_punct,1,0,0.8524,200,14.3,,!!MấT DạY VừA ThÔi!!
+POS-0061,positive,raw,1,0,0.6021,200,14.81,,đồ vô học
+POS-0062,positive,leetspeak,1,0,0.6021,200,14.13,,đồ vô học
+POS-0063,positive,dot_separated,1,0,0.6601,200,14.63,,đ.ồ. . .v.ô. . .h.ọ.c
+POS-0064,positive,star_separated,1,0,0.7149,200,14.16,,đ*ồ* *v*ô* *h*ọ*c
+POS-0065,positive,underscore_separated,1,0,0.6547,200,14.68,,đồ_vô_học
+POS-0066,positive,no_diacritics,1,0,0.6844,200,15.09,,do vo hoc
+POS-0067,positive,zero_width_space,1,0,0.7238,200,13.17,,đ​ồ​ ​v​ô​ ​h​ọ​c
+POS-0068,positive,homoglyph,1,0,0.7244,200,14.0,,đồ vô họс
+POS-0069,positive,teencode,1,0,0.6021,200,14.5,,đồ vô học
+POS-0070,positive,mixed_case_punct,1,0,0.8398,200,14.22,,!!Đồ vÔ HọC!!
+POS-0071,positive,raw,1,1,0.8939,200,14.46,,thằng chó đẻ
+POS-0072,positive,leetspeak,1,1,0.4137,200,14.3,,7hằng chó đẻ
+POS-0073,positive,dot_separated,1,1,0.4137,200,13.3,,t.h.ằ.n.g. . .c.h.ó. . .đ.ẻ
+POS-0074,positive,star_separated,1,0,0.7154,200,13.82,,t*h*ằ*n*g* *c*h*ó* *đ*ẻ
+POS-0075,positive,underscore_separated,1,1,0.68,200,14.53,,thằng_chó_đẻ
+POS-0076,positive,no_diacritics,1,0,0.6813,200,14.96,,thang cho de
+POS-0077,positive,zero_width_space,1,0,0.6772,200,13.62,,t​h​ằ​n​g​ ​c​h​ó​ ​đ​ẻ
+POS-0078,positive,homoglyph,1,1,0.7855,200,13.88,,thằng сhó đẻ
+POS-0079,positive,teencode,1,1,0.8939,200,15.34,,thằng chó đẻ
+POS-0080,positive,mixed_case_punct,1,1,0.4722,200,16.48,,!!ThẰnG ChÓ Đẻ!!
+POS-0081,positive,raw,1,1,0.5868,200,14.79,,con đĩ rẻ tiền
+POS-0082,positive,leetspeak,1,1,0.4133,200,14.94,,c0n đĩ rẻ 71ền
+POS-0083,positive,dot_separated,1,1,0.405,200,14.42,,c.o.n. . .đ.ĩ. . .r.ẻ. . .t.i.ề.n
+POS-0084,positive,star_separated,1,0,0.7397,200,13.97,,c*o*n* *đ*ĩ* *r*ẻ* *t*i*ề*n
+POS-0085,positive,underscore_separated,1,0,0.6767,200,13.38,,con_đĩ_rẻ_tiền
+POS-0086,positive,no_diacritics,1,0,0.7222,200,15.17,,con di re tien
+POS-0087,positive,zero_width_space,1,0,0.6653,200,13.68,,c​o​n​ ​đ​ĩ​ ​r​ẻ​ ​t​i​ề​n
+POS-0088,positive,homoglyph,1,1,0.5545,200,14.51,,соn đĩ rẻ tiền
+POS-0089,positive,teencode,1,1,0.5868,200,13.94,,con đĩ rẻ tiền
+POS-0090,positive,mixed_case_punct,1,0,0.6503,200,15.42,,!!CoN Đĩ rẺ TiỀn!!
+POS-0091,positive,raw,1,0,0.7555,200,15.29,,đồ súc vật
+POS-0092,positive,leetspeak,1,0,0.7975,200,14.6,,đồ 5úc vậ7
+POS-0093,positive,dot_separated,1,0,0.6378,200,13.91,,đ.ồ. . .s.ú.c. . .v.ậ.t
+POS-0094,positive,star_separated,1,0,0.7673,200,13.61,,đ*ồ* *s*ú*c* *v*ậ*t
+POS-0095,positive,underscore_separated,1,0,0.8968,200,15.02,,đồ_súc_vật
+POS-0096,positive,no_diacritics,1,0,0.7025,200,13.58,,do suc vat
+POS-0097,positive,zero_width_space,1,0,0.7563,200,13.6,,đ​ồ​ ​s​ú​c​ ​v​ậ​t
+POS-0098,positive,homoglyph,1,0,0.7568,200,14.5,,đồ súс vật
+POS-0099,positive,teencode,1,0,0.7555,200,13.83,,đồ súc vật
+POS-0100,positive,mixed_case_punct,1,0,0.7735,200,13.55,,!!Đồ sÚc vẬt!!
+POS-0101,positive,raw,1,0,0.6944,200,13.84,,câm mồm lại đi
+POS-0102,positive,leetspeak,1,1,0.619,200,15.16,,câm mồm lạ1 đ1
+POS-0103,positive,dot_separated,1,0,0.6241,200,14.54,,c.â.m. . .m.ồ.m. . .l.ạ.i. . .đ.i
+POS-0104,positive,star_separated,1,0,0.807,200,13.66,,c*â*m* *m*ồ*m* *l*ạ*i* *đ*i
+POS-0105,positive,underscore_separated,1,1,0.4371,200,14.39,,câm_mồm_lại_đi
+POS-0106,positive,no_diacritics,1,0,0.7673,200,14.96,,cam mom lai di
+POS-0107,positive,zero_width_space,1,0,0.7179,200,14.11,,c​â​m​ ​m​ồ​m​ ​l​ạ​i​ ​đ​i
+POS-0108,positive,homoglyph,1,0,0.7855,200,14.56,,сâm mồm lại đi
+POS-0109,positive,teencode,1,0,0.6944,200,14.87,,câm mồm lại đi
+POS-0110,positive,mixed_case_punct,1,0,0.8648,200,13.95,,!!CâM MồM LạI Đi!!
+POS-0111,positive,raw,1,1,0.5049,200,14.97,,đồ khốn kiếp
+POS-0112,positive,leetspeak,1,0,0.6299,200,14.49,,đồ khốn k1ếp
+POS-0113,positive,dot_separated,1,0,0.7081,200,14.34,,đ.ồ. . .k.h.ố.n. . .k.i.ế.p
+POS-0114,positive,star_separated,1,0,0.7995,200,13.76,,đ*ồ* *k*h*ố*n* *k*i*ế*p
+POS-0115,positive,underscore_separated,1,1,0.4951,200,13.67,,đồ_khốn_kiếp
+POS-0116,positive,no_diacritics,1,0,0.7227,200,15.02,,do khon kiep
+POS-0117,positive,zero_width_space,1,0,0.723,200,13.83,,đ​ồ​ ​k​h​ố​n​ ​k​i​ế​p
+POS-0118,positive,homoglyph,1,1,0.5049,200,14.53,,đồ khốn kiếp
+POS-0119,positive,teencode,1,1,0.5049,200,15.25,,đồ khốn kiếp
+POS-0120,positive,mixed_case_punct,1,0,0.8821,200,15.45,,!!Đồ kHốN KiẾp!!
+POS-0121,positive,raw,1,1,0.6625,200,15.12,,thằng ngu dốt
+POS-0122,positive,leetspeak,1,1,0.4517,200,13.99,,7hằng ngu dố7
+POS-0123,positive,dot_separated,1,0,0.7142,200,13.78,,t.h.ằ.n.g. . .n.g.u. . .d.ố.t
+POS-0124,positive,star_separated,1,0,0.7666,200,13.99,,t*h*ằ*n*g* *n*g*u* *d*ố*t
+POS-0125,positive,underscore_separated,1,1,0.5865,200,16.47,,thằng_ngu_dốt
+POS-0126,positive,no_diacritics,1,1,0.4404,200,14.24,,thang ngu dot
+POS-0127,positive,zero_width_space,1,0,0.6995,200,14.05,,t​h​ằ​n​g​ ​n​g​u​ ​d​ố​t
+POS-0128,positive,homoglyph,1,1,0.6625,200,14.78,,thằng ngu dốt
+POS-0129,positive,teencode,1,1,0.6625,200,14.41,,thằng ngu dốt
+POS-0130,positive,mixed_case_punct,1,1,0.4629,200,17.3,,!!ThẰnG NgU DốT!!
+POS-0131,positive,raw,1,0,0.6339,200,14.87,,con ranh mất dạy
+POS-0132,positive,leetspeak,1,0,0.7688,200,12.82,,c0n r4nh mấ7 dạy
+POS-0133,positive,dot_separated,1,0,0.6883,200,14.45,,c.o.n. . .r.a.n.h. . .m.ấ.t. . .d.ạ.y
+POS-0134,positive,star_separated,1,0,0.7907,200,13.98,,c*o*n* *r*a*n*h* *m*ấ*t* *d*ạ*y
+POS-0135,positive,underscore_separated,1,1,0.6808,200,14.82,,con_ranh_mất_dạy
+POS-0136,positive,no_diacritics,1,1,0.4896,200,14.14,,con ranh mat day
+POS-0137,positive,zero_width_space,1,0,0.7058,200,13.79,,c​o​n​ ​r​a​n​h​ ​m​ấ​t​ ​d​ạ​y
+POS-0138,positive,homoglyph,1,0,0.6983,200,14.95,,соn rаnh mất dạy
+POS-0139,positive,teencode,1,0,0.6339,200,13.91,,con ranh mất dạy
+POS-0140,positive,mixed_case_punct,1,0,0.7262,200,13.47,,!!CoN RaNh mẤt dẠy!!
+POS-0141,positive,raw,1,0,0.7196,200,15.63,,đồ phản bội bẩn thỉu
+POS-0142,positive,leetspeak,1,0,0.8048,200,13.73,,đồ phản bộ1 bẩn 7hỉu
+POS-0143,positive,dot_separated,1,0,0.604,200,17.18,,đ.ồ. . .p.h.ả.n. . .b.ộ.i. . .b.ẩ.n. . .t.h.ỉ.u
+POS-0144,positive,star_separated,1,0,0.7997,200,16.92,,đ*ồ* *p*h*ả*n* *b*ộ*i* *b*ẩ*n* *t*h*ỉ*u
+POS-0145,positive,underscore_separated,1,0,0.604,200,14.75,,đồ_phản_bội_bẩn_thỉu
+POS-0146,positive,no_diacritics,1,0,0.705,200,15.24,,do phan boi ban thiu
+POS-0147,positive,zero_width_space,1,0,0.7341,200,17.82,,đ​ồ​ ​p​h​ả​n​ ​b​ộ​i​ ​b​ẩ​n​ ​t​h​ỉ​u
+POS-0148,positive,homoglyph,1,0,0.7196,200,15.07,,đồ phản bội bẩn thỉu
+POS-0149,positive,teencode,1,0,0.7196,200,14.71,,đồ phản bội bẩn thỉu
+POS-0150,positive,mixed_case_punct,1,0,0.8183,200,14.45,,!!Đồ pHảN BộI BẩN ThỈu!!
+POS-0151,positive,raw,1,1,0.6385,200,15.67,,địt mẹ mày
+POS-0152,positive,leetspeak,1,1,0.7191,200,15.44,,đị7 mẹ mày
+POS-0153,positive,dot_separated,1,1,0.4309,200,14.69,,đ.ị.t. . .m.ẹ. . .m.à.y
+POS-0154,positive,star_separated,1,0,0.7592,200,14.2,,đ*ị*t* *m*ẹ* *m*à*y
+POS-0155,positive,underscore_separated,1,1,0.6245,200,15.93,,địt_mẹ_mày
+POS-0156,positive,no_diacritics,1,0,0.6404,200,17.62,,dit me may
+POS-0157,positive,zero_width_space,1,0,0.6722,200,14.56,,đ​ị​t​ ​m​ẹ​ ​m​à​y
+POS-0158,positive,homoglyph,1,1,0.6385,200,14.51,,địt mẹ mày
+POS-0159,positive,teencode,1,1,0.5006,200,14.89,,địt mẹ m
+POS-0160,positive,mixed_case_punct,1,0,0.6843,200,14.0,,!!ĐịT Mẹ mÀy!!
+POS-0161,positive,raw,1,1,0.6305,200,14.71,,đm thằng này
+POS-0162,positive,leetspeak,1,0,0.6917,200,15.32,,đm 7hằng này
+POS-0163,positive,dot_separated,1,0,0.6637,200,13.92,,đ.m. . .t.h.ằ.n.g. . .n.à.y
+POS-0164,positive,star_separated,1,0,0.7674,200,15.06,,đ*m* *t*h*ằ*n*g* *n*à*y
+POS-0165,positive,underscore_separated,1,1,0.6013,200,16.71,,đm_thằng_này
+POS-0166,positive,no_diacritics,1,0,0.6696,200,14.35,,dm thang nay
+POS-0167,positive,zero_width_space,1,0,0.7105,200,13.99,,đ​m​ ​t​h​ằ​n​g​ ​n​à​y
+POS-0168,positive,homoglyph,1,1,0.6305,200,14.47,,đm thằng này
+POS-0169,positive,teencode,1,1,0.6305,200,14.51,,đm thằng này
+POS-0170,positive,mixed_case_punct,1,0,0.7506,200,15.85,,!!Đm tHằNg nÀy!!
+POS-0171,positive,raw,1,1,0.5226,200,15.06,,vãi cả lồn
+POS-0172,positive,leetspeak,1,0,0.7352,200,15.01,,vã1 cả lồn
+POS-0173,positive,dot_separated,1,0,0.6248,200,14.27,,v.ã.i. . .c.ả. . .l.ồ.n
+POS-0174,positive,star_separated,1,0,0.8105,200,13.61,,v*ã*i* *c*ả* *l*ồ*n
+POS-0175,positive,underscore_separated,1,0,0.6574,200,15.04,,vãi_cả_lồn
+POS-0176,positive,no_diacritics,1,0,0.6725,200,15.42,,vai ca lon
+POS-0177,positive,zero_width_space,1,0,0.7536,200,13.72,,v​ã​i​ ​c​ả​ ​l​ồ​n
+POS-0178,positive,homoglyph,1,1,0.579,200,15.03,,vãi сả lồn
+POS-0179,positive,teencode,1,1,0.548,200,14.75,,vl cả lồn
+POS-0180,positive,mixed_case_punct,1,0,0.7883,200,14.95,,!!VãI Cả lỒn!!
+POS-0181,positive,raw,1,0,0.7831,200,14.79,,clgt vậy trời
+POS-0182,positive,leetspeak,1,0,0.7749,200,14.01,,clg7 vậy 7rờ1
+POS-0183,positive,dot_separated,1,0,0.6562,200,13.77,,c.l.g.t. . .v.ậ.y. . .t.r.ờ.i
+POS-0184,positive,star_separated,1,0,0.789,200,14.02,,c*l*g*t* *v*ậ*y* *t*r*ờ*i
+POS-0185,positive,underscore_separated,1,0,0.8143,200,14.71,,clgt_vậy_trời
+POS-0186,positive,no_diacritics,1,0,0.6478,200,17.8,,clgt vay troi
+POS-0187,positive,zero_width_space,1,0,0.7131,200,14.07,,c​l​g​t​ ​v​ậ​y​ ​t​r​ờ​i
+POS-0188,positive,homoglyph,1,0,0.8419,200,13.34,,сlgt vậy trời
+POS-0189,positive,teencode,1,0,0.6056,200,13.63,,clgt z trời
+POS-0190,positive,mixed_case_punct,1,0,0.7957,200,17.54,,!!ClGt vẬy tRờI!!
+POS-0191,positive,raw,1,1,0.5158,200,13.04,,cút mẹ mày đi
+POS-0192,positive,leetspeak,1,1,0.5534,200,14.6,,cú7 mẹ mày đ1
+POS-0193,positive,dot_separated,1,0,0.6249,200,12.57,,c.ú.t. . .m.ẹ. . .m.à.y. . .đ.i
+POS-0194,positive,star_separated,1,0,0.8128,200,13.99,,c*ú*t* *m*ẹ* *m*à*y* *đ*i
+POS-0195,positive,underscore_separated,1,1,0.4191,200,14.94,,cút_mẹ_mày_đi
+POS-0196,positive,no_diacritics,1,0,0.6122,200,13.15,,cut me may di
+POS-0197,positive,zero_width_space,1,0,0.6976,200,14.54,,c​ú​t​ ​m​ẹ​ ​m​à​y​ ​đ​i
+POS-0198,positive,homoglyph,1,1,0.4509,200,13.81,,сút mẹ mày đi
+POS-0199,positive,teencode,1,1,0.5031,200,13.41,,cút mẹ m đi
+POS-0200,positive,mixed_case_punct,1,0,0.7142,200,13.45,,!!CúT Mẹ mÀy đI!!
+POS-0201,positive,raw,1,1,0.6638,200,14.98,,đồ chó cái
+POS-0202,positive,leetspeak,1,0,0.6647,200,15.9,,đồ chó cá1
+POS-0203,positive,dot_separated,1,0,0.6311,200,12.69,,đ.ồ. . .c.h.ó. . .c.á.i
+POS-0204,positive,star_separated,1,0,0.755,200,13.0,,đ*ồ* *c*h*ó* *c*á*i
+POS-0205,positive,underscore_separated,1,1,0.5339,200,13.8,,đồ_chó_cái
+POS-0206,positive,no_diacritics,1,0,0.7169,200,14.21,,do cho cai
+POS-0207,positive,zero_width_space,1,0,0.7104,200,12.71,,đ​ồ​ ​c​h​ó​ ​c​á​i
+POS-0208,positive,homoglyph,1,0,0.6931,200,13.08,,đồ сhó сái
+POS-0209,positive,teencode,1,1,0.6638,200,13.8,,đồ chó cái
+POS-0210,positive,mixed_case_punct,1,0,0.7869,200,14.01,,!!Đồ cHó cÁi!!
+POS-0211,positive,raw,1,1,0.8472,200,14.29,,thằng óc lợn
+POS-0212,positive,leetspeak,1,1,0.4045,200,13.59,,7hằng óc lợn
+POS-0213,positive,dot_separated,1,0,0.7044,200,12.69,,t.h.ằ.n.g. . .ó.c. . .l.ợ.n
+POS-0214,positive,star_separated,1,0,0.7462,200,13.44,,t*h*ằ*n*g* *ó*c* *l*ợ*n
+POS-0215,positive,underscore_separated,1,1,0.6979,200,13.76,,thằng_óc_lợn
+POS-0216,positive,no_diacritics,1,0,0.6138,200,14.57,,thang oc lon
+POS-0217,positive,zero_width_space,1,0,0.7156,200,14.29,,t​h​ằ​n​g​ ​ó​c​ ​l​ợ​n
+POS-0218,positive,homoglyph,1,1,0.7082,200,14.54,,thằng óс lợn
+POS-0219,positive,teencode,1,1,0.8472,200,14.87,,thằng óc lợn
+POS-0220,positive,mixed_case_punct,1,0,0.7143,200,15.89,,!!ThẰnG Óc lỢn!!
+POS-0221,positive,raw,1,0,0.6852,200,15.03,,con quỷ cái
+POS-0222,positive,leetspeak,1,0,0.7097,200,14.3,,c0n quỷ cá1
+POS-0223,positive,dot_separated,1,0,0.6955,200,13.37,,c.o.n. . .q.u.ỷ. . .c.á.i
+POS-0224,positive,star_separated,1,0,0.8221,200,14.08,,c*o*n* *q*u*ỷ* *c*á*i
+POS-0225,positive,underscore_separated,1,0,0.6175,200,15.1,,con_quỷ_cái
+POS-0226,positive,no_diacritics,1,1,0.4259,200,14.98,,con quy cai
+POS-0227,positive,zero_width_space,1,0,0.7366,200,12.87,,c​o​n​ ​q​u​ỷ​ ​c​á​i
+POS-0228,positive,homoglyph,1,0,0.6717,200,14.41,,соn quỷ сái
+POS-0229,positive,teencode,1,0,0.6852,200,14.61,,con quỷ cái
+POS-0230,positive,mixed_case_punct,1,0,0.8678,200,17.31,,!!CoN QuỶ CáI!!
+POS-0231,positive,raw,1,1,0.5512,200,14.39,,ngu như chó ấy
+POS-0232,positive,leetspeak,1,1,0.5512,200,14.43,,ngu như chó ấy
+POS-0233,positive,dot_separated,1,0,0.6822,200,14.59,,n.g.u. . .n.h.ư. . .c.h.ó. . .ấ.y
+POS-0234,positive,star_separated,1,0,0.7984,200,14.5,,n*g*u* *n*h*ư* *c*h*ó* *ấ*y
+POS-0235,positive,underscore_separated,1,0,0.647,200,16.52,,ngu_như_chó_ấy
+POS-0236,positive,no_diacritics,1,1,0.4994,200,13.47,,ngu nhu cho ay
+POS-0237,positive,zero_width_space,1,0,0.754,200,14.13,,n​g​u​ ​n​h​ư​ ​c​h​ó​ ​ấ​y
+POS-0238,positive,homoglyph,1,1,0.4658,200,13.5,,ngu như сhó ấy
+POS-0239,positive,teencode,1,1,0.5512,200,14.38,,ngu như chó ấy
+POS-0240,positive,mixed_case_punct,1,0,0.7819,200,16.83,,!!NgU NhƯ ChÓ Ấy!!
+POS-0241,positive,raw,1,0,0.7467,200,14.82,,đồ bần nông mất dạy
+POS-0242,positive,leetspeak,1,0,0.7225,200,14.52,,đồ bần nông mấ7 dạy
+POS-0243,positive,dot_separated,1,0,0.6538,200,17.38,,đ.ồ. . .b.ầ.n. . .n.ô.n.g. . .m.ấ.t. . .d.ạ.y
+POS-0244,positive,star_separated,1,0,0.7505,200,16.64,,đ*ồ* *b*ầ*n* *n*ô*n*g* *m*ấ*t* *d*ạ*y
+POS-0245,positive,underscore_separated,1,1,0.4706,200,14.37,,đồ_bần_nông_mất_dạy
+POS-0246,positive,no_diacritics,1,0,0.6773,200,14.58,,do ban nong mat day
+POS-0247,positive,zero_width_space,1,0,0.7027,200,16.36,,đ​ồ​ ​b​ầ​n​ ​n​ô​n​g​ ​m​ấ​t​ ​d​ạ​y
+POS-0248,positive,homoglyph,1,0,0.7467,200,14.91,,đồ bần nông mất dạy
+POS-0249,positive,teencode,1,0,0.7467,200,14.14,,đồ bần nông mất dạy
+POS-0250,positive,mixed_case_punct,1,0,0.7631,200,15.97,,!!Đồ bẦn nÔnG MấT DạY!!
+POS-0251,positive,raw,1,1,0.7184,200,13.52,,thằng khốn này chết đi
+POS-0252,positive,leetspeak,1,0,0.6635,200,14.84,,7hằng khốn này chế7 đ1
+POS-0253,positive,dot_separated,1,0,0.6798,200,16.96,,t.h.ằ.n.g. . .k.h.ố.n. . .n.à.y. . .c.h.ế.t. . .đ.i
+POS-0254,positive,star_separated,1,0,0.782,200,17.8,,t*h*ằ*n*g* *k*h*ố*n* *n*à*y* *c*h*ế*t* *đ*i
+POS-0255,positive,underscore_separated,1,1,0.4594,200,15.72,,thằng_khốn_này_chết_đi
+POS-0256,positive,no_diacritics,1,1,0.4191,200,13.77,,thang khon nay chet di
+POS-0257,positive,zero_width_space,1,0,0.6985,200,18.73,,t​h​ằ​n​g​ ​k​h​ố​n​ ​n​à​y​ ​c​h​ế​t​ ​đ​i
+POS-0258,positive,homoglyph,1,1,0.6376,200,15.16,,thằng khốn này сhết đi
+POS-0259,positive,teencode,1,1,0.7184,200,14.57,,thằng khốn này chết đi
+POS-0260,positive,mixed_case_punct,1,0,0.6649,200,13.98,,!!ThẰnG KhỐn nÀy cHếT Đi!!
+POS-0261,positive,raw,1,0,0.6931,200,15.74,,đồ đàn bà lăng loàn
+POS-0262,positive,leetspeak,1,0,0.7235,200,15.76,,đồ đàn bà lăng l0àn
+POS-0263,positive,dot_separated,1,0,0.6243,200,17.2,,đ.ồ. . .đ.à.n. . .b.à. . .l.ă.n.g. . .l.o.à.n
+POS-0264,positive,star_separated,1,0,0.7232,200,17.28,,đ*ồ* *đ*à*n* *b*à* *l*ă*n*g* *l*o*à*n
+POS-0265,positive,underscore_separated,1,0,0.727,200,15.44,,đồ_đàn_bà_lăng_loàn
+POS-0266,positive,no_diacritics,1,1,0.4282,200,15.19,,do dan ba lang loan
+POS-0267,positive,zero_width_space,1,0,0.7104,200,17.3,,đ​ồ​ ​đ​à​n​ ​b​à​ ​l​ă​n​g​ ​l​o​à​n
+POS-0268,positive,homoglyph,1,0,0.7023,200,14.64,,đồ đàn bà lăng lоàn
+POS-0269,positive,teencode,1,0,0.6931,200,14.61,,đồ đàn bà lăng loàn
+POS-0270,positive,mixed_case_punct,1,1,0.5343,200,16.39,,!!Đồ đÀn bÀ LăNg lOàN!!
+POS-0271,positive,raw,1,0,0.6797,200,14.49,,biến mẹ mày đi
+POS-0272,positive,leetspeak,1,1,0.5992,200,15.0,,b1ến mẹ mày đ1
+POS-0273,positive,dot_separated,1,0,0.642,200,13.92,,b.i.ế.n. . .m.ẹ. . .m.à.y. . .đ.i
+POS-0274,positive,star_separated,1,0,0.8241,200,14.29,,b*i*ế*n* *m*ẹ* *m*à*y* *đ*i
+POS-0275,positive,underscore_separated,1,0,0.7004,200,14.79,,biến_mẹ_mày_đi
+POS-0276,positive,no_diacritics,1,0,0.684,200,15.15,,bien me may di
+POS-0277,positive,zero_width_space,1,0,0.7299,200,14.32,,b​i​ế​n​ ​m​ẹ​ ​m​à​y​ ​đ​i
+POS-0278,positive,homoglyph,1,0,0.6797,200,14.52,,biến mẹ mày đi
+POS-0279,positive,teencode,1,0,0.7843,200,14.46,,biến mẹ m đi
+POS-0280,positive,mixed_case_punct,1,0,0.8442,200,15.66,,!!BiẾn mẸ MàY Đi!!
+POS-0281,positive,raw,1,1,0.708,200,15.33,,thằng đần độn
+POS-0282,positive,leetspeak,1,0,0.7551,200,14.5,,7hằng đần độn
+POS-0283,positive,dot_separated,1,0,0.6295,200,14.06,,t.h.ằ.n.g. . .đ.ầ.n. . .đ.ộ.n
+POS-0284,positive,star_separated,1,0,0.6602,200,14.04,,t*h*ằ*n*g* *đ*ầ*n* *đ*ộ*n
+POS-0285,positive,underscore_separated,1,1,0.6013,200,17.23,,thằng_đần_độn
+POS-0286,positive,no_diacritics,1,0,0.7334,200,15.46,,thang dan don
+POS-0287,positive,zero_width_space,1,0,0.6684,200,14.27,,t​h​ằ​n​g​ ​đ​ầ​n​ ​đ​ộ​n
+POS-0288,positive,homoglyph,1,1,0.708,200,14.91,,thằng đần độn
+POS-0289,positive,teencode,1,1,0.708,200,15.04,,thằng đần độn
+POS-0290,positive,mixed_case_punct,1,0,0.7121,200,16.2,,!!ThẰnG ĐầN ĐộN!!
+POS-0291,positive,raw,1,1,0.6419,200,15.45,,đéo ai thèm chơi với mày
+POS-0292,positive,leetspeak,1,1,0.4317,200,14.24,,đé0 41 7hèm chơ1 vớ1 mày
+POS-0293,positive,dot_separated,1,0,0.6207,200,17.84,,đ.é.o. . .a.i. . .t.h.è.m. . .c.h.ơ.i. . .v.ớ.i. . .m.à.y
+POS-0294,positive,star_separated,1,0,0.7938,200,18.26,,đ*é*o* *a*i* *t*h*è*m* *c*h*ơ*i* *v*ớ*i* *m*à*y
+POS-0295,positive,underscore_separated,1,1,0.4414,200,15.52,,đéo_ai_thèm_chơi_với_mày
+POS-0296,positive,no_diacritics,1,1,0.4474,200,15.14,,deo ai them choi voi may
+POS-0297,positive,zero_width_space,1,0,0.7129,200,18.38,,đ​é​o​ ​a​i​ ​t​h​è​m​ ​c​h​ơ​i​ ​v​ớ​i​ ​m​à​y
+POS-0298,positive,homoglyph,1,0,0.6154,200,13.97,,đéо аi thèm сhơi với mày
+POS-0299,positive,teencode,1,1,0.536,200,14.88,,đéo ai thèm chơi với m
+POS-0300,positive,mixed_case_punct,1,0,0.6108,200,14.52,,!!ĐéO Ai tHèM ChƠi vỚi mÀy!!
+POS-0301,positive,raw,1,1,0.7781,200,14.4,,mày ngu vãi lồn
+POS-0302,positive,leetspeak,1,1,0.6701,200,14.6,,mày ngu vã1 lồn
+POS-0303,positive,dot_separated,1,0,0.6738,200,13.94,,m.à.y. . .n.g.u. . .v.ã.i. . .l.ồ.n
+POS-0304,positive,star_separated,1,0,0.8084,200,14.28,,m*à*y* *n*g*u* *v*ã*i* *l*ồ*n
+POS-0305,positive,underscore_separated,1,1,0.5948,200,16.62,,mày_ngu_vãi_lồn
+POS-0306,positive,no_diacritics,1,0,0.6021,200,14.65,,may ngu vai lon
+POS-0307,positive,zero_width_space,1,0,0.7278,200,14.47,,m​à​y​ ​n​g​u​ ​v​ã​i​ ​l​ồ​n
+POS-0308,positive,homoglyph,1,1,0.7781,200,14.82,,mày ngu vãi lồn
+POS-0309,positive,teencode,1,1,0.7452,200,14.56,,m ngu vl lồn
+POS-0310,positive,mixed_case_punct,1,0,0.7436,200,13.68,,!!MàY NgU VãI LồN!!
+POS-0311,positive,raw,1,1,0.4999,200,17.14,,thằng súc sinh
+POS-0312,positive,leetspeak,1,0,0.8251,200,14.72,,7hằng 5úc 51nh
+POS-0313,positive,dot_separated,1,0,0.7213,200,14.42,,t.h.ằ.n.g. . .s.ú.c. . .s.i.n.h
+POS-0314,positive,star_separated,1,0,0.8021,200,14.07,,t*h*ằ*n*g* *s*ú*c* *s*i*n*h
+POS-0315,positive,underscore_separated,1,1,0.455,200,14.51,,thằng_súc_sinh
+POS-0316,positive,no_diacritics,1,0,0.7863,200,14.55,,thang suc sinh
+POS-0317,positive,zero_width_space,1,0,0.7089,200,14.02,,t​h​ằ​n​g​ ​s​ú​c​ ​s​i​n​h
+POS-0318,positive,homoglyph,1,1,0.4582,200,14.32,,thằng súс sinh
+POS-0319,positive,teencode,1,1,0.4999,200,14.94,,thằng súc sinh
+POS-0320,positive,mixed_case_punct,1,0,0.8629,200,17.54,,!!ThẰnG SúC SiNh!!
+POS-0321,positive,raw,1,0,0.6412,200,14.94,,đồ mặt dày vô liêm sỉ
+POS-0322,positive,leetspeak,1,0,0.7778,200,14.39,,đồ mặ7 dày vô l1êm 5ỉ
+POS-0323,positive,dot_separated,1,0,0.6708,200,17.15,,đ.ồ. . .m.ặ.t. . .d.à.y. . .v.ô. . .l.i.ê.m. . .s.ỉ
+POS-0324,positive,star_separated,1,0,0.7901,200,17.24,,đ*ồ* *m*ặ*t* *d*à*y* *v*ô* *l*i*ê*m* *s*ỉ
+POS-0325,positive,underscore_separated,1,1,0.5384,200,15.36,,đồ_mặt_dày_vô_liêm_sỉ
+POS-0326,positive,no_diacritics,1,0,0.6431,200,15.03,,do mat day vo liem si
+POS-0327,positive,zero_width_space,1,0,0.7044,200,17.1,,đ​ồ​ ​m​ặ​t​ ​d​à​y​ ​v​ô​ ​l​i​ê​m​ ​s​ỉ
+POS-0328,positive,homoglyph,1,0,0.6412,200,15.79,,đồ mặt dày vô liêm sỉ
+POS-0329,positive,teencode,1,0,0.6412,200,14.6,,đồ mặt dày vô liêm sỉ
+POS-0330,positive,mixed_case_punct,1,0,0.6741,200,17.86,,!!Đồ mẶt dÀy vÔ LiÊm sỈ!!
+POS-0331,positive,raw,1,1,0.6985,200,14.7,,con mụ điên khùng
+POS-0332,positive,leetspeak,1,1,0.5554,200,15.17,,c0n mụ đ1ên khùng
+POS-0333,positive,dot_separated,1,0,0.6273,200,14.52,,c.o.n. . .m.ụ. . .đ.i.ê.n. . .k.h.ù.n.g
+POS-0334,positive,star_separated,1,0,0.7914,200,14.31,,c*o*n* *m*ụ* *đ*i*ê*n* *k*h*ù*n*g
+POS-0335,positive,underscore_separated,1,1,0.5045,200,15.19,,con_mụ_điên_khùng
+POS-0336,positive,no_diacritics,1,0,0.7125,200,14.72,,con mu dien khung
+POS-0337,positive,zero_width_space,1,0,0.6863,200,14.01,,c​o​n​ ​m​ụ​ ​đ​i​ê​n​ ​k​h​ù​n​g
+POS-0338,positive,homoglyph,1,1,0.5689,200,14.4,,соn mụ điên khùng
+POS-0339,positive,teencode,1,1,0.6985,200,14.47,,con mụ điên khùng
+POS-0340,positive,mixed_case_punct,1,0,0.7804,200,16.05,,!!CoN Mụ đIêN KhÙnG!!
+POS-0341,positive,raw,1,1,0.4574,200,14.51,,thằng cave rẻ tiền
+POS-0342,positive,leetspeak,1,0,0.8105,200,13.63,,7hằng c4v3 rẻ 71ền
+POS-0343,positive,dot_separated,1,0,0.7133,200,14.94,,t.h.ằ.n.g. . .c.a.v.e. . .r.ẻ. . .t.i.ề.n
+POS-0344,positive,star_separated,1,0,0.76,200,17.18,,t*h*ằ*n*g* *c*a*v*e* *r*ẻ* *t*i*ề*n
+POS-0345,positive,underscore_separated,1,1,0.6745,200,14.94,,thằng_cave_rẻ_tiền
+POS-0346,positive,no_diacritics,1,0,0.7469,200,14.58,,thang cave re tien
+POS-0347,positive,zero_width_space,1,0,0.6892,200,16.82,,t​h​ằ​n​g​ ​c​a​v​e​ ​r​ẻ​ ​t​i​ề​n
+POS-0348,positive,homoglyph,1,1,0.5052,200,14.9,,thằng саvе rẻ tiền
+POS-0349,positive,teencode,1,1,0.4574,200,14.37,,thằng cave rẻ tiền
+POS-0350,positive,mixed_case_punct,1,0,0.6507,200,14.25,,!!ThẰnG CaVe rẺ TiỀn!!
+POS-0351,positive,raw,1,1,0.5976,200,35.14,,đồ đĩ đực
+POS-0352,positive,leetspeak,1,1,0.5976,200,21.4,,đồ đĩ đực
+POS-0353,positive,dot_separated,1,1,0.4008,200,16.57,,đ.ồ. . .đ.ĩ. . .đ.ự.c
+POS-0354,positive,star_separated,1,0,0.7193,200,14.24,,đ*ồ* *đ*ĩ* *đ*ự*c
+POS-0355,positive,underscore_separated,1,1,0.5412,200,15.38,,đồ_đĩ_đực
+POS-0356,positive,no_diacritics,1,0,0.7156,200,15.07,,do di duc
+POS-0357,positive,zero_width_space,1,0,0.6425,200,14.56,,đ​ồ​ ​đ​ĩ​ ​đ​ự​c
+POS-0358,positive,homoglyph,1,1,0.6118,200,15.56,,đồ đĩ đựс
+POS-0359,positive,teencode,1,1,0.5976,200,15.56,,đồ đĩ đực
+POS-0360,positive,mixed_case_punct,1,0,0.6753,200,16.18,,!!Đồ đĨ ĐựC!!
+POS-0361,positive,raw,1,1,0.5084,200,14.95,,vklol thằng ml
+POS-0362,positive,leetspeak,1,0,0.7786,200,14.7,,vkl0l 7hằng ml
+POS-0363,positive,dot_separated,1,0,0.6298,200,14.34,,v.k.l.o.l. . .t.h.ằ.n.g. . .m.l
+POS-0364,positive,star_separated,1,0,0.767,200,14.42,,v*k*l*o*l* *t*h*ằ*n*g* *m*l
+POS-0365,positive,underscore_separated,1,0,0.8028,200,14.65,,vklol_thằng_ml
+POS-0366,positive,no_diacritics,1,0,0.7634,200,14.46,,vklol thang ml
+POS-0367,positive,zero_width_space,1,0,0.6847,200,14.35,,v​k​l​o​l​ ​t​h​ằ​n​g​ ​m​l
+POS-0368,positive,homoglyph,1,1,0.4919,200,14.5,,vklоl thằng ml
+POS-0369,positive,teencode,1,1,0.5084,200,14.56,,vklol thằng ml
+POS-0370,positive,mixed_case_punct,1,0,0.7779,200,16.17,,!!VkLoL ThẰnG Ml!!
+POS-0371,positive,raw,1,1,0.6193,200,15.3,,địt con mẹ mày luôn
+POS-0372,positive,leetspeak,1,1,0.5796,200,14.61,,đị7 c0n mẹ mày luôn
+POS-0373,positive,dot_separated,1,0,0.6031,200,14.41,,đ.ị.t. . .c.o.n. . .m.ẹ. . .m.à.y. . .l.u.ô.n
+POS-0374,positive,star_separated,1,0,0.7729,200,17.0,,đ*ị*t* *c*o*n* *m*ẹ* *m*à*y* *l*u*ô*n
+POS-0375,positive,underscore_separated,1,1,0.6245,200,14.7,,địt_con_mẹ_mày_luôn
+POS-0376,positive,no_diacritics,1,1,0.4029,200,14.9,,dit con me may luon
+POS-0377,positive,zero_width_space,1,0,0.6867,200,17.03,,đ​ị​t​ ​c​o​n​ ​m​ẹ​ ​m​à​y​ ​l​u​ô​n
+POS-0378,positive,homoglyph,1,1,0.5479,200,14.97,,địt соn mẹ mày luôn
+POS-0379,positive,teencode,1,1,0.4053,200,14.73,,địt con mẹ m luôn
+POS-0380,positive,mixed_case_punct,1,1,0.5338,200,16.02,,!!ĐịT CoN Mẹ mÀy lUôN!!
+POS-0381,positive,raw,1,1,0.7834,200,14.9,,thằng dcm vô học
+POS-0382,positive,leetspeak,1,0,0.7301,200,14.68,,7hằng dcm vô học
+POS-0383,positive,dot_separated,1,0,0.6297,200,14.14,,t.h.ằ.n.g. . .d.c.m. . .v.ô. . .h.ọ.c
+POS-0384,positive,star_separated,1,0,0.7038,200,14.4,,t*h*ằ*n*g* *d*c*m* *v*ô* *h*ọ*c
+POS-0385,positive,underscore_separated,1,1,0.6395,200,15.42,,thằng_dcm_vô_học
+POS-0386,positive,no_diacritics,1,1,0.43,200,14.99,,thang dcm vo hoc
+POS-0387,positive,zero_width_space,1,0,0.6847,200,14.3,,t​h​ằ​n​g​ ​d​c​m​ ​v​ô​ ​h​ọ​c
+POS-0388,positive,homoglyph,1,1,0.5874,200,14.54,,thằng dсm vô họс
+POS-0389,positive,teencode,1,1,0.7834,200,14.46,,thằng dcm vô học
+POS-0390,positive,mixed_case_punct,1,0,0.7614,200,15.76,,!!ThẰnG DcM Vô hỌc!!
+POS-0391,positive,raw,1,1,0.4569,200,14.75,,đồ rác rưởi của xã hội
+POS-0392,positive,leetspeak,1,0,0.7672,200,14.01,,đồ rác rưở1 củ4 xã hộ1
+POS-0393,positive,dot_separated,1,0,0.6196,200,17.6,,đ.ồ. . .r.á.c. . .r.ư.ở.i. . .c.ủ.a. . .x.ã. . .h.ộ.i
+POS-0394,positive,star_separated,1,0,0.7432,200,17.58,,đ*ồ* *r*á*c* *r*ư*ở*i* *c*ủ*a* *x*ã* *h*ộ*i
+POS-0395,positive,underscore_separated,1,1,0.5679,200,15.29,,đồ_rác_rưởi_của_xã_hội
+POS-0396,positive,no_diacritics,1,1,0.4126,200,15.08,,do rac ruoi cua xa hoi
+POS-0397,positive,zero_width_space,1,0,0.7231,200,17.53,,đ​ồ​ ​r​á​c​ ​r​ư​ở​i​ ​c​ủ​a​ ​x​ã​ ​h​ộ​i
+POS-0398,positive,homoglyph,1,0,0.6579,200,13.6,,đồ ráс rưởi сủа xã hội
+POS-0399,positive,teencode,1,1,0.4569,200,14.38,,đồ rác rưởi của xã hội
+POS-0400,positive,mixed_case_punct,1,1,0.4052,200,16.38,,!!Đồ rÁc rƯởI CủA Xã hỘi!!
+NEG-0001,negative,academic_trigger_word,0,0,0.7637,200,15.64,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Chúc mọi người một ngày tốt lành.
+NEG-0002,negative,benign_plain,0,0,0.8593,200,15.13,,Mình đang học lập trình Python và thấy rất thú vị. Đây là thông tin tham khảo.
+NEG-0003,negative,benign_plain,0,0,0.8749,200,14.86,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Mong mọi người ủng hộ.
+NEG-0004,negative,benign_plain,0,0,0.8202,200,14.56,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Đây là thông tin tham khảo.
+NEG-0005,negative,academic_trigger_word,0,0,0.833,200,14.47,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Hẹn gặp lại vào tuần sau.
+NEG-0006,negative,academic_trigger_word,0,0,0.8172,200,14.31,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Mong mọi người ủng hộ.
+NEG-0007,negative,benign_plain,0,0,0.9344,200,14.13,,"Xin chào, rất vui được làm quen với mọi người."
+NEG-0008,negative,benign_plain,0,0,0.9093,200,14.52,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. 😊"
+NEG-0009,negative,academic_trigger_word,0,0,0.79,200,14.61,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Chi tiết xem thêm bên dưới.
+NEG-0010,negative,academic_trigger_word,0,0,0.811,200,14.49,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. 😊
+NEG-0011,negative,benign_plain,0,0,0.9448,200,13.78,,"Xin chào, rất vui được làm quen với mọi người. 😊"
+NEG-0012,negative,academic_trigger_word,0,0,0.8019,200,14.65,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Xin chân thành cảm ơn.
+NEG-0013,negative,benign_plain,0,0,0.8808,200,13.88,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Mong mọi người ủng hộ.
+NEG-0014,negative,academic_trigger_word,0,0,0.8546,200,14.2,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Mong mọi người ủng hộ.
+NEG-0015,negative,academic_trigger_word,0,0,0.7934,200,14.58,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Chi tiết xem thêm bên dưới.
+NEG-0016,negative,academic_trigger_word,0,0,0.6382,200,15.34,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Đây là thông tin tham khảo.
+NEG-0017,negative,benign_plain,0,0,0.926,200,14.62,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Rất mong nhận được góp ý.
+NEG-0018,negative,academic_trigger_word,0,0,0.8456,200,14.68,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Chi tiết xem thêm bên dưới.
+NEG-0019,negative,benign_plain,0,0,0.8637,200,13.86,,Mình đang học lập trình Python và thấy rất thú vị. Chúc mọi người một ngày tốt lành.
+NEG-0020,negative,benign_plain,0,0,0.9089,200,14.54,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Rất mong nhận được góp ý.
+NEG-0021,negative,academic_trigger_word,0,0,0.8248,200,14.93,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Cảm ơn mọi người đã đọc.
+NEG-0022,negative,benign_plain,0,0,0.8611,200,13.84,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Chúc mọi người một ngày tốt lành.
+NEG-0023,negative,academic_trigger_word,0,0,0.7438,200,14.57,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Cảm ơn mọi người đã đọc.
+NEG-0024,negative,benign_plain,0,0,0.8281,200,14.49,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Chi tiết xem thêm bên dưới.
+NEG-0025,negative,benign_plain,0,0,0.9212,200,14.3,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Chúc mọi người một ngày tốt lành."
+NEG-0026,negative,benign_plain,0,0,0.9327,200,14.25,,Bạn có thể chỉ mình cách nấu phở bò được không? Mong mọi người ủng hộ.
+NEG-0027,negative,benign_plain,0,0,0.9312,200,13.95,,"Xin chào, rất vui được làm quen với mọi người. Mong mọi người ủng hộ."
+NEG-0028,negative,benign_plain,0,0,0.9603,200,13.49,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. 😊"
+NEG-0029,negative,academic_trigger_word,0,0,0.7247,200,13.88,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Chi tiết xem thêm bên dưới.
+NEG-0030,negative,academic_trigger_word,0,0,0.7516,200,17.89,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. 😊
+NEG-0031,negative,academic_trigger_word,0,0,0.7762,200,14.06,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Chúc mọi người một ngày tốt lành.
+NEG-0032,negative,academic_trigger_word,0,0,0.8574,200,13.8,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Rất mong nhận được góp ý.
+NEG-0033,negative,academic_trigger_word,0,0,0.7551,200,13.91,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Đây là thông tin tham khảo.
+NEG-0034,negative,academic_trigger_word,0,0,0.794,200,16.08,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Chúc mọi người một ngày tốt lành.
+NEG-0035,negative,benign_plain,0,0,0.8826,200,13.82,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Xin chân thành cảm ơn.
+NEG-0036,negative,benign_plain,0,0,0.7637,200,13.95,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Đây là thông tin tham khảo.
+NEG-0037,negative,academic_trigger_word,0,0,0.6011,200,14.82,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Đây là thông tin tham khảo.
+NEG-0038,negative,academic_trigger_word,0,0,0.7609,200,14.13,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu.
+NEG-0039,negative,benign_plain,0,0,0.8636,200,14.11,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Chúc mọi người một ngày tốt lành.
+NEG-0040,negative,academic_trigger_word,0,0,0.843,200,14.13,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Rất mong nhận được góp ý.
+NEG-0041,negative,academic_trigger_word,0,0,0.7207,200,14.8,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Hẹn gặp lại vào tuần sau.
+NEG-0042,negative,academic_trigger_word,0,0,0.8023,200,14.01,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Chúc mọi người một ngày tốt lành.
+NEG-0043,negative,academic_trigger_word,0,0,0.788,200,14.31,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư.
+NEG-0044,negative,academic_trigger_word,0,0,0.6238,200,13.56,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác.
+NEG-0045,negative,benign_plain,0,0,0.8455,200,14.14,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Chúc mọi người một ngày tốt lành.
+NEG-0046,negative,academic_trigger_word,0,0,0.77,200,14.56,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Cảm ơn mọi người đã đọc.
+NEG-0047,negative,academic_trigger_word,0,0,0.7921,200,13.4,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em.
+NEG-0048,negative,benign_plain,0,0,0.8943,200,14.07,,Mình đang học lập trình Python và thấy rất thú vị. Chi tiết xem thêm bên dưới.
+NEG-0049,negative,academic_trigger_word,0,0,0.7661,200,17.45,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. 😊
+NEG-0050,negative,benign_plain,0,0,0.9146,200,14.26,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Rất mong nhận được góp ý."
+NEG-0051,negative,benign_plain,0,0,0.8079,200,14.55,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Xin chân thành cảm ơn.
+NEG-0052,negative,benign_plain,0,0,0.9372,200,13.8,,Bạn có thể chỉ mình cách nấu phở bò được không? Hẹn gặp lại vào tuần sau.
+NEG-0053,negative,academic_trigger_word,0,0,0.6337,200,14.15,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Cảm ơn mọi người đã đọc.
+NEG-0054,negative,benign_plain,0,0,0.8648,200,13.69,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Xin chân thành cảm ơn.
+NEG-0055,negative,academic_trigger_word,0,0,0.7646,200,14.47,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Chi tiết xem thêm bên dưới.
+NEG-0056,negative,benign_plain,0,0,0.8727,200,13.84,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Đây là thông tin tham khảo."
+NEG-0057,negative,academic_trigger_word,0,0,0.9185,200,13.96,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Rất mong nhận được góp ý.
+NEG-0058,negative,benign_plain,0,0,0.8168,200,12.65,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Xin chân thành cảm ơn.
+NEG-0059,negative,academic_trigger_word,0,0,0.7024,200,13.91,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Đây là thông tin tham khảo.
+NEG-0060,negative,academic_trigger_word,0,0,0.7751,200,12.49,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Xin chân thành cảm ơn.
+NEG-0061,negative,benign_plain,0,0,0.8684,200,15.17,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Mong mọi người ủng hộ.
+NEG-0062,negative,academic_trigger_word,0,0,0.6883,200,14.21,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Xin chân thành cảm ơn.
+NEG-0063,negative,benign_plain,0,0,0.9072,200,13.21,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Hẹn gặp lại vào tuần sau.
+NEG-0064,negative,benign_plain,0,0,0.8226,200,13.29,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. 😊
+NEG-0065,negative,benign_plain,0,0,0.8741,200,16.79,,Bức tranh phong cảnh này được vẽ rất tinh tế.
+NEG-0066,negative,benign_plain,0,0,0.8228,200,36.97,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Cảm ơn mọi người đã đọc.
+NEG-0067,negative,academic_trigger_word,0,0,0.8122,200,15.19,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Hẹn gặp lại vào tuần sau.
+NEG-0068,negative,benign_plain,0,0,0.743,200,13.49,,Dự án này cần thêm thời gian để hoàn thiện tài liệu.
+NEG-0069,negative,benign_plain,0,0,0.8923,200,13.41,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Chi tiết xem thêm bên dưới."
+NEG-0070,negative,benign_plain,0,0,0.911,200,13.58,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Rất mong nhận được góp ý."
+NEG-0071,negative,academic_trigger_word,0,0,0.8425,200,12.78,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Mong mọi người ủng hộ.
+NEG-0072,negative,academic_trigger_word,0,0,0.8494,200,13.6,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Rất mong nhận được góp ý.
+NEG-0073,negative,benign_plain,0,0,0.8622,200,12.77,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm.
+NEG-0074,negative,benign_plain,0,0,0.898,200,12.5,,Bạn có thể chỉ mình cách nấu phở bò được không? Xin chân thành cảm ơn.
+NEG-0075,negative,academic_trigger_word,0,0,0.8023,200,13.74,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Xin chân thành cảm ơn.
+NEG-0076,negative,academic_trigger_word,0,0,0.7995,200,12.86,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Chúc mọi người một ngày tốt lành.
+NEG-0077,negative,academic_trigger_word,0,0,0.7758,200,13.9,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Đây là thông tin tham khảo.
+NEG-0078,negative,benign_plain,0,0,0.8916,200,13.58,,Bạn có thể chỉ mình cách nấu phở bò được không? Đây là thông tin tham khảo.
+NEG-0079,negative,benign_plain,0,0,0.8733,200,12.28,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. 😊
+NEG-0080,negative,benign_plain,0,0,0.8087,200,13.23,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Xin chân thành cảm ơn.
+NEG-0081,negative,benign_plain,0,0,0.8012,200,13.1,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Đây là thông tin tham khảo.
+NEG-0082,negative,benign_plain,0,0,0.8733,200,13.48,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc."
+NEG-0083,negative,academic_trigger_word,0,0,0.7328,200,13.23,,Con đĩa là loài động vật không xương sống sống ở ao hồ.
+NEG-0084,negative,academic_trigger_word,0,0,0.7948,200,13.84,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Xin chân thành cảm ơn.
+NEG-0085,negative,academic_trigger_word,0,0,0.6969,200,13.96,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi.
+NEG-0086,negative,benign_plain,0,0,0.7797,200,13.57,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Đây là thông tin tham khảo.
+NEG-0087,negative,benign_plain,0,0,0.9339,200,13.89,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Hẹn gặp lại vào tuần sau."
+NEG-0088,negative,academic_trigger_word,0,0,0.8725,200,13.79,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Rất mong nhận được góp ý.
+NEG-0089,negative,benign_plain,0,0,0.8024,200,13.89,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Chi tiết xem thêm bên dưới.
+NEG-0090,negative,academic_trigger_word,0,0,0.8573,200,13.69,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Cảm ơn mọi người đã đọc.
+NEG-0091,negative,academic_trigger_word,0,0,0.7842,200,16.01,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Mong mọi người ủng hộ.
+NEG-0092,negative,academic_trigger_word,0,0,0.7959,200,13.98,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Cảm ơn mọi người đã đọc.
+NEG-0093,negative,academic_trigger_word,0,0,0.8347,200,13.31,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Hẹn gặp lại vào tuần sau.
+NEG-0094,negative,benign_plain,0,0,0.8726,200,13.91,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Chi tiết xem thêm bên dưới.
+NEG-0095,negative,benign_plain,0,0,0.8437,200,14.08,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Xin chân thành cảm ơn.
+NEG-0096,negative,benign_plain,0,0,0.908,200,13.22,,Mình đang học lập trình Python và thấy rất thú vị. Rất mong nhận được góp ý.
+NEG-0097,negative,benign_plain,0,0,0.8079,200,14.07,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Chúc mọi người một ngày tốt lành.
+NEG-0098,negative,academic_trigger_word,0,0,0.6807,200,14.05,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Hẹn gặp lại vào tuần sau.
+NEG-0099,negative,academic_trigger_word,0,0,0.9036,200,14.24,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Mong mọi người ủng hộ.
+NEG-0100,negative,benign_plain,0,0,0.752,200,13.42,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần.
+NEG-0101,negative,benign_plain,0,0,0.9315,200,13.73,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé."
+NEG-0102,negative,benign_plain,0,0,0.8247,200,13.96,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Chúc mọi người một ngày tốt lành.
+NEG-0103,negative,academic_trigger_word,0,0,0.8009,200,14.02,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Rất mong nhận được góp ý.
+NEG-0104,negative,academic_trigger_word,0,0,0.8698,200,13.81,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Rất mong nhận được góp ý.
+NEG-0105,negative,academic_trigger_word,0,0,0.8306,200,13.2,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Hẹn gặp lại vào tuần sau.
+NEG-0106,negative,benign_plain,0,0,0.9341,200,13.67,,Bức tranh phong cảnh này được vẽ rất tinh tế. Mong mọi người ủng hộ.
+NEG-0107,negative,benign_plain,0,0,0.9408,200,13.8,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Chi tiết xem thêm bên dưới."
+NEG-0108,negative,academic_trigger_word,0,0,0.7474,200,14.08,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Cảm ơn mọi người đã đọc.
+NEG-0109,negative,benign_plain,0,0,0.8249,200,14.06,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Chúc mọi người một ngày tốt lành.
+NEG-0110,negative,academic_trigger_word,0,0,0.7829,200,14.15,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Cảm ơn mọi người đã đọc.
+NEG-0111,negative,academic_trigger_word,0,0,0.7737,200,14.41,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Đây là thông tin tham khảo.
+NEG-0112,negative,academic_trigger_word,0,0,0.6478,200,14.22,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Xin chân thành cảm ơn.
+NEG-0113,negative,academic_trigger_word,0,0,0.9088,200,14.75,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Mong mọi người ủng hộ.
+NEG-0114,negative,academic_trigger_word,0,0,0.8678,200,13.91,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Rất mong nhận được góp ý.
+NEG-0115,negative,benign_plain,0,0,0.884,200,13.56,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Rất mong nhận được góp ý.
+NEG-0116,negative,benign_plain,0,0,0.9094,200,13.95,,Mình đang học lập trình Python và thấy rất thú vị. Hẹn gặp lại vào tuần sau.
+NEG-0117,negative,benign_plain,0,0,0.8757,200,13.21,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Cảm ơn mọi người đã đọc.
+NEG-0118,negative,academic_trigger_word,0,0,0.6717,200,13.87,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Đây là thông tin tham khảo.
+NEG-0119,negative,academic_trigger_word,0,0,0.7065,200,12.93,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người.
+NEG-0120,negative,benign_plain,0,0,0.9108,200,13.64,,Bạn có thể chỉ mình cách nấu phở bò được không? Chúc mọi người một ngày tốt lành.
+NEG-0121,negative,academic_trigger_word,0,0,0.9163,200,13.86,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Rất mong nhận được góp ý.
+NEG-0122,negative,benign_plain,0,0,0.9539,200,13.08,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Hẹn gặp lại vào tuần sau."
+NEG-0123,negative,academic_trigger_word,0,0,0.7761,200,17.92,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Chi tiết xem thêm bên dưới.
+NEG-0124,negative,academic_trigger_word,0,0,0.7857,200,14.1,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Cảm ơn mọi người đã đọc.
+NEG-0125,negative,benign_plain,0,0,0.8989,200,14.5,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Chúc mọi người một ngày tốt lành."
+NEG-0126,negative,benign_plain,0,0,0.865,200,13.87,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Chúc mọi người một ngày tốt lành."
+NEG-0127,negative,benign_plain,0,0,0.8442,200,14.0,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Mong mọi người ủng hộ.
+NEG-0128,negative,benign_plain,0,0,0.9133,200,13.6,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Rất mong nhận được góp ý.
+NEG-0129,negative,benign_plain,0,0,0.8663,200,13.12,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Chúc mọi người một ngày tốt lành.
+NEG-0130,negative,academic_trigger_word,0,0,0.7217,200,13.52,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm.
+NEG-0131,negative,benign_plain,0,0,0.9227,200,13.45,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Mong mọi người ủng hộ.
+NEG-0132,negative,academic_trigger_word,0,0,0.7616,200,13.65,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Chi tiết xem thêm bên dưới.
+NEG-0133,negative,academic_trigger_word,0,0,0.8685,200,14.13,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Mong mọi người ủng hộ.
+NEG-0134,negative,benign_plain,0,0,0.8374,200,14.35,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Chi tiết xem thêm bên dưới.
+NEG-0135,negative,academic_trigger_word,0,0,0.7204,200,14.2,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Đây là thông tin tham khảo.
+NEG-0136,negative,academic_trigger_word,0,0,0.839,200,14.02,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Rất mong nhận được góp ý.
+NEG-0137,negative,benign_plain,0,0,0.8759,200,13.72,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. 😊
+NEG-0138,negative,academic_trigger_word,0,0,0.6856,200,13.5,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. 😊
+NEG-0139,negative,benign_plain,0,0,0.8472,200,13.86,,Bức tranh phong cảnh này được vẽ rất tinh tế. Đây là thông tin tham khảo.
+NEG-0140,negative,academic_trigger_word,0,0,0.6466,200,13.52,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn.
+NEG-0141,negative,academic_trigger_word,0,0,0.7546,200,13.86,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Chúc mọi người một ngày tốt lành.
+NEG-0142,negative,benign_plain,0,0,0.9365,200,14.69,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Rất mong nhận được góp ý."
+NEG-0143,negative,benign_plain,0,0,0.9005,200,13.33,,"Xin chào, rất vui được làm quen với mọi người. Cảm ơn mọi người đã đọc."
+NEG-0144,negative,benign_plain,0,0,0.8894,200,13.7,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Xin chân thành cảm ơn.
+NEG-0145,negative,academic_trigger_word,0,0,0.7637,200,13.87,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Hẹn gặp lại vào tuần sau.
+NEG-0146,negative,academic_trigger_word,0,0,0.7705,200,12.96,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Chúc mọi người một ngày tốt lành.
+NEG-0147,negative,benign_plain,0,0,0.8971,200,13.72,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Xin chân thành cảm ơn."
+NEG-0148,negative,academic_trigger_word,0,0,0.773,200,13.08,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Cảm ơn mọi người đã đọc.
+NEG-0149,negative,benign_plain,0,0,0.8949,200,13.91,,Mình đang học lập trình Python và thấy rất thú vị.
+NEG-0150,negative,academic_trigger_word,0,0,0.7452,200,13.6,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. 😊
+NEG-0151,negative,benign_plain,0,0,0.8303,200,13.0,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Cảm ơn mọi người đã đọc.
+NEG-0152,negative,academic_trigger_word,0,0,0.8182,200,13.98,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Chi tiết xem thêm bên dưới.
+NEG-0153,negative,benign_plain,0,0,0.9209,200,13.5,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Mong mọi người ủng hộ.
+NEG-0154,negative,benign_plain,0,0,0.8856,200,13.59,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Đây là thông tin tham khảo."
+NEG-0155,negative,benign_plain,0,0,0.8606,200,13.75,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Hẹn gặp lại vào tuần sau.
+NEG-0156,negative,benign_plain,0,0,0.9352,200,13.48,,Bạn có thể chỉ mình cách nấu phở bò được không? 😊
+NEG-0157,negative,academic_trigger_word,0,0,0.7962,200,13.73,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Chi tiết xem thêm bên dưới.
+NEG-0158,negative,benign_plain,0,0,0.8934,200,13.43,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Chi tiết xem thêm bên dưới."
+NEG-0159,negative,benign_plain,0,0,0.9195,200,14.46,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Hẹn gặp lại vào tuần sau."
+NEG-0160,negative,academic_trigger_word,0,0,0.8194,200,12.98,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn.
+NEG-0161,negative,academic_trigger_word,0,0,0.8384,200,13.16,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Mong mọi người ủng hộ.
+NEG-0162,negative,academic_trigger_word,0,0,0.7621,200,13.42,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người.
+NEG-0163,negative,academic_trigger_word,0,0,0.8427,200,13.11,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Xin chân thành cảm ơn.
+NEG-0164,negative,academic_trigger_word,0,0,0.8462,200,14.0,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Mong mọi người ủng hộ.
+NEG-0165,negative,benign_plain,0,0,0.9281,200,13.2,,Bạn có thể chỉ mình cách nấu phở bò được không?
+NEG-0166,negative,benign_plain,0,0,0.8108,200,13.92,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Cảm ơn mọi người đã đọc.
+NEG-0167,negative,benign_plain,0,0,0.8637,200,13.8,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Rất mong nhận được góp ý.
+NEG-0168,negative,benign_plain,0,0,0.7652,200,13.94,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Đây là thông tin tham khảo.
+NEG-0169,negative,benign_plain,0,0,0.9557,200,13.8,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Mong mọi người ủng hộ."
+NEG-0170,negative,academic_trigger_word,0,0,0.6958,200,13.78,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Chúc mọi người một ngày tốt lành.
+NEG-0171,negative,benign_plain,0,0,0.7997,200,13.93,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Chi tiết xem thêm bên dưới.
+NEG-0172,negative,academic_trigger_word,0,0,0.6899,200,13.79,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. 😊
+NEG-0173,negative,academic_trigger_word,0,0,0.8057,200,14.15,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Chi tiết xem thêm bên dưới.
+NEG-0174,negative,benign_plain,0,0,0.932,200,13.68,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Mong mọi người ủng hộ.
+NEG-0175,negative,academic_trigger_word,0,0,0.8125,200,13.35,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Mong mọi người ủng hộ.
+NEG-0176,negative,academic_trigger_word,0,0,0.8574,200,14.13,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Hẹn gặp lại vào tuần sau.
+NEG-0177,negative,benign_plain,0,0,0.7927,200,13.28,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Chúc mọi người một ngày tốt lành.
+NEG-0178,negative,academic_trigger_word,0,0,0.7657,200,13.61,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Hẹn gặp lại vào tuần sau.
+NEG-0179,negative,benign_plain,0,0,0.8687,200,14.1,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Cảm ơn mọi người đã đọc."
+NEG-0180,negative,academic_trigger_word,0,0,0.7574,200,12.81,,Phim tài liệu nói về nạn buôn người và cách phòng chống. 😊
+NEG-0181,negative,academic_trigger_word,0,0,0.7301,200,13.72,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Chi tiết xem thêm bên dưới.
+NEG-0182,negative,benign_plain,0,0,0.8504,200,14.02,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Hẹn gặp lại vào tuần sau.
+NEG-0183,negative,academic_trigger_word,0,0,0.8092,200,14.48,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Đây là thông tin tham khảo.
+NEG-0184,negative,academic_trigger_word,0,0,0.7994,200,13.79,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Rất mong nhận được góp ý.
+NEG-0185,negative,academic_trigger_word,0,0,0.7872,200,13.7,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Đây là thông tin tham khảo.
+NEG-0186,negative,benign_plain,0,0,0.8146,200,13.36,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ.
+NEG-0187,negative,benign_plain,0,0,0.8799,200,12.9,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Xin chân thành cảm ơn.
+NEG-0188,negative,benign_plain,0,0,0.8033,200,13.39,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. 😊
+NEG-0189,negative,academic_trigger_word,0,0,0.8025,200,13.93,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Cảm ơn mọi người đã đọc.
+NEG-0190,negative,academic_trigger_word,0,0,0.8069,200,13.91,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. 😊
+NEG-0191,negative,academic_trigger_word,0,0,0.8556,200,14.38,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Chi tiết xem thêm bên dưới.
+NEG-0192,negative,benign_plain,0,0,0.7953,200,13.37,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Cảm ơn mọi người đã đọc.
+NEG-0193,negative,benign_plain,0,0,0.9398,200,13.53,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. 😊"
+NEG-0194,negative,academic_trigger_word,0,0,0.7202,200,13.6,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Mong mọi người ủng hộ.
+NEG-0195,negative,benign_plain,0,0,0.8884,200,12.61,,Bức tranh phong cảnh này được vẽ rất tinh tế. 😊
+NEG-0196,negative,academic_trigger_word,0,0,0.8401,200,13.74,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Mong mọi người ủng hộ.
+NEG-0197,negative,academic_trigger_word,0,0,0.6022,200,13.85,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động.
+NEG-0198,negative,academic_trigger_word,0,0,0.7291,200,13.81,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Đây là thông tin tham khảo.
+NEG-0199,negative,academic_trigger_word,0,0,0.8683,200,13.65,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Rất mong nhận được góp ý.
+NEG-0200,negative,academic_trigger_word,0,0,0.7329,200,14.68,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Chúc mọi người một ngày tốt lành.
+NEG-0201,negative,benign_plain,0,0,0.8595,200,13.82,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Đây là thông tin tham khảo.
+NEG-0202,negative,academic_trigger_word,0,0,0.8105,200,13.34,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Hẹn gặp lại vào tuần sau.
+NEG-0203,negative,academic_trigger_word,0,0,0.7662,200,13.86,,Bài báo khoa học phân tích tác động của bạo lực gia đình đến trẻ em. Xin chân thành cảm ơn.
+NEG-0204,negative,academic_trigger_word,0,0,0.799,200,14.12,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Chi tiết xem thêm bên dưới.
+NEG-0205,negative,benign_plain,0,0,0.8911,200,14.3,,Bạn có thể chỉ mình cách nấu phở bò được không? Chi tiết xem thêm bên dưới.
+NEG-0206,negative,benign_plain,0,0,0.8928,200,12.99,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. 😊
+NEG-0207,negative,academic_trigger_word,0,0,0.7877,200,13.96,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Xin chân thành cảm ơn.
+NEG-0208,negative,benign_plain,0,0,0.8513,200,14.34,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Cảm ơn mọi người đã đọc."
+NEG-0209,negative,benign_plain,0,0,0.9166,200,13.71,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Mong mọi người ủng hộ.
+NEG-0210,negative,academic_trigger_word,0,0,0.8112,200,13.69,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính.
+NEG-0211,negative,academic_trigger_word,0,0,0.8359,200,13.82,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. 😊
+NEG-0212,negative,benign_plain,0,0,0.941,200,13.85,,"Xin chào, rất vui được làm quen với mọi người. Hẹn gặp lại vào tuần sau."
+NEG-0213,negative,academic_trigger_word,0,0,0.7435,200,13.91,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Xin chân thành cảm ơn.
+NEG-0214,negative,academic_trigger_word,0,0,0.8685,200,13.86,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Chi tiết xem thêm bên dưới.
+NEG-0215,negative,benign_plain,0,0,0.8826,200,13.98,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Chi tiết xem thêm bên dưới.
+NEG-0216,negative,academic_trigger_word,0,0,0.8597,200,14.36,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Mong mọi người ủng hộ.
+NEG-0217,negative,benign_plain,0,0,0.855,200,14.41,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Đây là thông tin tham khảo."
+NEG-0218,negative,benign_plain,0,0,0.8946,200,13.68,,Bức tranh phong cảnh này được vẽ rất tinh tế. Chi tiết xem thêm bên dưới.
+NEG-0219,negative,benign_plain,0,0,0.8542,200,13.18,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Cảm ơn mọi người đã đọc.
+NEG-0220,negative,benign_plain,0,0,0.8812,200,13.34,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua.
+NEG-0221,negative,benign_plain,0,0,0.8756,200,13.31,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Xin chân thành cảm ơn."
+NEG-0222,negative,academic_trigger_word,0,0,0.8351,200,13.68,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Rất mong nhận được góp ý.
+NEG-0223,negative,benign_plain,0,0,0.8687,200,13.79,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Đây là thông tin tham khảo.
+NEG-0224,negative,benign_plain,0,0,0.9065,200,14.28,,Bạn có thể chỉ mình cách nấu phở bò được không? Cảm ơn mọi người đã đọc.
+NEG-0225,negative,academic_trigger_word,0,0,0.8644,200,13.42,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Mong mọi người ủng hộ.
+NEG-0226,negative,academic_trigger_word,0,0,0.8421,200,14.12,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Hẹn gặp lại vào tuần sau.
+NEG-0227,negative,academic_trigger_word,0,0,0.8778,200,13.59,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. 😊
+NEG-0228,negative,academic_trigger_word,0,0,0.716,200,13.92,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Đây là thông tin tham khảo.
+NEG-0229,negative,benign_plain,0,0,0.9221,200,13.24,,Mình đang học lập trình Python và thấy rất thú vị. 😊
+NEG-0230,negative,academic_trigger_word,0,0,0.8603,200,14.14,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Hẹn gặp lại vào tuần sau.
+NEG-0231,negative,benign_plain,0,0,0.9386,200,14.4,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Đây là thông tin tham khảo."
+NEG-0232,negative,academic_trigger_word,0,0,0.8294,200,14.27,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Đây là thông tin tham khảo.
+NEG-0233,negative,benign_plain,0,0,0.8168,200,12.86,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. 😊
+NEG-0234,negative,benign_plain,0,0,0.8828,200,13.31,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Rất mong nhận được góp ý.
+NEG-0235,negative,benign_plain,0,0,0.9597,200,12.81,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé."
+NEG-0236,negative,academic_trigger_word,0,0,0.6876,200,13.33,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Chúc mọi người một ngày tốt lành.
+NEG-0237,negative,academic_trigger_word,0,0,0.8008,200,13.95,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Cảm ơn mọi người đã đọc.
+NEG-0238,negative,academic_trigger_word,0,0,0.8777,200,13.46,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. 😊
+NEG-0239,negative,benign_plain,0,0,0.898,200,13.81,,"Xin chào, rất vui được làm quen với mọi người. Chúc mọi người một ngày tốt lành."
+NEG-0240,negative,academic_trigger_word,0,0,0.8773,200,13.69,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi.
+NEG-0241,negative,benign_plain,0,0,0.8429,200,14.39,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Cảm ơn mọi người đã đọc.
+NEG-0242,negative,academic_trigger_word,0,0,0.7905,200,13.92,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên.
+NEG-0243,negative,benign_plain,0,0,0.8781,200,13.79,,Mình đang học lập trình Python và thấy rất thú vị. Xin chân thành cảm ơn.
+NEG-0244,negative,benign_plain,0,0,0.8081,200,13.95,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Chúc mọi người một ngày tốt lành.
+NEG-0245,negative,benign_plain,0,0,0.8681,200,12.63,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt.
+NEG-0246,negative,benign_plain,0,0,0.8201,200,13.56,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện. Xin chân thành cảm ơn.
+NEG-0247,negative,academic_trigger_word,0,0,0.7029,200,13.87,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Đây là thông tin tham khảo.
+NEG-0248,negative,benign_plain,0,0,0.9112,200,14.1,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Rất mong nhận được góp ý.
+NEG-0249,negative,academic_trigger_word,0,0,0.8562,200,14.04,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Xin chân thành cảm ơn.
+NEG-0250,negative,benign_plain,0,0,0.8442,200,13.15,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Hẹn gặp lại vào tuần sau.
+NEG-0251,negative,benign_plain,0,0,0.8285,200,13.4,,Trận đấu bóng đá tối qua diễn ra rất kịch tính.
+NEG-0252,negative,academic_trigger_word,0,0,0.7344,200,13.96,,Phim tài liệu nói về nạn buôn người và cách phòng chống. Cảm ơn mọi người đã đọc.
+NEG-0253,negative,benign_plain,0,0,0.909,200,13.03,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Chi tiết xem thêm bên dưới.
+NEG-0254,negative,academic_trigger_word,0,0,0.8444,200,13.84,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Rất mong nhận được góp ý.
+NEG-0255,negative,benign_plain,0,0,0.8348,200,14.46,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Chúc mọi người một ngày tốt lành."
+NEG-0256,negative,benign_plain,0,0,0.8876,200,14.4,,Mình đang học lập trình Python và thấy rất thú vị. Cảm ơn mọi người đã đọc.
+NEG-0257,negative,academic_trigger_word,0,0,0.7987,200,13.71,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Hẹn gặp lại vào tuần sau.
+NEG-0258,negative,academic_trigger_word,0,0,0.8373,200,13.88,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Hẹn gặp lại vào tuần sau.
+NEG-0259,negative,benign_plain,0,0,0.934,200,14.11,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Cảm ơn mọi người đã đọc."
+NEG-0260,negative,academic_trigger_word,0,0,0.7706,200,14.01,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Xin chân thành cảm ơn.
+NEG-0261,negative,benign_plain,0,0,0.7794,200,13.51,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần.
+NEG-0262,negative,academic_trigger_word,0,0,0.7531,200,13.33,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. 😊
+NEG-0263,negative,academic_trigger_word,0,0,0.722,200,12.41,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại.
+NEG-0264,negative,academic_trigger_word,0,0,0.8409,200,13.54,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Mong mọi người ủng hộ.
+NEG-0265,negative,academic_trigger_word,0,0,0.6244,200,12.62,,Chương trình thời sự đưa tin về vụ cướp giật tài sản.
+NEG-0266,negative,academic_trigger_word,0,0,0.8001,200,14.01,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Chúc mọi người một ngày tốt lành.
+NEG-0267,negative,benign_plain,0,0,0.9169,200,13.56,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Mong mọi người ủng hộ.
+NEG-0268,negative,benign_plain,0,0,0.9337,200,13.15,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Xin chân thành cảm ơn."
+NEG-0269,negative,benign_plain,0,0,0.8972,200,17.54,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Mong mọi người ủng hộ."
+NEG-0270,negative,academic_trigger_word,0,0,0.7877,200,14.16,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Chúc mọi người một ngày tốt lành.
+NEG-0271,negative,benign_plain,0,0,0.9185,200,14.05,,"Xin chào, rất vui được làm quen với mọi người. Xin chân thành cảm ơn."
+NEG-0272,negative,benign_plain,0,0,0.9235,200,14.0,,"Xin chào, rất vui được làm quen với mọi người. Chi tiết xem thêm bên dưới."
+NEG-0273,negative,benign_plain,0,0,0.8347,200,13.12,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. 😊
+NEG-0274,negative,academic_trigger_word,0,0,0.6558,200,14.05,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Cảm ơn mọi người đã đọc.
+NEG-0275,negative,academic_trigger_word,0,0,0.7851,200,13.46,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Rất mong nhận được góp ý.
+NEG-0276,negative,benign_plain,0,0,0.8505,200,13.63,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Mong mọi người ủng hộ.
+NEG-0277,negative,benign_plain,0,0,0.9083,200,14.29,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Hẹn gặp lại vào tuần sau.
+NEG-0278,negative,benign_plain,0,0,0.883,200,14.02,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Đây là thông tin tham khảo.
+NEG-0279,negative,benign_plain,0,0,0.8909,200,14.04,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Hẹn gặp lại vào tuần sau.
+NEG-0280,negative,academic_trigger_word,0,0,0.7977,200,13.59,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. 😊
+NEG-0281,negative,academic_trigger_word,0,0,0.6717,200,13.59,,Phim tài liệu nói về nạn buôn người và cách phòng chống.
+NEG-0282,negative,benign_plain,0,0,0.7659,200,15.33,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc.
+NEG-0283,negative,academic_trigger_word,0,0,0.7678,200,13.86,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Cảm ơn mọi người đã đọc.
+NEG-0284,negative,academic_trigger_word,0,0,0.7392,200,14.09,,Con đĩa là loài động vật không xương sống sống ở ao hồ. Chi tiết xem thêm bên dưới.
+NEG-0285,negative,academic_trigger_word,0,0,0.7668,200,13.76,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Đây là thông tin tham khảo.
+NEG-0286,negative,academic_trigger_word,0,0,0.847,200,13.23,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Chúc mọi người một ngày tốt lành.
+NEG-0287,negative,benign_plain,0,0,0.8024,200,13.74,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Đây là thông tin tham khảo.
+NEG-0288,negative,academic_trigger_word,0,0,0.8192,200,14.43,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Xin chân thành cảm ơn.
+NEG-0289,negative,academic_trigger_word,0,0,0.7238,200,13.27,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Xin chân thành cảm ơn.
+NEG-0290,negative,benign_plain,0,0,0.9017,200,13.55,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Hẹn gặp lại vào tuần sau."
+NEG-0291,negative,academic_trigger_word,0,0,0.8014,200,13.0,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. 😊
+NEG-0292,negative,academic_trigger_word,0,0,0.8533,200,13.76,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Mong mọi người ủng hộ.
+NEG-0293,negative,benign_plain,0,0,0.8756,200,13.46,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Rất mong nhận được góp ý.
+NEG-0294,negative,academic_trigger_word,0,0,0.7341,200,13.92,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Đây là thông tin tham khảo.
+NEG-0295,negative,academic_trigger_word,0,0,0.8121,200,13.89,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. 😊
+NEG-0296,negative,academic_trigger_word,0,0,0.7336,200,14.87,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Xin chân thành cảm ơn.
+NEG-0297,negative,academic_trigger_word,0,0,0.7674,200,14.16,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Chúc mọi người một ngày tốt lành.
+NEG-0298,negative,academic_trigger_word,0,0,0.8885,200,14.14,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Rất mong nhận được góp ý.
+NEG-0299,negative,academic_trigger_word,0,0,0.7634,200,13.78,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu.
+NEG-0300,negative,benign_plain,0,0,0.9299,200,13.83,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Mong mọi người ủng hộ."
+NEG-0301,negative,benign_plain,0,0,0.8791,200,13.8,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Rất mong nhận được góp ý.
+NEG-0302,negative,benign_plain,0,0,0.8207,200,14.0,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Chi tiết xem thêm bên dưới.
+NEG-0303,negative,academic_trigger_word,0,0,0.7921,200,13.75,,Con chó là loài vật nuôi trung thành và thông minh nhất với con người. Xin chân thành cảm ơn.
+NEG-0304,negative,benign_plain,0,0,0.8297,200,13.75,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Cảm ơn mọi người đã đọc.
+NEG-0305,negative,academic_trigger_word,0,0,0.7637,200,14.71,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Rất mong nhận được góp ý.
+NEG-0306,negative,benign_plain,0,0,0.885,200,13.95,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Chi tiết xem thêm bên dưới.
+NEG-0307,negative,benign_plain,0,0,0.9248,200,13.95,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Mong mọi người ủng hộ.
+NEG-0308,negative,benign_plain,0,0,0.89,200,13.8,,Trận đấu bóng đá tối qua diễn ra rất kịch tính. Hẹn gặp lại vào tuần sau.
+NEG-0309,negative,academic_trigger_word,0,0,0.7631,200,13.82,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Mong mọi người ủng hộ.
+NEG-0310,negative,academic_trigger_word,0,0,0.819,200,13.74,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Xin chân thành cảm ơn.
+NEG-0311,negative,benign_plain,0,0,0.8619,200,13.59,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Mong mọi người ủng hộ.
+NEG-0312,negative,academic_trigger_word,0,0,0.7703,200,14.72,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Chúc mọi người một ngày tốt lành.
+NEG-0313,negative,academic_trigger_word,0,0,0.7943,200,14.27,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Hẹn gặp lại vào tuần sau.
+NEG-0314,negative,academic_trigger_word,0,0,0.8465,200,14.04,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Rất mong nhận được góp ý.
+NEG-0315,negative,academic_trigger_word,0,0,0.7664,200,13.85,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Đây là thông tin tham khảo.
+NEG-0316,negative,academic_trigger_word,0,0,0.8736,200,13.24,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Rất mong nhận được góp ý.
+NEG-0317,negative,benign_plain,0,0,0.7766,200,14.03,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Chi tiết xem thêm bên dưới.
+NEG-0318,negative,academic_trigger_word,0,0,0.8359,200,13.94,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Cảm ơn mọi người đã đọc.
+NEG-0319,negative,benign_plain,0,0,0.8599,200,13.89,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Hẹn gặp lại vào tuần sau.
+NEG-0320,negative,benign_plain,0,0,0.858,200,13.82,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Hẹn gặp lại vào tuần sau.
+NEG-0321,negative,benign_plain,0,0,0.9148,200,14.28,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Chi tiết xem thêm bên dưới."
+NEG-0322,negative,benign_plain,0,0,0.8819,200,14.05,,Bức tranh phong cảnh này được vẽ rất tinh tế. Cảm ơn mọi người đã đọc.
+NEG-0323,negative,benign_plain,0,0,0.8588,200,13.91,,Bức tranh phong cảnh này được vẽ rất tinh tế. Chúc mọi người một ngày tốt lành.
+NEG-0324,negative,benign_plain,0,0,0.8664,200,13.66,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Rất mong nhận được góp ý.
+NEG-0325,negative,benign_plain,0,0,0.9185,200,12.66,,Bức tranh phong cảnh này được vẽ rất tinh tế. Hẹn gặp lại vào tuần sau.
+NEG-0326,negative,academic_trigger_word,0,0,0.7846,200,13.69,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. 😊
+NEG-0327,negative,academic_trigger_word,0,0,0.7481,200,13.96,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Cảm ơn mọi người đã đọc.
+NEG-0328,negative,academic_trigger_word,0,0,0.7819,200,13.92,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Rất mong nhận được góp ý.
+NEG-0329,negative,benign_plain,0,0,0.8816,200,14.31,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Cảm ơn mọi người đã đọc.
+NEG-0330,negative,academic_trigger_word,0,0,0.7519,200,13.9,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Mong mọi người ủng hộ.
+NEG-0331,negative,academic_trigger_word,0,0,0.7768,200,13.3,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. 😊
+NEG-0332,negative,benign_plain,0,0,0.9142,200,13.02,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. Mong mọi người ủng hộ."
+NEG-0333,negative,benign_plain,0,0,0.8948,200,14.01,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Hẹn gặp lại vào tuần sau.
+NEG-0334,negative,benign_plain,0,0,0.9234,200,13.38,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. Rất mong nhận được góp ý.
+NEG-0335,negative,benign_plain,0,0,0.8412,200,13.09,,Chúng ta nên ăn nhiều rau xanh để tốt cho sức khoẻ. Xin chân thành cảm ơn.
+NEG-0336,negative,benign_plain,0,0,0.9286,200,14.15,,Mình đang học lập trình Python và thấy rất thú vị. Mong mọi người ủng hộ.
+NEG-0337,negative,academic_trigger_word,0,0,0.7785,200,13.24,,Tạp chí y khoa công bố nghiên cứu mới về ung thư máu. Xin chân thành cảm ơn.
+NEG-0338,negative,benign_plain,0,0,0.8826,200,13.74,,Bức tranh phong cảnh này được vẽ rất tinh tế. Xin chân thành cảm ơn.
+NEG-0339,negative,academic_trigger_word,0,0,0.8828,200,13.55,,Đồ án tốt nghiệp của sinh viên đạt giải nhất cuộc thi. Hẹn gặp lại vào tuần sau.
+NEG-0340,negative,academic_trigger_word,0,0,0.76,200,12.91,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Cảm ơn mọi người đã đọc.
+NEG-0341,negative,benign_plain,0,0,0.8006,200,13.3,,Hôm nay mình đi khám sức khoẻ định kỳ ở bệnh viện.
+NEG-0342,negative,academic_trigger_word,0,0,0.8166,200,12.68,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. 😊
+NEG-0343,negative,benign_plain,0,0,0.8607,200,13.13,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua.
+NEG-0344,negative,benign_plain,0,0,0.937,200,12.47,,"Xin chào, rất vui được làm quen với mọi người. Rất mong nhận được góp ý."
+NEG-0345,negative,benign_plain,0,0,0.9249,200,13.87,,Bạn có thể chỉ mình cách nấu phở bò được không? Rất mong nhận được góp ý.
+NEG-0346,negative,academic_trigger_word,0,0,0.8019,200,14.04,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Đây là thông tin tham khảo.
+NEG-0347,negative,academic_trigger_word,0,0,0.7543,200,13.58,,Giáo trình sinh học mô tả quá trình giao phối ở loài lưỡng cư. Xin chân thành cảm ơn.
+NEG-0348,negative,benign_plain,0,0,0.9238,200,12.84,,Cảm ơn bạn đã giúp mình hoàn thành báo cáo hôm qua. 😊
+NEG-0349,negative,benign_plain,0,0,0.8317,200,12.2,,Dự án này cần thêm thời gian để hoàn thiện tài liệu. Xin chân thành cảm ơn.
+NEG-0350,negative,academic_trigger_word,0,0,0.8159,200,13.27,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Chúc mọi người một ngày tốt lành.
+NEG-0351,negative,benign_plain,0,0,0.8199,200,13.63,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Hẹn gặp lại vào tuần sau.
+NEG-0352,negative,benign_plain,0,0,0.9243,200,12.4,,Bức tranh phong cảnh này được vẽ rất tinh tế. Rất mong nhận được góp ý.
+NEG-0353,negative,benign_plain,0,0,0.8603,200,14.22,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Chúc mọi người một ngày tốt lành.
+NEG-0354,negative,benign_plain,0,0,0.9052,200,13.07,,"Xin chào, rất vui được làm quen với mọi người. Đây là thông tin tham khảo."
+NEG-0355,negative,academic_trigger_word,0,0,0.6679,200,13.51,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Cảm ơn mọi người đã đọc.
+NEG-0356,negative,academic_trigger_word,0,0,0.7786,200,13.31,,Bài phân tích văn học về hình tượng con quỷ trong dân gian.
+NEG-0357,negative,benign_plain,0,0,0.8324,200,13.26,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. 😊
+NEG-0358,negative,benign_plain,0,0,0.8668,200,13.4,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động.
+NEG-0359,negative,benign_plain,0,0,0.7952,200,12.89,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Chúc mọi người một ngày tốt lành.
+NEG-0360,negative,academic_trigger_word,0,0,0.691,200,13.8,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Xin chân thành cảm ơn.
+NEG-0361,negative,benign_plain,0,0,0.7763,200,13.92,,Chúng tôi đang lên kế hoạch du lịch Đà Lạt cuối tuần. Đây là thông tin tham khảo.
+NEG-0362,negative,academic_trigger_word,0,0,0.6768,200,13.39,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Đây là thông tin tham khảo.
+NEG-0363,negative,academic_trigger_word,0,0,0.6964,200,14.08,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Chi tiết xem thêm bên dưới.
+NEG-0364,negative,benign_plain,0,0,0.8133,200,13.27,,Cuốn sách này viết về lịch sử Việt Nam thời Lý Trần. Cảm ơn mọi người đã đọc.
+NEG-0365,negative,benign_plain,0,0,0.9584,200,13.29,,"Hôm nay trời đẹp quá, mình đi dạo công viên nhé. Rất mong nhận được góp ý."
+NEG-0366,negative,benign_plain,0,0,0.9121,200,13.47,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ. 😊"
+NEG-0367,negative,academic_trigger_word,0,0,0.8221,200,13.24,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Cảm ơn mọi người đã đọc.
+NEG-0368,negative,academic_trigger_word,0,0,0.7706,200,13.78,,Loài chim yến làm tổ trên vách đá cao để tránh thú săn mồi. Chúc mọi người một ngày tốt lành.
+NEG-0369,negative,benign_plain,0,0,0.9019,200,12.39,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. 😊
+NEG-0370,negative,academic_trigger_word,0,0,0.8373,200,13.13,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Đây là thông tin tham khảo.
+NEG-0371,negative,academic_trigger_word,0,0,0.6834,200,13.99,,Cuốn tiểu thuyết mô tả nhân vật phản diện tàn ác và độc ác. Chi tiết xem thêm bên dưới.
+NEG-0372,negative,academic_trigger_word,0,0,0.6689,200,13.55,,Bài viết học thuật bàn về nạn xâm hại và bóc lột lao động. Chúc mọi người một ngày tốt lành.
+NEG-0373,negative,academic_trigger_word,0,0,0.8045,200,12.89,,Con đĩa là loài động vật không xương sống sống ở ao hồ. 😊
+NEG-0374,negative,academic_trigger_word,0,0,0.7302,200,13.82,,Chương trình thời sự đưa tin về vụ cướp giật tài sản. Hẹn gặp lại vào tuần sau.
+NEG-0375,negative,benign_plain,0,0,0.8964,200,14.07,,"Chiều nay có mưa to, nhớ mang theo áo mưa nhé. Cảm ơn mọi người đã đọc."
+NEG-0376,negative,academic_trigger_word,0,0,0.8197,200,13.75,,Bài giảng lịch sử nhắc đến các cuộc chiến tranh đẫm máu. Chi tiết xem thêm bên dưới.
+NEG-0377,negative,benign_plain,0,0,0.912,200,13.12,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Rất mong nhận được góp ý.
+NEG-0378,negative,academic_trigger_word,0,0,0.8905,200,14.42,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. Mong mọi người ủng hộ.
+NEG-0379,negative,academic_trigger_word,0,0,0.8182,200,13.72,,Cảnh sát điều tra vụ án giết người xảy ra tại quận trung tâm. Mong mọi người ủng hộ.
+NEG-0380,negative,benign_plain,0,0,0.8561,200,12.94,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Chúc mọi người một ngày tốt lành.
+NEG-0381,negative,benign_plain,0,0,0.8767,200,13.39,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Cảm ơn mọi người đã đọc.
+NEG-0382,negative,benign_plain,0,0,0.8717,200,13.27,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Chi tiết xem thêm bên dưới.
+NEG-0383,negative,benign_plain,0,0,0.8882,200,13.71,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Xin chân thành cảm ơn.
+NEG-0384,negative,benign_plain,0,0,0.9053,200,13.29,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. Hẹn gặp lại vào tuần sau.
+NEG-0385,negative,academic_trigger_word,0,0,0.8753,200,13.66,,Bác sĩ khám cho bệnh nhân bị đau khớp gối do viêm mãn tính. Hẹn gặp lại vào tuần sau.
+NEG-0386,negative,academic_trigger_word,0,0,0.8669,200,13.77,,Đồ chơi trẻ em bằng gỗ được sản xuất thủ công an toàn. 😊
+NEG-0387,negative,benign_plain,0,0,0.8511,200,13.96,,Đội tuyển Việt Nam đã thi đấu rất xuất sắc tối qua. Đây là thông tin tham khảo.
+NEG-0388,negative,academic_trigger_word,0,0,0.8283,200,14.57,,Luận văn nghiên cứu về hành vi tự tử ở thanh thiếu niên. Chúc mọi người một ngày tốt lành.
+NEG-0389,negative,academic_trigger_word,0,0,0.8241,200,14.0,,Bài phân tích văn học về hình tượng con quỷ trong dân gian. Hẹn gặp lại vào tuần sau.
+NEG-0390,negative,academic_trigger_word,0,0,0.8322,200,13.73,,Địa chất học nghiên cứu cấu trúc các lớp đất đá cổ đại. Hẹn gặp lại vào tuần sau.
+NEG-0391,negative,benign_plain,0,0,0.8945,200,13.63,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. 😊
+NEG-0392,negative,academic_trigger_word,0,0,0.7502,200,13.92,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Chi tiết xem thêm bên dưới.
+NEG-0393,negative,benign_plain,0,0,0.7957,200,13.93,,Công ty vừa thông báo tăng lương cho nhân viên xuất sắc. Cảm ơn mọi người đã đọc.
+NEG-0394,negative,benign_plain,0,0,0.8551,200,13.02,,Cô giáo hôm nay giảng bài rất dễ hiểu và sinh động. Đây là thông tin tham khảo.
+NEG-0395,negative,benign_plain,0,0,0.8637,200,14.3,,"Chúc mừng sinh nhật, chúc bạn luôn vui vẻ hạnh phúc. Xin chân thành cảm ơn."
+NEG-0396,negative,benign_plain,0,0,0.908,200,12.76,,"Mẹ mình nấu ăn ngon nhất trên đời, mình rất yêu mẹ."
+NEG-0397,negative,academic_trigger_word,0,0,0.7476,200,13.76,,Đề tài nghiên cứu về chất độc trong thực phẩm bẩn. Chúc mọi người một ngày tốt lành.
+NEG-0398,negative,benign_plain,0,0,0.9149,200,13.31,,Bài tập toán này khó thật nhưng mình sẽ cố gắng làm. 😊
+NEG-0399,negative,benign_plain,0,0,0.8886,200,13.19,,Mình rất buồn vì kỳ thi vừa rồi không đạt kết quả tốt. Chi tiết xem thêm bên dưới.
+NEG-0400,negative,academic_trigger_word,0,0,0.7355,200,13.91,,Cô ấy là chuyên gia phân tích tâm lý tội phạm giết người. Chi tiết xem thêm bên dưới.
+EDGE-1CHAR-01,edge,one_char,,0,0.8394,200,14.56,,​
+EDGE-1CHAR-02,edge,one_char,,0,0.8002,200,15.53,,O
+EDGE-1CHAR-03,edge,one_char,,0,0.817,200,14.74,,","
+EDGE-1CHAR-04,edge,one_char,,0,0.8156,200,13.98,,y
+EDGE-1CHAR-05,edge,one_char,,0,0.8405,200,16.3,,K
+EDGE-1CHAR-06,edge,one_char,,0,0.7951,200,14.36,,Z
+EDGE-1CHAR-07,edge,one_char,,0,0.8803,200,14.89,,™
+EDGE-1CHAR-08,edge,one_char,,0,0.8471,200,13.52,,ự
+EDGE-1CHAR-09,edge,one_char,,0,0.8143,200,14.86,,đ
+EDGE-1CHAR-10,edge,one_char,,0,0.81,200,31.57,,s
+EDGE-1CHAR-11,edge,one_char,,0,0.8235,200,24.21,,o
+EDGE-1CHAR-12,edge,one_char,,0,0.8505,200,16.17,,.
+EDGE-1CHAR-13,edge,one_char,,0,0.7569,200,15.51,,r
+EDGE-1CHAR-14,edge,one_char,,0,0.8245,200,17.33,,@
+EDGE-1CHAR-15,edge,one_char,,0,0.8393,200,15.66,,…
+EDGE-1CHAR-16,edge,one_char,,0,0.8186,200,16.12,,b
+EDGE-1CHAR-17,edge,one_char,,0,0.791,200,15.19,,m
+EDGE-1CHAR-18,edge,one_char,,0,0.8015,200,15.05,,d
+EDGE-1CHAR-19,edge,one_char,,0,0.8472,200,15.66,,D
+EDGE-1CHAR-20,edge,one_char,,0,0.8513,200,15.69,,1
+EDGE-LONG-01,edge,super_long,,0,0.7482,200,30.16,,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+EDGE-LONG-02,edge,super_long,,0,0.7482,200,29.1,,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+EDGE-LONG-03,edge,super_long,,0,0.7482,200,32.83,,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+EDGE-LONG-04,edge,super_long,,0,0.7482,200,53.18,,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+EDGE-LONG-05,edge,super_long,,0,0.7482,200,79.53,,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+EDGE-LONG-06,edge,super_long,,1,0.6758,200,27.46,,đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đ
+EDGE-LONG-07,edge,super_long,,1,0.6758,200,28.21,,đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đ
+EDGE-LONG-08,edge,super_long,,1,0.6758,200,29.78,,đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đ
+EDGE-LONG-09,edge,super_long,,1,0.6758,200,39.61,,đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đ
+EDGE-LONG-10,edge,super_long,,1,0.6758,200,52.02,,đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đồ ngu đ
+EDGE-LONG-11,edge,super_long,,0,0.7229,200,27.31,,xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin
+EDGE-LONG-12,edge,super_long,,0,0.7163,200,28.2,,xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin
+EDGE-LONG-13,edge,super_long,,0,0.7163,200,29.6,,xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin
+EDGE-LONG-14,edge,super_long,,0,0.7163,200,37.62,,xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin
+EDGE-LONG-15,edge,super_long,,0,0.7163,200,48.19,,xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin chào xin
+EDGE-LONG-16,edge,super_long,,0,0.7541,200,26.99,,😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+EDGE-LONG-17,edge,super_long,,0,0.7541,200,28.46,,😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+EDGE-LONG-18,edge,super_long,,0,0.7541,200,30.87,,😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+EDGE-LONG-19,edge,super_long,,0,0.7541,200,49.85,,😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+EDGE-LONG-20,edge,super_long,,0,0.7541,200,71.94,,😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+EDGE-UNI-01,edge,unicode_emoji,,0,0.8896,200,18.42,,ạạ
+EDGE-UNI-02,edge,unicode_emoji,,0,0.8687,200,15.54,,مرحبا שלום 你好 こんにちは Привет 💯
+EDGE-UNI-03,edge,unicode_emoji,,0,0.8832,200,13.64,,👨‍👩‍👧‍👦🏳️‍🌈‍‍‍
+EDGE-UNI-04,edge,unicode_emoji,,0,0.8934,200,12.9,,🇻🚀‍🏳️😁😘👍😴🌈
+EDGE-UNI-05,edge,unicode_emoji,,0,0.7774,200,13.1,,ćĥà̀o͜ćĥà̀o͜
+EDGE-UNI-06,edge,unicode_emoji,,0,0.8687,200,13.74,,مرحبا שלום 你好 こんにちは Привет 💯
+EDGE-UNI-07,edge,unicode_emoji,,0,0.8832,200,12.86,,👨‍👩‍👧‍👦🏳️‍🌈❤❤❤
+EDGE-UNI-08,edge,unicode_emoji,,0,0.8934,200,13.33,,🐱👨🇻😘✨‍😭👍😂🐱
+EDGE-UNI-09,edge,unicode_emoji,,0,0.9031,200,14.26,,a҉a҉
+EDGE-UNI-10,edge,unicode_emoji,,0,0.8687,200,13.34,,مرحبا שלום 你好 こんにちは Привет 🏳
+EDGE-UNI-11,edge,unicode_emoji,,0,0.8832,200,13.36,,👨‍👩‍👧‍👦🏳️‍🌈‍‍‍
+EDGE-UNI-12,edge,unicode_emoji,,0,0.8934,200,13.51,,👧😭🎉🐱😊👧️‍❤👧
+EDGE-UNI-13,edge,unicode_emoji,,0,0.8896,200,14.35,,ạạ
+EDGE-UNI-14,edge,unicode_emoji,,0,0.8687,200,13.79,,مرحبا שלום 你好 こんにちは Привет 🇻
+EDGE-UNI-15,edge,unicode_emoji,,0,0.8832,200,13.99,,👨‍👩‍👧‍👦🏳️‍🌈🔥🔥🔥
+EDGE-UNI-16,edge,unicode_emoji,,0,0.8934,200,13.21,,👧🐶❤🚀👦🙏️😜😭🐶
+EDGE-UNI-17,edge,unicode_emoji,,0,0.7937,200,15.97,,t͜ēs̃t̀t͜ēs̃t̀
+EDGE-UNI-18,edge,unicode_emoji,,0,0.8687,200,14.62,,مرحبا שלום 你好 こんにちは Привет ‍
+EDGE-UNI-19,edge,unicode_emoji,,0,0.8832,200,12.79,,👨‍👩‍👧‍👦🏳️‍🌈🔥🔥🔥
+EDGE-UNI-20,edge,unicode_emoji,,0,0.8934,200,13.33,,🚀️😀🔥🙏😡🐱🌈👨‍
+EDGE-EMPTY-01,edge,empty_payload,,1,0.482,200,15.02,,
+EDGE-EMPTY-02,edge,empty_payload,,1,0.482,200,14.72,, 
+EDGE-EMPTY-03,edge,empty_payload,,1,0.482,200,14.78,,  
+EDGE-EMPTY-04,edge,empty_payload,,1,0.482,200,14.56,,\n
+EDGE-EMPTY-05,edge,empty_payload,,1,0.482,200,14.45,,	
+EDGE-EMPTY-06,edge,empty_payload,,1,0.482,200,13.55,,"\n"
+EDGE-EMPTY-07,edge,empty_payload,,0,0.8394,200,15.05,,​
+EDGE-EMPTY-08,edge,empty_payload,,1,0.482,200,15.46,, 
+EDGE-EMPTY-09,edge,empty_payload,,0,0.8999,200,14.72,, 
+EDGE-EMPTY-10,edge,empty_payload,,1,0.482,200,14.48,,   \n	  
+EDGE-EMPTY-11,edge,empty_payload,,1,0.482,200,13.97,,　
+EDGE-EMPTY-12,edge,empty_payload,,0,0.8394,200,14.75,,​
+EDGE-EMPTY-13,edge,empty_payload,,0,0.8433,200,16.14,,﻿
+EDGE-EMPTY-14,edge,empty_payload,,1,0.482,200,14.51,,
+EDGE-EMPTY-15,edge,empty_payload,,1,0.482,200,14.95,,
+EDGE-EMPTY-16,edge,empty_payload,,1,0.482,200,14.82,,   
+EDGE-EMPTY-17,edge,empty_payload,,1,0.482,200,14.56,,    
+EDGE-EMPTY-18,edge,empty_payload,,1,0.482,200,14.69,,    
+EDGE-EMPTY-19,edge,empty_payload,,1,0.482,200,15.16,,    
+EDGE-EMPTY-20,edge,empty_payload,,1,0.482,200,14.75,,  
+EDGE-INJ-01,edge,html_js_injection,,0,0.8576,200,18.87,,<script>alert('xss')</script>
+EDGE-INJ-02,edge,html_js_injection,,0,0.8572,200,13.17,,<img src=x onerror=alert(1)>
+EDGE-INJ-03,edge,html_js_injection,,0,0.8634,200,13.81,,'; DROP TABLE users; --
+EDGE-INJ-04,edge,html_js_injection,,0,0.8449,200,13.5,,<svg/onload=alert(document.cookie)>
+EDGE-INJ-05,edge,html_js_injection,,0,0.8604,200,13.73,,javascript:alert(1)
+EDGE-INJ-06,edge,html_js_injection,,0,0.8699,200,14.44,,<iframe src='javascript:alert(1)'></iframe>
+EDGE-INJ-07,edge,html_js_injection,,0,0.8924,200,13.55,,{{7*7}}
+EDGE-INJ-08,edge,html_js_injection,,0,0.87,200,14.85,,${7*7}
+EDGE-INJ-09,edge,html_js_injection,,0,0.8653,200,14.2,,"<a href=""javascript:alert(1)"">click</a>"
+EDGE-INJ-10,edge,html_js_injection,,0,0.8595,200,15.05,,""" OR 1=1 --"
+EDGE-INJ-11,edge,html_js_injection,,0,0.8983,200,14.79,,<div onmouseover=alert(1)>hover</div>
+EDGE-INJ-12,edge,html_js_injection,,0,0.8774,200,14.51,,<style>@import 'javascript:alert(1)';</style>
+EDGE-INJ-13,edge,html_js_injection,,0,0.8767,200,13.59,,%3Cscript%3Ealert(1)%3C%2Fscript%3E
+EDGE-INJ-14,edge,html_js_injection,,0,0.8494,200,14.2,,<script src=//evil.example/x.js></script>
+EDGE-INJ-15,edge,html_js_injection,,0,0.8481,200,13.95,,<body onload=alert('xss')>
+EDGE-INJ-16,edge,html_js_injection,,0,0.8368,200,13.37,,<input onfocus=alert(1) autofocus>
+EDGE-INJ-17,edge,html_js_injection,,0,0.9171,200,14.68,,<marquee onstart=alert(1)>x</marquee>
+EDGE-INJ-18,edge,html_js_injection,,0,0.8123,200,14.96,,'; exec xp_cmdshell('dir'); --
+EDGE-INJ-19,edge,html_js_injection,,0,0.8641,200,14.17,,<object data='javascript:alert(1)'>
+EDGE-INJ-20,edge,html_js_injection,,0,0.8631,200,13.68,,<xss id=x onclick=alert(1)>click</xss>
+STRESS-JSON-01,stress,malformed_json,,,,422,0.68,,"{""content"": ""thiếu ngoặc đóng"""
+STRESS-JSON-02,stress,malformed_json,,,,422,0.43,,"{content: ""thiếu dấu ngoặc kép key""}"
+STRESS-JSON-03,stress,malformed_json,,,,422,0.31,,"{""content"": ""trailing comma"",}"
+STRESS-JSON-04,stress,malformed_json,,,,422,0.31,,"{""content"": }"
+STRESS-JSON-05,stress,malformed_json,,,,422,0.36,,not even json
+STRESS-JSON-06,stress,malformed_json,,,,422,0.36,,"{""content"": ""unterminated string}"
+STRESS-JSON-07,stress,malformed_json,,,,422,0.41,,"[""array thay vì object""]"
+STRESS-JSON-08,stress,malformed_json,,,,422,0.35,,"{""content"": ""a""} extra garbage"
+STRESS-JSON-09,stress,malformed_json,,,,422,0.44,,
+STRESS-JSON-10,stress,malformed_json,,,,422,0.36,,{}
+STRESS-JSON-11,stress,malformed_json,,,,422,0.35,,null
+STRESS-JSON-12,stress,malformed_json,,,,422,0.34,,12345
+STRESS-JSON-13,stress,malformed_json,,,,422,0.39,,"{""content"": ""a"", ""content"": ""b"" ""missing_comma"": 1}"
+STRESS-JSON-14,stress,malformed_json,,,,422,0.35,,"{""content"": ""unicode lỗi \uZZZZ""}"
+STRESS-JSON-15,stress,malformed_json,,,,422,0.35,,{'content': 'single quotes'}
+STRESS-JSON-16,stress,malformed_json,,,,422,0.45,,"{""content"": ""lặp lỗi 15"""""""
+STRESS-JSON-17,stress,malformed_json,,,,422,0.37,,"{""content"": ""lặp lỗi 16"""""""
+STRESS-JSON-18,stress,malformed_json,,,,422,0.39,,"{""content"": ""lặp lỗi 17"""""""
+STRESS-JSON-19,stress,malformed_json,,,,422,0.34,,"{""content"": ""lặp lỗi 18"""""""
+STRESS-JSON-20,stress,malformed_json,,,,422,0.32,,"{""content"": ""lặp lỗi 19"""""""
+STRESS-JSON-21,stress,malformed_json,,,,422,0.34,,"{""content"": ""lặp lỗi 20"""""""
+STRESS-JSON-22,stress,malformed_json,,,,422,0.32,,"{""content"": ""lặp lỗi 21"""""""
+STRESS-JSON-23,stress,malformed_json,,,,422,0.33,,"{""content"": ""lặp lỗi 22"""""""
+STRESS-JSON-24,stress,malformed_json,,,,422,0.33,,"{""content"": ""lặp lỗi 23"""""""
+STRESS-JSON-25,stress,malformed_json,,,,422,0.34,,"{""content"": ""lặp lỗi 24"""""""
+STRESS-CT-01,stress,wrong_content_type,,,,422,0.68,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-02,stress,wrong_content_type,,,,422,0.36,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-03,stress,wrong_content_type,,,,422,0.3,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-04,stress,wrong_content_type,,,,422,0.33,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-05,stress,wrong_content_type,,,,422,0.29,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-06,stress,wrong_content_type,,,,422,0.3,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-07,stress,wrong_content_type,,,,422,0.28,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-08,stress,wrong_content_type,,,,422,0.31,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-09,stress,wrong_content_type,,0,0.7589,200,13.39,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-10,stress,wrong_content_type,,0,0.7589,200,13.02,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-11,stress,wrong_content_type,,0,0.7589,200,13.16,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-12,stress,wrong_content_type,,,,422,0.55,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-13,stress,wrong_content_type,,0,0.7589,200,12.69,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-14,stress,wrong_content_type,,,,422,0.42,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-15,stress,wrong_content_type,,0,0.7589,200,12.65,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-16,stress,wrong_content_type,,0,0.7589,200,13.82,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-17,stress,wrong_content_type,,,,422,0.49,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-18,stress,wrong_content_type,,,,422,0.34,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-19,stress,wrong_content_type,,0,0.7589,200,13.24,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-20,stress,wrong_content_type,,,,422,0.44,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-21,stress,wrong_content_type,,,,422,0.32,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-22,stress,wrong_content_type,,0,0.7589,200,13.11,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-23,stress,wrong_content_type,,,,422,0.47,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-24,stress,wrong_content_type,,,,422,0.39,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-CT-25,stress,wrong_content_type,,0,0.7589,200,12.85,,"{""content"": ""n\u1ed9i dung h\u1ee3p l\u1ec7 nh\u01b0ng sai content-type""}"
+STRESS-SIZE-01,stress,oversized_or_bad_type,,0,0.7343,200,98.2,,"{""content"": ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+STRESS-SIZE-02,stress,oversized_or_bad_type,,0,0.7343,200,378.7,,"{""content"": ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+STRESS-SIZE-03,stress,oversized_or_bad_type,,,,422,0.57,,"{""content"": 12345}"
+STRESS-SIZE-04,stress,oversized_or_bad_type,,,,422,0.38,,"{""content"": null}"
+STRESS-SIZE-05,stress,oversized_or_bad_type,,,,422,0.4,,"{""content"": [""a"", ""b""]}"
+STRESS-SIZE-06,stress,oversized_or_bad_type,,,,422,0.36,,"{""content"": {""nested"": ""obj""}}"
+STRESS-SIZE-07,stress,oversized_or_bad_type,,,,422,0.39,,"{""content"": true}"
+STRESS-SIZE-08,stress,oversized_or_bad_type,,,,422,0.39,,"{""wrong_field_name"": ""abc""}"
+STRESS-SIZE-09,stress,oversized_or_bad_type,,,,422,0.39,,{}
+STRESS-SIZE-10,stress,oversized_or_bad_type,,0,0.8989,200,16.71,,"{""content"": ""ok"", ""extra_unexpected_field"": ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+STRESS-SIZE-11,stress,oversized_or_bad_type,,,,422,0.54,,"[{""content"": ""array of objects""}]"
+STRESS-SIZE-12,stress,oversized_or_bad_type,,,,422,0.38,,"{""content"": ""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa""}{""content"": ""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+STRESS-SIZE-13,stress,oversized_or_bad_type,,0,0.7518,200,42.27,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-14,stress,oversized_or_bad_type,,0,0.7518,200,38.45,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-15,stress,oversized_or_bad_type,,0,0.7518,200,37.74,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-16,stress,oversized_or_bad_type,,0,0.7518,200,34.34,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-17,stress,oversized_or_bad_type,,0,0.7518,200,29.24,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-18,stress,oversized_or_bad_type,,0,0.7518,200,30.24,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-19,stress,oversized_or_bad_type,,0,0.7518,200,38.52,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-20,stress,oversized_or_bad_type,,0,0.7518,200,48.58,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-21,stress,oversized_or_bad_type,,0,0.7518,200,31.47,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-22,stress,oversized_or_bad_type,,0,0.7518,200,47.32,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-23,stress,oversized_or_bad_type,,0,0.7518,200,46.56,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-24,stress,oversized_or_bad_type,,0,0.7518,200,53.77,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-SIZE-25,stress,oversized_or_bad_type,,0,0.7518,200,35.78,,"{""content"": ""padpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpadpa"
+STRESS-HDR-01,stress,missing_header_or_auth,,,,422,0.47,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-02,stress,missing_header_or_auth,,0,0.8784,200,14.32,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-03,stress,missing_header_or_auth,,0,0.8784,200,12.99,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-04,stress,missing_header_or_auth,,0,0.8784,200,13.84,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-05,stress,missing_header_or_auth,,0,0.8784,200,13.62,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-06,stress,missing_header_or_auth,,,,422,0.49,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-07,stress,missing_header_or_auth,,0,0.8784,200,14.22,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-08,stress,missing_header_or_auth,,0,0.8784,200,13.74,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-09,stress,missing_header_or_auth,,0,0.8784,200,13.67,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-10,stress,missing_header_or_auth,,0,0.8784,200,12.56,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-11,stress,missing_header_or_auth,,0,0.8784,200,12.78,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-12,stress,missing_header_or_auth,,0,0.8784,200,13.66,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-13,stress,missing_header_or_auth,,0,0.8784,200,12.91,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-14,stress,missing_header_or_auth,,0,0.8784,200,12.89,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-15,stress,missing_header_or_auth,,0,0.8784,200,12.91,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-16,stress,missing_header_or_auth,,0,0.8784,200,12.09,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-17,stress,missing_header_or_auth,,0,0.8784,200,13.13,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-18,stress,missing_header_or_auth,,0,0.8784,200,13.15,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-19,stress,missing_header_or_auth,,0,0.8784,200,12.6,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-20,stress,missing_header_or_auth,,0,0.8784,200,14.1,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-21,stress,missing_header_or_auth,,0,0.8784,200,12.55,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-22,stress,missing_header_or_auth,,0,0.8784,200,12.58,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-23,stress,missing_header_or_auth,,0,0.8784,200,13.58,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-24,stress,missing_header_or_auth,,0,0.8784,200,12.94,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"
+STRESS-HDR-25,stress,missing_header_or_auth,,0,0.8784,200,13.29,,"{""content"": ""ki\u1ec3m tra thi\u1ebfu header""}"

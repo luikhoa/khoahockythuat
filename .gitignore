@@ -8,3 +8,9 @@ extension/test-results/
 extension/playwright-report/
 
 qa/
+
+# Thư mục thí nghiệm huấn luyện PhoBERT (~500MB, chứa checkpoint .safetensors
+# >100MB) và bản zip của nó — vượt giới hạn file GitHub, không track ở đây.
+# Cần weight nào thì đã copy sẵn sang backend/offensive_classifier.pkl.
+phobert_experiment_complete/
+phobert_experiment_complete.zip
