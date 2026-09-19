@@ -30,6 +30,7 @@ h1 {
   letter-spacing: -0.01em;
 }
 .phụ { color: var(--mờ); font-size: 11.5px; }
+.thử-lại { margin-top: 8px; }
 
 /* Thanh chắn: tỉ lệ nội dung đã che trên tổng số đã quét */
 .thanh {

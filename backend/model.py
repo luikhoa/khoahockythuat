@@ -4,7 +4,10 @@ import torch
 import torch.nn as nn
 from transformers import AutoModel, AutoTokenizer, PreTrainedTokenizer
 
-from config import HIDDEN_DIM, MAX_LENGTH, MODEL_NAME, NUM_LABELS, DROPOUT
+try:
+    from .config import HIDDEN_DIM, MAX_LENGTH, MODEL_NAME, NUM_LABELS, DROPOUT
+except ImportError:  # Giữ tương thích khi chạy trực tiếp từ backend/.
+    from config import HIDDEN_DIM, MAX_LENGTH, MODEL_NAME, NUM_LABELS, DROPOUT
 
 
 @dataclass

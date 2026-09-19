@@ -8,7 +8,7 @@ const ĐỘ_DÀI_TỐI_THIỂU = 2;
 const ĐỘ_DÀI_TỐI_ĐA = 1200;
 const BỎ_QUA = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "CODE", "PRE", "SVG"]);
 const NHỊP_THỬ_LẠI = [1_000, 5_000, 15_000, 30_000];
-const LABELS = ["an toàn", "xúc phạm"];
+const LABELS = ["an toàn", "độc hại"];
 
 const LOẠI_SỰ_KIỆN: Record<keyof StatsSnapshot, EventType> = {
   scanned: "scanned", toxic: "toxic", threat: "threat", links: "link", revealed: "revealed",
@@ -24,7 +24,9 @@ const stats: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scann
 const đãGửi: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
 let đangXửLý = false;
 let hẹnThửLại: ReturnType<typeof setTimeout> | undefined;
+let hẹnGửiThốngKê: ReturnType<typeof setTimeout> | undefined;
 let lầnThửLại = 0;
+let modelTạmDừng = false;
 let chuỗiGửiSựKiện = Promise.resolve();
 let observer: MutationObserver | undefined;
 let đãKhởiĐộng = false;
@@ -107,18 +109,16 @@ function gửiSựKiện(): void {
 }
 
 function lưuThốngKê(): void {
-  if (typeof chrome !== "undefined" && chrome.storage) {
-    const ngày = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
-    chrome.storage.local.set({ ["cs_" + ngày]: stats, cs_meta: CyberShieldModel.meta });
-  }
   gửiSựKiện();
 }
 
-function debounce(fn: () => void, ms: number): () => void {
-  let id: ReturnType<typeof setTimeout>;
-  return () => { clearTimeout(id); id = setTimeout(fn, ms); };
+function lưuTrễ(): void {
+  if (hẹnGửiThốngKê !== undefined) clearTimeout(hẹnGửiThốngKê);
+  hẹnGửiThốngKê = setTimeout(() => {
+    hẹnGửiThốngKê = undefined;
+    lưuThốngKê();
+  }, 1_500);
 }
-const lưuTrễ = debounce(lưuThốngKê, 1500);
 
 function bỏCanThiệp(el: HTMLElement): void {
   el.classList.remove("cs-blur", "cs-toxic");
@@ -177,18 +177,32 @@ function đánhDấuLink(a: HTMLAnchorElement): void {
   lưuTrễ();
 }
 
-function lênLịchThửLại(): void {
+function lênLịchThửLại(retryable: boolean): void {
   if (hẹnThửLại !== undefined) return;
-  const delay = NHỊP_THỬ_LẠI[Math.min(lầnThửLại, NHỊP_THỬ_LẠI.length - 1)];
+  const delay = retryable
+    ? NHỊP_THỬ_LẠI[Math.min(lầnThửLại, NHỊP_THỬ_LẠI.length - 1)]
+    : NHỊP_THỬ_LẠI[NHỊP_THỬ_LẠI.length - 1];
   hẹnThửLại = setTimeout(async () => {
     hẹnThửLại = undefined;
-    try { await CyberShieldModel.health(); lầnThửLại = 0; xửLýHàngĐợi(); }
-    catch { lầnThửLại++; lênLịchThửLại(); }
+    try {
+      const status = await CyberShieldModel.status();
+      if (status.state === "ready-webgpu" || status.state === "ready-wasm") {
+        lầnThửLại = 0;
+        modelTạmDừng = false;
+        xửLýHàngĐợi();
+        return;
+      }
+      lầnThửLại++;
+      lênLịchThửLại(status.state !== "error" || status.error.retryable);
+    } catch {
+      lầnThửLại++;
+      lênLịchThửLại(true);
+    }
   }, delay);
 }
 
 async function chạyHàngĐợi(): Promise<void> {
-  if (đangXửLý) return;
+  if (đangXửLý || modelTạmDừng) return;
   đangXửLý = true;
   try {
     while (hàngĐợi.size > 0) {
@@ -203,8 +217,11 @@ async function chạyHàngĐợi(): Promise<void> {
       try { kết = await phânLoại(key); }
       catch (error) {
         hàngĐợi.add(el);
-        console.warn("[CyberShield] Backend chưa sẵn sàng; sẽ thử lại.", error);
-        lênLịchThửLại();
+        const retryable = typeof error === "object" && error !== null
+          && "retryable" in error && (error as { retryable?: unknown }).retryable === true;
+        modelTạmDừng = true;
+        console.warn("[CyberShield] Mô hình cục bộ chưa sẵn sàng.", error);
+        lênLịchThửLại(retryable);
         return;
       }
       if (!el.isConnected || !làKhốiVănBản(el) || fingerprint(el.textContent ?? "") !== key) {
@@ -252,12 +269,6 @@ async function khởiĐộng(): Promise<void> {
   đãKhởiĐộng = true;
   quanSát(document.body);
   quét(document.body);
-  const url = typeof chrome !== "undefined" && chrome.runtime?.id ? chrome.runtime.getURL("model.json") : "../extension/model.json";
-  try {
-    const meta = await CyberShieldModel.load(url);
-    if (typeof chrome !== "undefined" && chrome.storage) chrome.storage.local.set({ cs_meta: meta });
-    console.log(`[CyberShield] Metadata: ${meta["phương_án"]} · macro-F1 ${meta.macro_f1_cv}`);
-  } catch (error) { console.warn("[CyberShield] Không tải được metadata; việc quét vẫn tiếp tục.", error); }
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => void khởiĐộng(), { once: true });
@@ -273,6 +284,7 @@ window.CyberShield = {
   dừng: () => {
     observer?.disconnect();
     if (hẹnThửLại !== undefined) clearTimeout(hẹnThửLại);
+    if (hẹnGửiThốngKê !== undefined) clearTimeout(hẹnGửiThốngKê);
     hàngĐợi.clear();
   },
 };

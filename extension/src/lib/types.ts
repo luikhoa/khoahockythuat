@@ -12,13 +12,14 @@ export interface Prediction {
   proba: [number, number];
 }
 
-export interface ModelMeta {
-  "phiên_bản": string;
-  "phương_án": string;
-  macro_f1_cv: number;
-  "nhãn": [string, string];
-  ngram: [number, number];
-  analyzer: "char" | "word";
+export interface ModelMetadata {
+  schemaVersion: 1;
+  modelVersion: string;
+  exportedAt?: string;
+  labels: [string, string];
+  maxLength: number;
+  toxicThreshold: number;
+  files?: Record<string, string>;
 }
 
 export interface StatsSnapshot {
@@ -38,17 +39,33 @@ export interface EventPayload {
   ts?: string;
 }
 
-export type BackendMessage =
-  | { type: "health" }
-  | { type: "predict"; content: string }
+export type ClearStatsRange = "day" | "all";
+
+export type ExtensionMessage =
+  | { type: "predict"; requestId?: string; content: string }
+  | { type: "model-status"; requestId?: string }
+  | { type: "retry-model"; requestId?: string }
   | { type: "stats"; range: "day" | "week" }
-  | { type: "event"; event: EventPayload };
+  | { type: "event"; event: EventPayload }
+  | { type: "clear-stats"; range: ClearStatsRange };
 
-export type BackendErrorKind = "timeout" | "network" | "http" | "invalid-response";
+export interface OffscreenMessage {
+  target: "offscreen";
+  requestId: string;
+  type: "predict" | "model-status" | "retry-model";
+  content?: string;
+}
 
-export type BackendResponse<T> =
+export type ExtensionResponse<T> =
   | { ok: true; data: T }
-  | { ok: false; error: { kind: BackendErrorKind; retryable: boolean } };
+  | {
+      ok: false;
+      error: {
+        kind: "model-loading" | "model-load" | "inference" | "busy" | "invalid-response";
+        retryable: boolean;
+        message?: string;
+      };
+    };
 
 export type LinkLevel = "an toàn" | "nghi ngờ" | "nguy hiểm";
 

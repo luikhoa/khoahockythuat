@@ -1,62 +1,102 @@
-import type { BackendMessage, BackendResponse } from "./lib/types";
+import { clearStats, getStats, incrementEvent } from "./lib/stats";
+import type {
+  ExtensionMessage,
+  ExtensionResponse,
+  OffscreenMessage,
+} from "./lib/types";
 
-const BACKEND_URL = "http://127.0.0.1:8000";
+const OFFSCREEN_PATH = "dist/offscreen.html";
+let creatingOffscreen: Promise<void> | undefined;
+let requestSequence = 0;
 
-function failure(kind: "timeout" | "network" | "http" | "invalid-response", retryable: boolean): BackendResponse<never> {
-  return { ok: false, error: { kind, retryable } };
-}
-
-async function wait(ms: number): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function fetchOnce(message: BackendMessage): Promise<BackendResponse<unknown>> {
-  const controller = new AbortController();
-  const timeoutMs = message.type === "predict" ? 15_000 : 3_000;
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-  const route = message.type === "health"
-    ? "/health"
-    : message.type === "predict"
-      ? "/predict"
-      : message.type === "stats"
-        ? `/stats?range=${message.range}`
-        : "/events";
-  const body = message.type === "predict"
-    ? JSON.stringify({ content: message.content })
-    : message.type === "event"
-      ? JSON.stringify(message.event)
-      : undefined;
-
-  try {
-    const response = await fetch(BACKEND_URL + route, {
-      method: body ? "POST" : "GET",
-      headers: body ? { "Content-Type": "application/json" } : undefined,
-      body,
-      signal: controller.signal,
+export async function ensureOffscreenDocument(): Promise<void> {
+  if (await hasOffscreenDocument()) return;
+  if (!creatingOffscreen) {
+    creatingOffscreen = chrome.offscreen.createDocument({
+      url: OFFSCREEN_PATH,
+      reasons: ["WORKERS" as chrome.offscreen.Reason],
+      justification: "Host the packaged local AI inference worker",
+    }).finally(() => {
+      creatingOffscreen = undefined;
     });
-    if (!response.ok) return failure("http", response.status >= 500);
-    try {
-      return { ok: true, data: await response.json() as unknown };
-    } catch {
-      return failure("invalid-response", false);
+  }
+  await creatingOffscreen;
+}
+
+export async function dispatch(message: ExtensionMessage): Promise<ExtensionResponse<unknown>> {
+  try {
+    switch (message.type) {
+      case "event":
+        await incrementEvent(message.event);
+        return { ok: true, data: { ok: true } };
+      case "stats":
+        return { ok: true, data: await getStats(message.range) };
+      case "clear-stats":
+        await clearStats(message.range);
+        return { ok: true, data: { ok: true } };
+      case "predict":
+      case "model-status":
+      case "retry-model":
+        return relayToOffscreen(message);
     }
   } catch (error) {
-    return error instanceof DOMException && error.name === "AbortError"
-      ? failure("timeout", true)
-      : failure("network", true);
-  } finally {
-    clearTimeout(timeout);
+    return {
+      ok: false,
+      error: {
+        kind: message.type === "event" || message.type === "stats" || message.type === "clear-stats"
+          ? "invalid-response"
+          : "model-load",
+        retryable: false,
+        message: error instanceof Error ? error.message : String(error ?? "Unknown extension error"),
+      },
+    };
   }
 }
 
-export async function dispatch(message: BackendMessage): Promise<BackendResponse<unknown>> {
-  const first = await fetchOnce(message);
-  if (message.type !== "predict" || first.ok || !first.error.retryable) return first;
-  await wait(500);
-  return fetchOnce(message);
+async function relayToOffscreen(
+  message: Extract<ExtensionMessage, { type: "predict" | "model-status" | "retry-model" }>,
+): Promise<ExtensionResponse<unknown>> {
+  await ensureOffscreenDocument();
+  const relay: OffscreenMessage = {
+    target: "offscreen",
+    type: message.type,
+    requestId: message.requestId ?? nextRequestId(),
+    ...(message.type === "predict" ? { content: message.content } : {}),
+  };
+  return chrome.runtime.sendMessage<OffscreenMessage, ExtensionResponse<unknown>>(relay);
 }
 
-chrome.runtime.onMessage.addListener((message: BackendMessage, _sender, sendResponse) => {
+async function hasOffscreenDocument(): Promise<boolean> {
+  const documentUrl = chrome.runtime.getURL(OFFSCREEN_PATH);
+  const runtime = chrome.runtime as typeof chrome.runtime & {
+    getContexts?: (filter: {
+      contextTypes: string[];
+      documentUrls: string[];
+    }) => Promise<Array<{ documentUrl?: string }>>;
+  };
+  if (typeof runtime.getContexts === "function") {
+    const contexts = await runtime.getContexts({
+      contextTypes: ["OFFSCREEN_DOCUMENT"],
+      documentUrls: [documentUrl],
+    });
+    return contexts.length > 0;
+  }
+
+  const workerClients = (globalThis as unknown as {
+    clients?: { matchAll(): Promise<Array<{ url: string }>> };
+  }).clients;
+  if (!workerClients) return false;
+  const matched = await workerClients.matchAll();
+  return matched.some((client) => client.url === documentUrl);
+}
+
+function nextRequestId(): string {
+  requestSequence += 1;
+  return `cs-${Date.now()}-${requestSequence}`;
+}
+
+chrome.runtime.onMessage.addListener((message: ExtensionMessage | OffscreenMessage, _sender, sendResponse) => {
+  if ("target" in message) return false;
   void dispatch(message).then(sendResponse);
   return true;
 });

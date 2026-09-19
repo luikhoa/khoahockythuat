@@ -1,53 +1,84 @@
-/**
- * popup.ts — Đọc thống kê từ GET /stats (backend); rơi về chrome.storage.local
- * cục bộ chỉ khi backend không phản hồi (offline, chưa chạy uvicorn, v.v.).
- */
-import type { ModelMeta, StatsSnapshot } from "../lib/types";
 import { CyberShieldModel } from "../lib/api";
+import type { ModelStatus } from "../inference/protocol";
+import type { ModelMetadata, StatsSnapshot } from "../lib/types";
 
-const khoáHômNay = "cs_" + new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" });
-const rỗng: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
+const emptyStats: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
 
-function vẽ(s: StatsSnapshot, meta: ModelMeta | null | undefined): void {
-  const quét = Math.max(s.scanned, 1);
-  const xúc = s.toxic, đe = s.threat;
-  const an = Math.max(quét - xúc - đe, 0);
-
-  const t = document.getElementById("thanh")!.children;
-  (t[0] as HTMLElement).style.width = (an / quét) * 100 + "%";
-  (t[1] as HTMLElement).style.width = (xúc / quét) * 100 + "%";
-  (t[2] as HTMLElement).style.width = (đe / quét) * 100 + "%";
-
-  document.getElementById("s-quét")!.textContent = s.scanned.toLocaleString("vi-VN");
-  document.getElementById("s-che")!.textContent = (xúc + đe).toLocaleString("vi-VN");
-  document.getElementById("s-link")!.textContent = s.links.toLocaleString("vi-VN");
-  document.getElementById("s-mở")!.textContent = s.revealed.toLocaleString("vi-VN");
-
-  document.getElementById("mô-hình")!.textContent = meta
-    ? `${meta["phương_án"]} · macro-F1 = ${meta.macro_f1_cv}`
-    : "Chưa quét trang nào trong hôm nay.";
+function renderStats(stats: StatsSnapshot): void {
+  const scanned = Math.max(stats.scanned, 1);
+  const blocked = stats.toxic + stats.threat;
+  const safe = Math.max(scanned - blocked, 0);
+  const bars = document.getElementById("thanh")!.children;
+  (bars[0] as HTMLElement).style.width = `${(safe / scanned) * 100}%`;
+  (bars[1] as HTMLElement).style.width = `${(stats.toxic / scanned) * 100}%`;
+  (bars[2] as HTMLElement).style.width = `${(stats.threat / scanned) * 100}%`;
+  document.getElementById("s-quét")!.textContent = stats.scanned.toLocaleString("vi-VN");
+  document.getElementById("s-che")!.textContent = blocked.toLocaleString("vi-VN");
+  document.getElementById("s-link")!.textContent = stats.links.toLocaleString("vi-VN");
+  document.getElementById("s-mở")!.textContent = stats.revealed.toLocaleString("vi-VN");
 }
 
-function đọcCụcBộ(callback: (s: StatsSnapshot, meta?: ModelMeta) => void): void {
-  chrome.storage.local.get([khoáHômNay, "cs_meta"], (d) => {
-    callback((d[khoáHômNay] as StatsSnapshot | undefined) || rỗng, d.cs_meta as ModelMeta | undefined);
-  });
+function renderStatus(status: ModelStatus): void {
+  const target = document.getElementById("trạng-thái")!;
+  const retry = document.getElementById("thử-lại") as HTMLButtonElement;
+  retry.hidden = status.state !== "error";
+  switch (status.state) {
+    case "loading":
+      target.textContent = "Đang nạp mô hình cục bộ…";
+      break;
+    case "ready-webgpu":
+      target.textContent = "AI cục bộ sẵn sàng · WebGPU";
+      break;
+    case "ready-wasm":
+      target.textContent = "AI cục bộ sẵn sàng · WASM";
+      break;
+    case "error":
+      target.textContent = `Không nạp được mô hình · ${status.error.message ?? status.error.kind}`;
+      break;
+  }
 }
 
-async function tải(): Promise<void> {
-  chrome.storage.local.get(["cs_meta"], async (d) => {
-    try {
-      const s = await CyberShieldModel.stats("day");
-      vẽ(s, d.cs_meta as ModelMeta | undefined);
-    } catch {
-      đọcCụcBộ(vẽ);
-    }
-  });
+function renderMetadata(metadata: ModelMetadata): void {
+  document.getElementById("mô-hình")!.textContent = `PhoBERT · ${metadata.modelVersion}`;
 }
 
-tải();
+async function loadPopup(): Promise<void> {
+  const [stats, status, metadata] = await Promise.allSettled([
+    CyberShieldModel.stats("day"),
+    CyberShieldModel.status(),
+    CyberShieldModel.loadMetadata(),
+  ]);
+  renderStats(stats.status === "fulfilled" ? stats.value : emptyStats);
+  renderStatus(status.status === "fulfilled"
+    ? status.value
+    : { state: "error", error: { kind: "inference", retryable: true, message: "Không đọc được trạng thái" } });
+  if (metadata.status === "fulfilled") renderMetadata(metadata.value);
+  else document.getElementById("mô-hình")!.textContent = "PhoBERT · chưa đọc được metadata";
+}
 
-document.getElementById("xoá")!.addEventListener("click", () => {
-  // Chỉ xoá bản lưu cục bộ (dự phòng) — backend chưa có API để reset bộ đếm.
-  chrome.storage.local.remove(khoáHômNay, () => vẽ(rỗng, null));
+document.getElementById("thử-lại")!.addEventListener("click", async () => {
+  const button = document.getElementById("thử-lại") as HTMLButtonElement;
+  button.disabled = true;
+  renderStatus({ state: "loading" });
+  try {
+    renderStatus(await CyberShieldModel.retryModel());
+  } catch (error) {
+    renderStatus({
+      state: "error",
+      error: {
+        kind: "model-load",
+        retryable: false,
+        message: error instanceof Error ? error.message : "Không thể thử lại",
+      },
+    });
+  } finally {
+    button.disabled = false;
+  }
 });
+
+document.getElementById("xoá")!.addEventListener("click", async () => {
+  await CyberShieldModel.clearStats("day");
+  renderStats(await CyberShieldModel.stats("day"));
+});
+
+void loadPopup();

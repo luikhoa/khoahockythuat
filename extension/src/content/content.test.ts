@@ -3,10 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const api = vi.hoisted(() => ({
   predict: vi.fn(),
-  health: vi.fn(),
+  status: vi.fn(),
   event: vi.fn(),
-  load: vi.fn(),
-  meta: null as null,
 }));
 
 vi.mock("../lib/api", () => ({ CyberShieldModel: api }));
@@ -29,10 +27,10 @@ beforeEach(() => {
   window.CyberShield?.dừng();
   vi.resetModules();
   vi.clearAllMocks();
+  vi.unstubAllGlobals();
   api.predict.mockResolvedValue(safe);
-  api.health.mockResolvedValue({ status: "ok" });
+  api.status.mockResolvedValue({ state: "ready-wasm", provider: "wasm" });
   api.event.mockResolvedValue({ ok: true });
-  api.load.mockResolvedValue({ "phương_án": "fixture", macro_f1_cv: 1 });
 });
 
 describe("DOM scanner", () => {
@@ -95,14 +93,45 @@ describe("DOM scanner", () => {
     expect(window.CyberShield.stats().scanned).toBe(1);
   });
 
-  it("giữ request lỗi trong hàng đợi và chạy lại khi health online", async () => {
+  it.each(["model-loading", "busy"])("giữ lỗi %s trong hàng đợi và retry sau status ready", async (kind) => {
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
-    api.predict.mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(safe);
-    await start("<p>Nội dung chờ backend</p>");
+    api.predict.mockRejectedValueOnce(Object.assign(new Error(kind), { kind, retryable: true }))
+      .mockResolvedValueOnce(safe);
+    await start("<p>Nội dung chờ mô hình</p>");
     await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(1));
     expect(window.CyberShield.stats().scanned).toBe(0);
-    await vi.waitFor(() => expect(api.health).toHaveBeenCalledTimes(1), { timeout: 1500 });
+    await vi.waitFor(() => expect(api.status).toHaveBeenCalledTimes(1), { timeout: 1500 });
     await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(2));
     await vi.waitFor(() => expect(window.CyberShield.stats().scanned).toBe(1));
+  });
+
+  it("pause AI khi model-load vĩnh viễn nhưng vẫn đánh dấu link", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    api.predict.mockRejectedValue(Object.assign(new Error("model-load"), {
+      kind: "model-load",
+      retryable: false,
+    }));
+    await start("<p>Nội dung cần AI</p><a href='https://phishing.xyz'>Link nguy hiểm</a>");
+    await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(1));
+
+    const extra = document.createElement("p");
+    extra.textContent = "Nội dung thêm sau lỗi";
+    document.body.appendChild(extra);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    expect(api.predict).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("a")!.classList.contains("cs-link-danger")).toBe(true);
+  });
+
+  it("chỉ gửi event delta và không ghi snapshot từ content tab", async () => {
+    const storageSet = vi.fn();
+    vi.stubGlobal("chrome", { storage: { local: { set: storageSet } }, runtime: {} });
+    await start("<p>Nội dung thống kê</p>");
+    await vi.waitFor(() => expect(window.CyberShield.stats().scanned).toBe(1));
+    await vi.waitFor(() => expect(api.event).toHaveBeenCalledWith({ type: "scanned", count: 1 }), {
+      timeout: 2_000,
+    });
+    expect(storageSet).not.toHaveBeenCalled();
+    expect(api.event.mock.calls.every(([event]) => !Object.prototype.hasOwnProperty.call(event, "scanned"))).toBe(true);
   });
 });

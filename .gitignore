@@ -4,6 +4,7 @@ __pycache__/
 backend/*.db
 extension/node_modules/
 extension/dist/
+extension/model/
 extension/test-results/
 extension/playwright-report/
 
