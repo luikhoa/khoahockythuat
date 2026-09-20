@@ -265,21 +265,21 @@ Expected: all unit tests/typecheck/build PASS. Search `rg -n "127\\.0\\.0\\.1:80
 - E2E exposes measured model state through popup/UI, not test-only production hooks.
 - Workflow documents `train -> export -> parity -> build -> offline E2E` and artifact compatibility rules.
 
-- [ ] **Step 1: Replace fake-backend E2E with offline inference assertions**
+- [x] **Step 1: Replace fake-backend E2E with offline inference assertions**
 
 Block every `http:`/`https:` request except the local demo fixture server and fail the test on attempted localhost:8000/Hugging Face/CDN access. Load unpacked extension, wait for `ready-webgpu` or `ready-wasm`, verify initial/dynamic toxic content, safe content, reveal action, multiple tabs sharing stats, popup persistence after service-worker restart and clear-day behavior.
 
-- [ ] **Step 2: Run E2E and fix only migration regressions**
+- [x] **Step 2: Run E2E and fix only migration regressions**
 
 Run: `cd extension && npm run test:e2e`
 
 Expected: PASS without FastAPI running. Do not fix unrelated DOM findings in this task; record them separately.
 
-- [ ] **Step 3: Document operation and retraining**
+- [x] **Step 3: Document operation and retraining**
 
 README must contain no backend startup prerequisite for users. `LOCAL_MODEL_WORKFLOW.md` records required Python/Node commands, offline export behavior, metadata schema, parity gates, generated artifact location, package-size check, and how a newly trained compatible checkpoint is moved into the extension. QA report must distinguish runtime migration parity from actual model-quality improvement.
 
-- [ ] **Step 4: Run complete verification**
+- [x] **Step 4: Run complete verification**
 
 Run:
 
@@ -293,6 +293,6 @@ du -sh extension/dist
 
 Expected: all tests PASS; grep has no runtime references; packaged model stays below 300 MB; Git diff has no whitespace errors.
 
-- [ ] **Step 5: Produce the final handoff**
+- [x] **Step 5: Produce the final handoff**
 
 Report changed files, Python–ONNX parity metrics, chosen provider on test machine, cold-start/warm p50/p95 if measured, package size, full verification outputs, and known model-quality limitations. Leave all changes unstaged and uncommitted for the user.

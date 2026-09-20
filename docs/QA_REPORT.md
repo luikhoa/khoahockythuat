@@ -1,6 +1,20 @@
 # CyberShield — Báo cáo tiến độ và QA
 
-**Cập nhật:** 13/09/2026. **Cơ sở:** source trong working tree hiện tại, không chỉ phiên bản đã commit.
+**Cập nhật:** 13/09/2026, bổ sung mục 0 ngày 20/09/2026. **Cơ sở:** source trong working tree hiện tại, không chỉ phiên bản đã commit.
+
+## 0. Cập nhật 20/09/2026 — Di trú AI sang chạy cục bộ trong extension
+
+Kể từ commit "packed into extention", phần còn lại của mục 1–6 dưới đây (viết ngày 13/09/2026, khi AI vẫn là điểm tích hợp tương lai qua FastAPI) mô tả một kiến trúc đã thay đổi ở tầng vận chuyển: **không còn HTTP/FastAPI ở runtime**. Model PhoBERT được export sang ONNX và chạy trong offscreen document + Web Worker của extension (ONNX Runtime Web, WebGPU ưu tiên, rơi về WASM). Mục này tách rõ hai việc khác nhau mà các báo cáo AI trước dễ gộp chung:
+
+| Việc | Đã kiểm chứng | Bằng chứng |
+| --- | --- | --- |
+| **Parity của việc di trú runtime** (Python → ONNX chạy trong trình duyệt) | Đạt: 100% label agreement, 100% blur agreement, F1 không đổi trên 1.000 câu black-box | `tests/results/onnx_parity_summary.json`, `docs/LOCAL_MODEL_WORKFLOW.md` §3 |
+| **Offline thực sự** (không rò rỉ request ra ngoài extension) | Đạt: E2E Playwright nạp extension thật, chặn mọi request ngoài fixture cục bộ, fail nếu có request tới localhost/Hugging Face/CDN | `extension/tests/e2e/extension.smoke.test.ts`, chạy đạt 20/09/2026 |
+| **Chất lượng phân loại của model** (checkpoint `phobert-offensive-1`) | **Không đổi và không được đánh giá lại trong đợt này** — F1 ≈ 0.65 trên bộ black-box 1.000 câu, mô hình còn bỏ sót nhiều nội dung độc hại | `tests/results/blackbox_summary.json`, `AI_TESTING_REPORT_VI.md` |
+
+**Kết luận:** việc chuyển AI vào chạy cục bộ trong extension đã hoàn tất và được kiểm chứng không làm thay đổi hành vi phân loại so với bản Python trước đó (đây là *migration parity*, tức "giữ nguyên", không phải "cải thiện"). Các finding AI cũ trong mục 3 (QA-001, QA-002 — "Chờ tích hợp AI") **vẫn giữ nguyên trạng thái chờ**: chúng nói về đúng/sai của bản thân phép biến đổi logits→xác suất và readiness, những vấn đề này không được tái đánh giá bởi đợt di trú runtime này. Số liệu F1/độ chính xác trong bảng ở mục 1 (nếu có) không nên được đọc là đã cải thiện; xem `AI_TESTING_REPORT_VI.md` cho đánh giá chất lượng model độc lập với việc chuyển runtime.
+
+Các mục 1–6 dưới đây giữ nguyên nội dung 13/09/2026 để không mất lịch sử; nơi nào nhắc tới FastAPI như thành phần runtime của sản phẩm (ví dụ mục 2, mục 5) cần đọc là **kiến trúc tại thời điểm 13/09/2026**, đã được thay thế theo mục 0 này — không áp dụng cho bản hiện tại.
 
 ## 1. Kết luận về tiến độ
 

@@ -2,112 +2,104 @@
 
 Tiện ích Chrome/Edge hỗ trợ làm mờ nội dung tiếng Việt có khả năng gây tổn thương và cảnh báo liên kết đáng ngờ. Người dùng có thể chọn **Vẫn xem** để mở lại nội dung.
 
-> **Trạng thái ngày 13/09/2026:** đã có luồng chức năng chính và kiểm thử tích hợp bằng dữ liệu giả lập; đang ở giai đoạn hoàn thiện MVP và QA. Chưa hoàn tất thống kê, trạng thái giao diện và độ bao phủ DOM. Phần AI sẽ do Dev AI tích hợp sau; kết quả kiểm thử dưới đây không đánh giá chất lượng mô hình.
+> **Trạng thái ngày 20/09/2026:** AI phân loại (PhoBERT) chạy **hoàn toàn cục bộ trong extension** qua ONNX Runtime Web — không còn FastAPI, không cần Internet lúc dùng. Đây là bản di trú runtime; **chất lượng phân loại của model không đổi** so với trước (F1 ≈ 0.65 trên bộ black-box 1.000 câu, xem `AI_TESTING_REPORT_VI.md`), cải thiện model là việc riêng. Frontend đang ở giai đoạn hoàn thiện MVP và QA; xem [docs/QA_REPORT.md](docs/QA_REPORT.md) để biết phần nào đã kiểm chứng và phần nào còn mở.
 
 ## Tính năng và giao diện hiện có
 
 | Thành phần | Đã có | Phần cần hoàn thiện |
 | --- | --- | --- |
-| Quét nội dung trên trang | Quét ban đầu, nội dung được thêm/sửa, cache theo văn bản, hàng đợi và thử lại khi backend lỗi | Văn bản xen thẻ con, nội dung chuyển từ ẩn sang hiện, thay đổi chỉ xóa node |
+| Quét nội dung trên trang | Quét ban đầu, nội dung được thêm/sửa, cache theo văn bản, hàng đợi và thử lại khi model chưa sẵn sàng | Văn bản xen thẻ con, nội dung chuyển từ ẩn sang hiện, thay đổi chỉ xóa node |
 | Làm mờ và mở lại | Blur, badge hiển thị độ tin cậy, nút **Vẫn xem** | Badge của các phần tử cùng cha có thể chồng lên nhau; chưa phục hồi style của trang |
 | Cảnh báo liên kết | Gạch chân, biểu tượng cảnh báo, tooltip giải thích và hộp xác nhận khi bấm; kiểm tra lại khi đổi `href` | Chưa có bộ kiểm thử riêng đánh giá các quy tắc URL |
-| Popup | Thống kê hôm nay, thanh tỷ lệ, bốn bộ đếm, thông tin mô hình, nút **Xoá thống kê** | Còn giao diện ba nhãn; nút xoá chỉ xoá bản cục bộ; chưa hiển thị trạng thái mất kết nối |
-| Backend | `/predict`, `/events`, `/stats`, `/health`; validation và SQLite | Chưa có reset, xác thực, rate limit, readiness hoặc cơ chế tách xử lý nặng khỏi event loop |
-| Kết nối frontend–backend | Service worker trung gian, timeout, retry và thống kê dự phòng | Chưa bảo đảm đồng bộ thống kê nhiều tab, qua nửa đêm hoặc khi đóng tab |
+| Popup | Thống kê hôm nay, thanh tỷ lệ, bốn bộ đếm, trạng thái model (loading/WebGPU/WASM/lỗi + nút thử lại), nút **Xoá thống kê** | Còn giao diện ba nhãn; chưa có lựa chọn xem tuần |
+| AI cục bộ | PhoBERT + đầu phân loại tuỳ biến, export ONNX FP16, chạy trong offscreen document + Web Worker, ưu tiên WebGPU rồi tự rơi về WASM | Chất lượng phân loại (F1 ≈ 0.65) chưa được cải thiện trong đợt này |
+| Thống kê | Ghi theo delta tại service worker, bucket theo ngày `Asia/Ho_Chi_Minh`, nhiều tab cộng dồn đúng, sống sót qua việc service worker bị Chrome thu hồi | Chưa đồng bộ giữa các thiết bị; chưa có tài khoản người dùng |
 
-Frontend hiện gồm popup của extension, các lớp can thiệp trên trang và hai trang demo. Chưa có trang cài đặt, công tắc bật/tắt theo website, màn hình lịch sử hoặc bộ chọn thống kê tuần. Dòng “Tấm chắn đang bật” trong popup hiện là chữ cố định, không phản ánh tình trạng backend.
+Frontend hiện gồm popup của extension, các lớp can thiệp trên trang và hai trang demo. Chưa có trang cài đặt, công tắc bật/tắt theo website, màn hình lịch sử hoặc bộ chọn thống kê tuần.
 
-Chi tiết tiến độ, lỗi còn mở và bằng chứng kiểm thử: [Báo cáo QA](docs/QA_REPORT.md).
+Chi tiết tiến độ, lỗi còn mở và bằng chứng kiểm thử: [Báo cáo QA](docs/QA_REPORT.md). Quy trình export/kiểm chứng model và cách thay checkpoint: [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md).
 
 ## Kiến trúc
 
 ```text
 Trang web
   └─ Content script: chọn văn bản, theo dõi DOM, kiểm tra URL
-       └─ API adapter → Chrome runtime message → Background service worker
-                                                    └─ FastAPI tại 127.0.0.1:8000
-                                                         ├─ /predict → predictor.predict(text)
-                                                         ├─ /events  → SQLite
-                                                         ├─ /stats   → SQLite
-                                                         └─ /health
+       └─ chrome.runtime message: predict(text, requestId)
+            └─ MV3 service worker (đảm bảo offscreen document tồn tại, chuyển tiếp request)
+                 └─ Offscreen document (duy nhất/profile, sống lâu hơn service worker)
+                      └─ AI Web Worker: tokenizer PhoBERT cục bộ + ONNX Runtime Web
+                                        (thử WebGPU trước, tự rơi về WASM)
+                                        + model.onnx đóng gói sẵn trong extension
 
-Popup → API adapter → Background service worker → /stats?range=day
-      └─ chrome.storage.local khi lấy thống kê từ backend thất bại
+Popup → chrome.runtime message → service worker → chrome.storage.local (thống kê theo ngày)
 
-Demo độc lập → API adapter dùng fetch trực tiếp → FastAPI
+Demo độc lập (không có chrome.runtime) → tự tạo Worker suy luận riêng, dùng cùng
+  model/WASM tĩnh qua HTTP server, không gọi bất kỳ backend nào
 ```
+
+Không còn HTTP call nào ở runtime: không FastAPI, không localhost, không Hugging Face Hub, không CDN. Model, tokenizer, ONNX Runtime Web (WASM) và JavaScript đều nằm trong package extension. `backend/` (Python/FastAPI/PyTorch) chỉ còn là **tooling**: huấn luyện, export ONNX và kiểm chứng parity Python↔ONNX trước khi đóng gói — không chạy lúc người dùng dùng extension.
 
 Content script chuẩn hoá khoảng trắng và chọn các phần tử dạng lá có văn bản dài **2–1.200 ký tự**. Nó bỏ qua một số thẻ kỹ thuật, input/textarea, vùng soạn thảo, vùng ẩn và UI có marker `data-cs-ui`. Đây là cách chọn theo cấu trúc DOM, chưa phải cơ chế hiểu đầy đủ nội dung bình luận trên mọi website.
 
-Mỗi tab xử lý hàng đợi tuần tự. Kết quả được cache theo văn bản chuẩn hoá, tối đa 4.000 mục; cùng văn bản trong tab có thể dùng lại dự đoán. Observer theo dõi `childList`, `characterData` và `href`, quét vùng thay đổi thay vì quét lại toàn bộ trang mỗi lần. Chỉ kết quả hợp lệ cho nội dung vẫn còn khớp mới được ghi nhận hoàn tất.
+Mỗi tab xử lý hàng đợi tuần tự và cache dự đoán theo văn bản chuẩn hoá, tối đa 4.000 mục mỗi tab (cache không chia sẻ giữa các tab; suy luận thực tế chạy lại ở tab mới). Observer theo dõi `childList`, `characterData` và `href`, quét vùng thay đổi thay vì quét lại toàn bộ trang mỗi lần.
 
-Điều kiện làm mờ hiện tại là `label === 1 && confidence >= 0.60`. Kiểm tra liên kết chạy cục bộ bằng các quy tắc URL, không dùng AI và không cần backend để đưa ra cảnh báo.
+Điều kiện làm mờ hiện tại là `label === 1 && confidence >= 0.60`; model tự gán `label = 1` khi `sigmoid(logit) >= 0.4`. Kiểm tra liên kết chạy cục bộ bằng các quy tắc URL, không dùng AI.
 
 ## Cấu trúc dự án
 
 ```text
-backend/
-  server.py             HTTP routes và validation
-  storage.py            Bộ đếm SQLite theo ngày
-  predictor.py          Điểm tích hợp predict(text) và schema Prediction
-  model.py, config.py   Thành phần thuộc phần AI
-  requirements.txt      Dependency backend
-  test_server.py        Test API với predictor giả lập
+backend/                 Tooling huấn luyện/export — KHÔNG chạy lúc dùng extension
+  export_onnx.py         CLI export checkpoint PyTorch -> extension/model (ONNX FP16 + metadata)
+  verify_onnx.py         Parity gate: so predictor Python với ONNX trên bộ black-box
+  model_contract.py      Validate schema/checksum của artifact model
+  predictor.py, model.py Oracle Python dùng để export/parity, không phải server sản phẩm
+  server.py, storage.py  API FastAPI cũ, giữ tạm làm tài liệu tham chiếu; không khởi động trong flow người dùng
+  offensive_classifier.pkl  Checkpoint đầu head hiện tại (PhoBERT backbone tải từ Hugging Face cache)
 extension/
-  manifest.json         Manifest V3; thư mục này dùng để Load unpacked
-  content.css           CSS can thiệp, nạp trực tiếp
-  model.json            Artifact cũ; hiện chỉ đọc metadata
-  build.js              Bundle bằng esbuild và copy tài nguyên popup
+  manifest.json          Manifest V3 (permissions: storage, offscreen); dùng để Load unpacked
+  content.css            CSS can thiệp, nạp trực tiếp
+  build.js               esbuild + validate/copy model ONNX + copy WASM runtime + copy popup/offscreen assets
+  model/                 Artifact ONNX đã export (gitignored, sinh bởi export_onnx.py)
   src/
-    background.ts       Service worker gọi backend
-    content/            Quét DOM, can thiệp và test
-    lib/                API adapter, kiểu dùng chung, kiểm tra URL
-    popup/              HTML, CSS và logic thống kê
-  tests/e2e/            Smoke test Chromium với extension thật
-  dist/                 Bundle sinh khi build, được gitignore
+    background.ts        Service worker: định tuyến message, đảm bảo offscreen document, thống kê
+    offscreen/            Host lâu sống cho AI Web Worker (offscreen.html/offscreen.ts)
+    inference/            protocol.ts, model-runtime.ts, worker.ts — tokenizer + ONNX Runtime Web
+    content/              Quét DOM, can thiệp và test
+    lib/                  API adapter nội bộ (message-based), kiểu dùng chung, kiểm tra URL, thống kê
+    popup/                HTML, CSS và logic hiển thị trạng thái model + thống kê
+  tests/e2e/              Smoke test Chromium offline với extension thật (không FastAPI)
+  dist/                   Bundle + model + WASM sinh khi build, được gitignore
 demo/
-  demo.html             Demo độc lập và ô gọi thử API
-  feed_demo.html        Bảng tin để thử extension đã cài
+  demo.html               Demo độc lập, tự tạo AI worker riêng khi không có chrome.runtime
+  feed_demo.html          Bảng tin để thử extension đã cài
 docs/
-  QA_REPORT.md          Trạng thái QA và công việc còn lại
-  TESTCASE_PLAN.md      Danh sách scenario dự kiến, không phải kết quả chạy
+  QA_REPORT.md              Trạng thái QA và công việc còn lại
+  TESTCASE_PLAN.md          Danh sách scenario dự kiến, không phải kết quả chạy
+  LOCAL_MODEL_WORKFLOW.md   Quy trình train → export → parity → build → E2E offline
+tests/
+  unit/                     pytest cho export/parity/predictor/server (Python)
+  blackbox_runner.py, results/  Bộ 1.000 câu black-box và kết quả đo (latency, F1, parity)
 ```
-
-`backend/qa/` đang được phát triển riêng; không được rà soát hoặc tính vào kết quả kiểm thử trong tài liệu này.
 
 ## Cài đặt và chạy cục bộ
 
-Cần Python và Node.js/npm tương thích với các dependency của dự án, cùng Chrome hoặc Edge để thử extension. Backend mặc định dùng cổng **8000**, demo dùng cổng **8080**.
+Cần Python và Node.js/npm tương thích với các dependency của dự án, cùng Chrome hoặc Edge để thử extension. **Không cần chạy backend nào để dùng extension** — Python chỉ cần khi bạn muốn tự export lại model (xem [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md)).
 
-### 1. Backend
+### 1. Model ONNX
 
-Từ thư mục gốc repository:
+Nếu `extension/model/` chưa tồn tại (thư mục này bị gitignore), export nó từ checkpoint hiện có:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r backend/requirements.txt
-cd backend
-uvicorn server:app --reload --host 127.0.0.1 --port 8000
+HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
+  python -m backend.export_onnx --offline --model-version phobert-offensive-1 --output extension/model
 ```
 
-Lệnh kích hoạt môi trường trên dành cho shell POSIX. Trên Windows PowerShell dùng `.venv\Scripts\Activate.ps1`.
-
-Hiện backend dùng import theo thư mục làm việc, nên chạy Uvicorn từ `backend/` như trên. Cách `uvicorn backend.server:app` từ repository root chưa được hỗ trợ đúng.
-
-```bash
-curl http://127.0.0.1:8000/health
-
-curl -X POST http://127.0.0.1:8000/predict \
-  -H 'Content-Type: application/json' \
-  -d '{"content":"Một đoạn văn bản để kiểm tra kết nối"}'
-```
-
-`/health` trả `{"status":"ok"}` chỉ xác nhận route HTTP phản hồi, không xác nhận AI sẵn sàng. Các file AI hiện có không được nghiệm thu trong đợt rà soát này; việc cung cấp mô hình và kiểm chứng dự đoán thuộc bước tích hợp AI.
+Bỏ `--offline`/hai biến môi trường ở lần chạy đầu nếu máy chưa có sẵn `vinai/phobert-base-v2` trong cache Hugging Face — script khi đó sẽ tự tải backbone. Artifact FP16 sinh ra khoảng **260 MB**, nằm dưới ngân sách 300 MB. Chi tiết đầy đủ, gồm parity gate bắt buộc trước khi build phát hành: [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md).
 
 ### 2. Build và nạp extension
-
-Mở terminal khác, từ repository root:
 
 ```bash
 cd extension
@@ -115,18 +107,20 @@ npm ci
 npm run verify
 ```
 
-`verify` chạy kiểm tra kiểu TypeScript, Vitest và build. Kết quả gồm `dist/content.js`, `dist/background.js`, `dist/popup.js`, `dist/popup.html`, `dist/styles.css` và source map.
+`verify` chạy kiểm tra kiểu TypeScript, Vitest và build; build sẽ báo lỗi rõ ràng và dừng nếu `extension/model/` thiếu file hoặc checksum không khớp `metadata.json`. Muốn build chỉ để kiểm tra bundle mà chưa có model thật, dùng `CS_SKIP_MODEL=1 npm run build`.
+
+Kết quả build gồm `dist/content.js`, `dist/background.js`, `dist/offscreen.js`, `dist/inference-worker.js`, `dist/popup.js`, `dist/popup.html`, `dist/offscreen.html`, `dist/styles.css`, `dist/model/` (đã validate) và `dist/wasm/` (toàn bộ biến thể WASM của ONNX Runtime Web).
 
 1. Mở `chrome://extensions` hoặc `edge://extensions`.
 2. Bật **Developer mode**.
 3. Chọn **Load unpacked** → thư mục **extension/**, không chọn `extension/dist/`.
 4. Sau mỗi lần sửa source: build lại, **Reload** extension rồi tải lại các tab thử nghiệm.
 
-`extension/content.css` được manifest nạp trực tiếp. CSS popup được copy từ `extension/src/popup/styles.css` vào `dist/` khi build.
+`extension/content.css` được manifest nạp trực tiếp. Lần đầu mở popup sau khi cài, model cần vài giây đến vài chục giây để nạp (tuỳ máy/CPU) trước khi trạng thái chuyển sang **AI cục bộ sẵn sàng · WebGPU** hoặc **· WASM**.
 
 ### 3. Chạy demo
 
-Từ repository root, sau khi đã build và chạy backend:
+Từ repository root, sau khi đã build:
 
 ```bash
 python3 -m http.server 8080 --bind 127.0.0.1
@@ -135,60 +129,43 @@ python3 -m http.server 8080 --bind 127.0.0.1
 | Địa chỉ | Cách dùng |
 | --- | --- |
 | `http://127.0.0.1:8080/demo/feed_demo.html` | Cài extension rồi mở trang để thử content script và service worker |
-| `http://127.0.0.1:8080/demo/demo.html` | Thử trong trình duyệt/profile không nạp extension; trang tự nhúng bundle content script |
+| `http://127.0.0.1:8080/demo/demo.html` | Thử trong trình duyệt/profile không nạp extension; trang tự tạo AI worker riêng dùng cùng `extension/dist/model` và `extension/dist/wasm` qua HTTP tĩnh |
 
-Demo độc lập còn có ô gọi `/predict` khi nhập ít nhất 8 ký tự và các thay đổi DOM theo thời gian. Ô này có logic gọi API riêng, chưa có timeout, debounce hay xử lý response đến sai thứ tự. Không dùng nó làm bằng chứng rằng toàn bộ transport của extension hoạt động.
+Tránh chạy demo độc lập cùng extension đang bật trên trang đó vì bundle có thể chạy hai lần. Dùng HTTP thay cho `file://` vì Web Worker/`fetch` model cần một origin hợp lệ.
 
-Tránh chạy demo độc lập cùng extension đang bật trên trang đó vì bundle có thể chạy hai lần. Dùng HTTP thay cho `file://`. CORS backend hiện cho phép đúng hai origin `http://localhost:8080` và `http://127.0.0.1:8080`.
+## Hợp đồng nội bộ (không còn HTTP)
 
-## Hợp đồng API hiện tại
+Không có `BACKEND_URL`, không có `/predict`/`/events`/`/stats`/`/health` qua HTTP. Content script, popup và demo độc lập gọi một tập message nội bộ có discriminated union (`extension/src/lib/types.ts`):
 
-Base URL trong frontend: `http://127.0.0.1:8000`, đang khai báo cố định trong API adapter và background service worker.
-
-| Endpoint | Dữ liệu | Bên sử dụng |
+| Message | Payload → Kết quả | Ai gọi |
 | --- | --- | --- |
-| `POST /predict` | `{"content":"..."}`, độ dài 1–1.200 ký tự | Content script; ô thử API trong demo |
-| `POST /events` | Loại sự kiện, số lượng, timestamp tuỳ chọn | Content script thông qua service worker |
-| `GET /stats?range=day\|week` | Năm bộ đếm tổng hợp | Popup hiện chỉ gọi `day`; `week` chưa có UI |
-| `GET /health` | `{"status":"ok"}` | Content script kiểm tra phục hồi sau lỗi |
+| `predict` | `{ content }` → `Prediction` | Content script |
+| `model-status` | *(không payload)* → `{ state, provider?, error? }` | Popup, content script khi phục hồi lỗi |
+| `retry-model` | *(không payload)* → `ModelStatus` | Popup (nút "Thử nạp lại mô hình") |
+| `event` | `{ event: { type, count, ts? } }` → `{ ok: true }` | Content script (delta thống kê) |
+| `stats` | `{ range: "day" \| "week" }` → `StatsSnapshot` | Popup |
+| `clear-stats` | `{ range: "day" \| "all" }` → `{ ok: true }` | Popup (nút "Xoá thống kê") |
+
+`ModelStatus.state` nhận `loading | ready-webgpu | ready-wasm | error`. Lỗi inference dùng các kind `model-loading | model-load | inference | busy | invalid-response`, mỗi lỗi khai báo `retryable` rõ ràng.
 
 ### Dự đoán
 
-Schema frontend hiện là phân loại **nhị phân**, không có `label: 2`:
+Schema phân loại **nhị phân**, không có `label: 2`:
 
 ```ts
 interface Prediction {
   label: 0 | 1;                 // 0: an toàn, 1: độc hại
   name: string;
-  confidence: number;          // 0..1
+  confidence: number;           // 0..1
   proba: [number, number];      // [p_an_toan, p_doc_hai]
 }
 ```
 
-Ví dụ minh hoạ schema, không phải kết quả đánh giá mô hình:
-
-```json
-{
-  "label": 1,
-  "name": "độc hại",
-  "confidence": 0.8,
-  "proba": [0.2, 0.8]
-}
-```
-
-Scanner kiểm tra label, miền giá trị confidence và hai xác suất trước khi sử dụng. Nó chưa kiểm tra tổng xác suất hay quan hệ `confidence == max(proba)`; các invariant này cần được chốt và kiểm thử khi bàn giao AI.
-
-Request dự đoán có timeout **15 giây/lần**, thử lại một lần sau **500 ms** đối với lỗi mạng, timeout hoặc HTTP 5xx. Các request health/stats/events có timeout **3 giây**. Khi phân loại thất bại, scanner giữ phần tử trong hàng đợi và dùng health để thử phục hồi với các mốc 1/5/15/30 giây. Metadata tải riêng và không chặn khởi động quét.
+`p1 = sigmoid(toxic_logit)`, `label = 1` khi `p1 >= 0.4`, `confidence = proba[label]`. Content script chỉ làm mờ khi `label === 1 && confidence >= 0.6`. Input rỗng hoặc dài hơn 1.200 ký tự bị từ chối trước khi tới model; tokenizer truncate ở 128 token. Scanner kiểm tra label, miền giá trị confidence và hai xác suất trước khi sử dụng.
 
 ### Sự kiện và thống kê
 
-```json
-{ "type": "scanned", "count": 5, "ts": "2026-09-13T10:00:00+07:00" }
-```
-
-`type` nhận `scanned | toxic | threat | link | revealed`. `count` mặc định là 1, giới hạn 1–10.000. `ts` là chuỗi tuỳ chọn; backend lấy phần ngày của timestamp, hoặc ngày hiện tại của server nếu không có/không phân tích được. Frontend hiện không gửi `ts`.
-
-Ví dụ response thống kê:
+`type` nhận `scanned | toxic | threat | link | revealed`. `count` mặc định là 1, giới hạn 1–10.000. Ví dụ response `stats`:
 
 ```json
 { "scanned": 19, "toxic": 5, "threat": 0, "links": 3, "revealed": 1 }
@@ -198,11 +175,9 @@ Ví dụ response thống kê:
 - `toxic`: số lần áp dụng blur đạt ngưỡng; nội dung độc hại dưới ngưỡng không làm tăng bộ đếm này.
 - `links`: số lần phát hiện URL đáng ngờ/nguy hiểm; `revealed`: số lần người dùng chọn mở lại.
 - `threat`: field còn từ schema cũ; scanner nhị phân hiện không tăng bộ đếm này.
-- `day` là hôm nay theo server; `week` là hôm nay và sáu ngày trước đó.
+- `day` là hôm nay theo giờ Việt Nam (`Asia/Ho_Chi_Minh`); `week` là hôm nay và sáu ngày trước đó.
 
-SQLite ở `backend/cybershield_stats.db` được khởi tạo khi import storage. Popup ưu tiên số liệu backend; fallback dùng `chrome.storage.local` theo ngày `Asia/Ho_Chi_Minh`. Các tab hiện có thể ghi đè dữ liệu cục bộ của nhau. Việc lưu/gửi dùng debounce 1,5 giây và chưa có hàng đợi lưu bền vững khi tab đóng.
-
-Không có endpoint reset. Nút **Xoá thống kê** hiện chỉ xoá key cục bộ và vẽ lại popup, không xoá SQLite.
+Service worker sở hữu duy nhất việc ghi `chrome.storage.local` theo khoá `cs_stats_YYYY-MM-DD`; mỗi tab chỉ gửi **delta** (không ghi đè snapshot đầy đủ), nên nhiều tab cộng dồn đúng và không tab nào ghi đè tab khác. Việc gửi event dùng debounce 1,5 giây phía content script. Nút **Xoá thống kê** gọi `clear-stats("day")`, xoá đúng bucket hôm nay trong `chrome.storage.local` (không còn khái niệm SQLite).
 
 ## Kiểm thử
 
@@ -216,27 +191,28 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Hoặc dùng `npm run verify` thay cho ba lệnh đầu. Smoke test tự chạy backend giả lập và trang fixture ở cổng **8000/8080**; hai cổng phải trống. Test dùng bundle trong `dist/`, vì vậy cần build trước.
+Hoặc dùng `npm run verify` thay cho ba lệnh đầu. `test:e2e` nạp extension thật vào Chromium, **không khởi động FastAPI hay bất kỳ backend nào**, chặn mọi request ra ngoài trừ `chrome-extension://` và một fixture tĩnh cục bộ, rồi xác nhận: model đạt trạng thái sẵn sàng hoàn toàn từ asset đóng gói, nội dung độc hại/an toàn được phân loại đúng, draft input không bị gửi đi phân loại, nhiều tab cộng dồn thống kê đúng, số liệu sống sót qua việc service worker bị Chrome thu hồi và tái khởi động, và xoá thống kê ngày hoạt động đúng. Test dùng bundle trong `dist/`, vì vậy cần build trước — kể cả model thật, không dùng `CS_SKIP_MODEL=1` cho lần chạy E2E.
 
-Test API hiện có, không cần chạy mô hình:
+Test Python (export/parity/predictor/server API), không bắt buộc cho việc dùng extension nhưng cần trước khi phát hành model mới:
 
 ```bash
 # Từ repository root, với môi trường Python đã kích hoạt
-python -m pip install httpx
-cd backend
-python -B -m unittest test_server -v
+python -m pip install -r backend/requirements.txt
+python -m pytest tests/unit -q
 ```
 
-`httpx` là dependency của test, chưa nằm trong `backend/requirements.txt`. Test thay predictor bằng stub và mock thao tác tăng bộ đếm; import storage vẫn có thể tạo schema SQLite. Khi cần cô lập hoàn toàn, chuyển kết nối SQLite sang DB tạm như cách đã dùng trong đợt rà soát QA.
+Ba test trong `tests/unit/test_server_api.py` (`TestPredictEndpoint::test_predict_empty_string_is_accepted`, `test_predict_no_length_limit_enforced`, `TestCORSConfig::test_cors_allows_any_origin`) hiện **fail theo thiết kế**: đây là các test ghi nhận lỗ hổng bảo mật cũ của `backend/server.py` (không giới hạn độ dài, CORS wildcard); các lỗ hổng đó đã được vá nên assertion cũ (mong đợi hành vi không an toàn) không còn đúng. `backend/server.py` không chạy trong flow người dùng nên các test này không chặn phát hành extension; chúng cần được viết lại để phản ánh hành vi đã vá, thuộc việc dọn dẹp `backend/` riêng.
 
-Kết quả kiểm tra ngày **13/09/2026**: typecheck/build đạt, **9/9** test Vitest, **4/4** test API với DB tạm, **1/1** smoke test Chromium đạt. Chưa nghiệm thu kết nối toàn tuyến với AI thật, popup trên Chrome/Edge thực tế, tải nhiều tab hoặc độ chính xác phát hiện. Xem [QA_REPORT.md](docs/QA_REPORT.md) để biết phạm vi bằng chứng.
+Kết quả kiểm tra ngày **20/09/2026** (checkpoint `phobert-offensive-1`): `npm run verify` đạt (typecheck, 50/50 test Vitest, build); parity gate Python↔ONNX **100% label agreement** trên 1.000 câu, F1 không đổi (≈0.6526); **1/1** smoke test Chromium offline đạt. Xem [tests/results/onnx_parity_summary.json](tests/results/onnx_parity_summary.json) và [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md) cho chi tiết đo đạc. Chưa nghiệm thu WebGPU trên GPU thật (môi trường CI/headless dùng ở đây rơi về WASM), popup trên Chrome/Edge thực tế ngoài Chromium test, hoặc cải thiện chất lượng phân loại.
 
 ## Giới hạn và công việc tiếp theo
 
-Ưu tiên đồng bộ thống kê nhiều tab/ngày, độ bền sự kiện, hành vi xoá; sửa các khoảng trống quét DOM; hoàn thiện badge và trạng thái kết nối của popup. Backend còn cần kiểm soát caller, tần suất request và xử lý công việc nặng trước khi sử dụng rộng rãi.
+Model hiện tại có F1 ≈ 0.65 trên bộ black-box 1.000 câu — bỏ sót một phần đáng kể nội dung độc hại; đây là giới hạn của **model**, không phải của việc chuyển sang chạy cục bộ (parity 100% với bản Python trước đó). Cải thiện độ chính xác là một đợt huấn luyện/đánh giá riêng, xem `AI_TESTING_REPORT_VI.md`.
 
-`extension/model.json` vẫn là artifact TF-IDF ba nhãn cũ. Popup đang đọc metadata của file này; tên mô hình và macro-F1 ở đó không phải bằng chứng chất lượng AI sẽ tích hợp. Cần đồng bộ metadata, tên nhãn và field `threat` khi chốt hợp đồng cuối.
+Ưu tiên tiếp theo phía frontend: sửa các khoảng trống quét DOM (văn bản xen thẻ con, nội dung ẩn→hiện, mutation chỉ xoá node — xem `docs/QA_REPORT.md`), hoàn thiện bố trí badge khi nhiều phần tử cùng cha, thêm lựa chọn xem thống kê tuần vào popup.
 
-Các endpoint đều có nơi gọi trong frontend, nhưng nhánh thống kê tuần chưa nối UI. Các tiện ích debug `window.CyberShield.quét/stats/cache/dừng` không phải công tắc điều khiển dành cho người dùng; việc không thấy TODO/FIXME chính thức không đồng nghĩa với việc dự án đã hoàn tất.
+`extension/dist/` sau build hiện khoảng 350 MB tổng cộng (model FP16 ~260 MB + toàn bộ biến thể WASM của ONNX Runtime Web + source map); một bản đóng gói phát hành nên loại source map và chỉ giữ biến thể WASM thực sự cần cho tập trình duyệt mục tiêu — chưa thực hiện trong đợt di trú này.
 
-Nội dung văn bản được chọn sẽ gửi tới backend cục bộ. Module thống kê chỉ lưu bộ đếm; cơ chế loại vùng soạn thảo/ẩn chưa bao phủ mọi UI tương tác. Chưa có hỗ trợ duyệt Shadow DOM, quét tất cả iframe hoặc tuỳ chọn loại trừ website. Extension chỉ chạy trên những trang mà trình duyệt cho phép content script hoạt động.
+Các tiện ích debug `window.CyberShield.quét/stats/cache/dừng` không phải công tắc điều khiển dành cho người dùng; việc không thấy TODO/FIXME chính thức không đồng nghĩa với việc dự án đã hoàn tất.
+
+Nội dung văn bản được chọn được phân loại hoàn toàn trên máy người dùng, không rời khỏi thiết bị. Module thống kê chỉ lưu bộ đếm cục bộ (`chrome.storage.local`), không đồng bộ giữa các thiết bị và không có tài khoản người dùng. Chưa có hỗ trợ duyệt Shadow DOM, quét tất cả iframe hoặc tuỳ chọn loại trừ website. Extension chỉ chạy trên những trang mà trình duyệt cho phép content script hoạt động.

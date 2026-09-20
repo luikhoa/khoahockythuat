@@ -49,18 +49,17 @@ function copyInferenceAssets() {
 
   const ortDist = path.join(__dirname, "node_modules/onnxruntime-web/dist");
   const wasmDir = path.join(OUT_DIR, "wasm");
-  const wasmFiles = [
-    "ort-wasm-simd-threaded.mjs",
-    "ort-wasm-simd-threaded.wasm",
-    "ort-wasm-simd-threaded.jsep.mjs",
-    "ort-wasm-simd-threaded.jsep.wasm",
-  ];
+  // onnxruntime-web feature-detects the runtime (JSPI, threading) and picks
+  // among the threaded/asyncify/jspi/jsep variants at load time, so every
+  // ort-wasm-simd-threaded* asset must ship — a partial copy 404s whichever
+  // variant it happens to select and it reports a generic init failure.
+  const wasmFiles = fs.readdirSync(ortDist).filter((name) => name.startsWith("ort-wasm-simd-threaded."));
   fs.rmSync(wasmDir, { recursive: true, force: true });
   fs.mkdirSync(wasmDir, { recursive: true });
   for (const filename of wasmFiles) {
     fs.copyFileSync(path.join(ortDist, filename), path.join(wasmDir, filename));
   }
-  console.log("  dist/wasm            (copied WebGPU/WASM runtime files)");
+  console.log(`  dist/wasm            (copied ${wasmFiles.length} WebGPU/WASM runtime files)`);
 }
 
 function validateModelArtifact(modelDir) {
