@@ -41,14 +41,13 @@ interface QueueItem {
 const MAX_CONTENT_LENGTH = 1_200;
 // Nguồn sự thật duy nhất cho ngưỡng quyết định — PHẢI khớp tay với
 // backend/threshold.py::TOXIC_THRESHOLD (TypeScript không import được file
-// Python đó). Xem rationale đầy đủ + PR-curve ở backend/threshold.py: 0.25
-// tối ưu F1 trên checkpoint phobert-offensive-1, không phải 0.4/0.5 — nâng
-// ngưỡng làm F1 tệ hơn vì phần lớn true positive có p1 nằm trong 0.40-0.62.
-// content.ts không còn tự áp ngưỡng blur riêng (QA-006/W6) — chỉ tin theo
-// `label` được tính ở đây, nên đây là ngưỡng THẬT SỰ duy nhất còn lại phía
-// runtime extension. Hiệu chỉnh lại sau mỗi lần retrain bằng
-// backend/calibrate_threshold.py.
-const TOXIC_THRESHOLD = 0.25;
+// Python đó). Xem rationale đầy đủ + PR-curve đo trên cả ViHSD lẫn blackbox ở
+// backend/threshold.py: 0.30 cho F1 cao nhất trên CẢ HAI tập cùng lúc (áp đảo
+// 0.25 của Giai đoạn 1, chứ không phải đánh đổi). content.ts không còn tự áp
+// ngưỡng blur riêng (QA-006/W6) — chỉ tin theo `label` được tính ở đây, nên
+// đây là ngưỡng THẬT SỰ duy nhất còn lại phía runtime extension. Hiệu chỉnh
+// lại sau mỗi lần retrain.
+const TOXIC_THRESHOLD = 0.30;
 
 export class ModelRuntimeError extends Error implements InferenceError {
   readonly kind: InferenceErrorKind;

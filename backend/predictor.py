@@ -1,10 +1,15 @@
 """Ranh giới AI — Dev AI chỉ sửa file này, không đụng FastAPI.
 
-Hợp đồng I/O phải khớp content.js:
+Hợp đồng I/O phải khớp content.ts (đã bỏ ngưỡng blur riêng từ Giai đoạn 1,
+xem QA-006/W6 trong threshold.py):
 
-    if (kết.label !== 0 && kết.confidence >= 0.60) bọcNộiDung(el, kết)
+    if (kết.label !== 0) bọcNộiDung(el, kết)
 
-Input  : text thô từ DOM (el.textContent.trim()), chưa normalize.
+label ở đây đã được quyết định bằng NGƯỠNG_ĐỘC_HẠI (= threshold.py::TOXIC_THRESHOLD,
+hiện là 0.30) — content.ts không tự áp thêm ngưỡng confidence nào nữa.
+
+Input  : text thô từ DOM (el.textContent.trim()), chưa normalize (normalize_text()
+         được gọi bên trong predict() trước khi tokenize).
 Output : Prediction(label, name, confidence, proba)
 """
 from pathlib import Path

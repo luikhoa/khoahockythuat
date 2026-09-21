@@ -34,7 +34,7 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
 - `--model-version`: chuỗi tuỳ ý, ghi vào `metadata.json` và hiển thị trong popup (`PhoBERT · <model-version>`). Đổi giá trị này mỗi khi thay checkpoint để phân biệt bản build.
 - `--output`: mặc định `extension/model`; script tự xoá/ghi đè thư mục này.
 
-Script export FP32 trung gian, tối ưu graph transformer, chuyển sang FP16, sinh `metadata.json` (schema version, checksum SHA-256 từng file, hai nhãn, `maxLength: 128`, `toxicThreshold: 0.4`) rồi tự gọi `validate_artifact()` trước khi thoát. Artifact FP32 trung gian bị xoá sau khi FP16 hợp lệ.
+Script export FP32 trung gian, tối ưu graph transformer, chuyển sang FP16, sinh `metadata.json` (schema version, checksum SHA-256 từng file, hai nhãn, `maxLength: 128`, `toxicThreshold` lấy trực tiếp từ `backend/threshold.py::TOXIC_THRESHOLD` — hiện là 0.30) rồi tự gọi `validate_artifact()` trước khi thoát. Artifact FP32 trung gian bị xoá sau khi FP16 hợp lệ.
 
 Kiểm tra kích thước sau khi export:
 
@@ -100,6 +100,19 @@ Kết quả đo được cho `phobert-offensive-1.1` (21/09/2026, **cùng trọn
 
 `f1` tăng từ 0.6526 lên **0.8775** chỉ nhờ tiền xử lý + hiệu chỉnh ngưỡng — không đổi một trọng số nào của model. Đây vẫn là *parity của quá trình di trú* (Python và ONNX cho cùng kết quả), phần cải thiện chất lượng thực chất đến từ mục 0 (0.65 → 0.6526 trước đó phản ánh model gốc; retrain thật với backbone unfreeze — xem `phobert_experiment_complete/`, chưa chạy — mới là bước tiếp theo để cải thiện thêm, đặc biệt trên phân phối dữ liệu tự nhiên hơn ngoài bộ blackbox 1.000 câu này).
 
+### 3.1. Hiệu chỉnh lại ngưỡng: 0.25 → 0.30 (21/09/2026)
+
+PR-curve dùng để chọn 0.25 (bảng ở `backend/threshold.py`, phiên bản trước) được dựng lại từ CSV export cũ — **trước khi có `text_normalize.py`** — nên không phản ánh đúng phân phối p1 của pipeline hiện tại. Đo lại trực tiếp qua `predictor.predict()` thật (có normalize) trên cả `phobert_experiment_complete/data/processed/test.csv` (ViHSD held-out, 6.680 dòng) lẫn bộ blackbox 800 câu có nhãn:
+
+```
+ngưỡng   ViHSD P   ViHSD R   ViHSD F1   Blackbox P   Blackbox R   Blackbox F1
+ 0.25      0.425     0.790     0.553       0.823        0.940       0.877   (Giai đoạn 1)
+ 0.30      0.491     0.701     0.577       0.892        0.885       0.888   <- chọn
+ 0.35      0.548     0.613     0.579       0.938        0.835       0.884
+```
+
+0.30 cho F1 cao hơn 0.25 trên **cả hai** tập cùng lúc — không phải đánh đổi, 0.25 đơn giản chưa tối ưu một khi đã bật normalize. Đã cập nhật `backend/threshold.py`, `extension/src/inference/model-runtime.ts`, `extension/model/metadata.json` (và `dist/model/metadata.json` sau `npm run build`) về 0.30. Precision lớp "độc hại" trên ViHSD vẫn chỉ 0.491 — giới hạn của chính checkpoint (chưa augment obfuscation), Giai đoạn 2 (retrain) mới giải quyết được gốc rễ, xem mục 6.
+
 ## 4. Build extension với artifact đã kiểm chứng
 
 ```bash
@@ -135,5 +148,5 @@ Hợp đồng bắt buộc giữa checkpoint và runtime extension: cùng hai in
 ## 7. Những gì KHÔNG nằm trong quy trình này
 
 - Không huấn luyện lại hoặc tự động cải thiện chất lượng mô hình — đó là một đợt việc riêng.
-- Không đổi ngưỡng phân loại (`toxicThreshold: 0.4`) hoặc ngưỡng làm mờ (`confidence >= 0.6`, cấu hình cứng trong `extension/src/content/content.ts`) như một phần của quy trình export.
+- Không tự ý đổi `TOXIC_THRESHOLD` (hiện 0.30, xem `backend/threshold.py`) như một phần của quy trình export — đổi ngưỡng phải đi kèm đo lại PR-curve trên cả ViHSD lẫn blackbox và ghi lại lý do. Từ Giai đoạn 1, `content.ts` không còn ngưỡng blur riêng — nó tin thẳng theo `label` mà model/`threshold.py` đã quyết định (xem QA-006/W6).
 - Không tải hoặc cập nhật model từ xa sau khi extension đã cài — mọi bản cập nhật model đi qua một bản build/phát hành extension mới.

@@ -230,7 +230,7 @@ async function chạyHàngĐợi(): Promise<void> {
       textĐãXửLý.set(el, key);
       stats.scanned++;
       // QA-006/W6 (đã sửa): trước đây có 2 ngưỡng độc lập — model quyết
-      // định label ở ngưỡng 0.4 (nay 0.25, xem extension/src/inference/
+      // định label ở ngưỡng 0.4 (nay 0.30, xem extension/src/inference/
       // model-runtime.ts), nhưng ở đây lại đòi confidence >= 0.6 mới blur.
       // Mọi kết quả label=1 với confidence trong [ngưỡng model, 0.6) bị
       // model báo "độc hại" nhưng người dùng không bao giờ thấy cảnh báo.

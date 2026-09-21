@@ -13,8 +13,10 @@ def test_compare_predictions_reports_drift_and_threshold_crossings():
         ParityCase("same-safe", "b", 0),
         ParityCase("crossing", "c", 1),
     ]
-    python_scores = {"a": 0.70, "b": 0.10, "c": 0.24}
-    onnx_scores = {"a": 0.69, "b": 0.12, "c": 0.26}
+    # "crossing" thẳng qua TOXIC_THRESHOLD hiện tại (0.30, backend/threshold.py):
+    # python 0.29 (< 0.30 -> label 0, sai) vs onnx 0.31 (>= 0.30 -> label 1, đúng).
+    python_scores = {"a": 0.70, "b": 0.10, "c": 0.29}
+    onnx_scores = {"a": 0.69, "b": 0.12, "c": 0.31}
 
     summary = compare_predictions(
         rows,
@@ -33,8 +35,8 @@ def test_compare_predictions_reports_drift_and_threshold_crossings():
     assert summary["thresholdCrossings"] == [
         {
             "id": "crossing",
-            "pythonP1": 0.24,
-            "onnxP1": 0.26,
+            "pythonP1": 0.29,
+            "onnxP1": 0.31,
             "labelCrossed": True,
             "blurCrossed": True,
         },

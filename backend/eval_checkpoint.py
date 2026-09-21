@@ -94,9 +94,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     print("So sánh với phobert-offensive-1 (checkpoint cũ, head-only, không augment):")
     print("  ViHSD held-out (test_f1_macro, 2 lớp)   : 0.7312")
     print("  Blackbox né lọc (F1 nhị phân, ngưỡng cũ) : 0.6526 (đo lúc export, ngưỡng 0.4)")
-    print("Nhắc lại: chạy backend/calibrate_threshold.py trên checkpoint mới TRƯỚC khi so sánh")
-    print("trực tiếp, vì phân phối p1 đổi khi backbone được fine-tune — ngưỡng 0.25 chỉ đúng")
-    print("cho phobert-offensive-1.")
+    print("Nhắc lại: hiệu chỉnh lại ngưỡng trên checkpoint mới TRƯỚC khi so sánh trực tiếp,")
+    print("vì phân phối p1 đổi khi backbone được fine-tune — ngưỡng 0.30 (backend/threshold.py)")
+    print("chỉ đúng cho phobert-offensive-1 với text_normalize đã bật.")
     return 0
 
 

@@ -12,35 +12,50 @@ trả về — model-runtime.ts dùng CHÍNH giá trị TOXIC_THRESHOLD bên dư
 tay, xem ghi chú đồng bộ ở model-runtime.ts vì TypeScript không import được
 file Python này).
 
-## Vì sao 0.25, không phải 0.45/0.5
+## Vì sao 0.30, không phải 0.25 (Giai đoạn 1) hay 0.45/0.5
 
-Giá trị rút ra từ phân tích PR-curve trên 800 câu có nhãn của
-`tests/results/blackbox_raw.csv` (p1 suy ngược chính xác từ predicted_label
-+ confidence đã ghi, không phụ thuộc ngưỡng 0.4 dùng lúc sinh file đó):
+Giai đoạn 1 chọn 0.25 dựa trên PR-curve dựng lại từ `tests/results/blackbox_raw.csv`
+(p1 suy ngược từ predicted_label + confidence đã ghi lúc export CŨ, tức
+**trước khi có `text_normalize.py`**) — bảng đó không phản ánh đúng phân phối
+p1 của pipeline hiện tại (normalize rồi mới tokenize). Ở đây đo lại trực tiếp
+bằng `predictor.predict()` thật (đã có normalize) trên CẢ HAI tập cùng lúc —
+ViHSD held-out (`phobert_experiment_complete/data/processed/test.csv`, phân
+phối tự nhiên) và blackbox né lọc (800 câu có nhãn, `tests/blackbox_runner.py`):
 
-    ngưỡng   precision   recall     F1
-     0.20       0.742     0.927    0.824
-     0.24       0.841     0.823    0.832   <- tối ưu F1
-     0.25       0.859     0.790    0.823   <- chọn (số tròn, gần tối ưu)
-     0.30       0.910     0.610    0.731
-     0.40       1.000     0.350    0.519   (giá trị cũ)
-     0.50       1.000     0.225    0.367
+    ngưỡng   ViHSD P   ViHSD R   ViHSD F1   Blackbox P   Blackbox R   Blackbox F1
+     0.20      0.353     0.869     0.503       0.757        0.988       0.857
+     0.25      0.425     0.790     0.553       0.823        0.940       0.877   (Giai đoạn 1)
+     0.30      0.491     0.701     0.577       0.892        0.885       0.888   <- chọn
+     0.35      0.548     0.613     0.579       0.938        0.835       0.884
+     0.40      0.610     0.540     0.573       0.976        0.715       0.825
+     0.45      0.659     0.460     0.542       0.996        0.652       0.789
+     0.50      0.721     0.394     0.509       1.000        0.565       0.722
+     0.60      0.796     0.248     0.378       1.000        0.465       0.635
 
-**Nâng ngưỡng lên 0.45/0.5 làm F1 TỆ HƠN (0.44/0.37), không phải tốt hơn.**
-Lý do: phần lớn true positive của checkpoint hiện tại (`phobert-offensive-1`)
-có p1 nằm trong khoảng 0.40–0.62 (xem bảng "15 kịch bản Fail nặng nhất" ở
-AI_TESTING_REPORT_VI.md §3.7) — model vốn đã rất "thận trọng" (precision cao,
-recall thấp); hạ ngưỡng bắt được nhiều positive hơn hẳn mà gần như không tốn
-precision, vì lớp an toàn tách khá rõ (âm tính thật có p1 thấp, xem cột
-precision=1.000 giữ nguyên tới tận ngưỡng 0.70 ở bảng trên).
+**0.30 áp đảo 0.25 trên CẢ HAI tập cùng lúc** (F1 ViHSD 0.577 > 0.553, F1
+blackbox 0.888 > 0.877) — không phải một đánh đổi, mà 0.25 đơn giản là chưa
+tối ưu cho pipeline có normalize. Từ 0.35 trở lên, F1 blackbox bắt đầu giảm
+trở lại (né lọc lọt qua nhiều hơn) dù ViHSD F1 vẫn nhích thêm chút ít — 0.30
+là điểm cân bằng tốt nhất đo được cho cả hai mục tiêu (chống né lọc + chất
+lượng trên phân phối tự nhiên).
 
-Script tái tạo phân tích này: xem `backend/calibrate_threshold.py`.
+Lưu ý: precision lớp "độc hại" trên ViHSD ở 0.30 vẫn chỉ 0.491 — nghĩa là
+trên văn bản tự nhiên (không cố tình né lọc), gần một nửa nội dung bị gắn
+"độc hại" là false positive. Đây là giới hạn của chính checkpoint
+`phobert-offensive-1` (head-only, chưa augment obfuscation), không phải điều
+chỉnh ngưỡng có thể giải quyết triệt để — xem `phobert_experiment_complete/`
+(Giai đoạn 2: unfreeze backbone + augment) để cải thiện gốc rễ thay vì tiếp
+tục nâng ngưỡng (nâng thêm sẽ đánh đổi recall, xem 0.40+ ở bảng trên).
+
+Script tái tạo bảng cũ (tiền-normalize): `backend/calibrate_threshold.py`.
+Bảng trên đo trực tiếp qua `predictor.predict()`, không có script cố định
+kèm theo — chạy lại thủ công khi cần hiệu chỉnh (sweep p1 thô của
+`backend/eval_checkpoint.py` trên cả hai tập).
 
 **Bắt buộc hiệu chỉnh lại giá trị này sau mỗi lần retrain** — phân phối p1
-sẽ đổi hẳn khi unfreeze backbone (Giai đoạn 2), số 0.25 chỉ đúng cho
-checkpoint `phobert-offensive-1` hiện tại. Chạy lại
-`backend/calibrate_threshold.py` trên `tests/results/blackbox_raw.csv` mới
-(sinh từ checkpoint mới) hoặc trên tập validation giữ lại trước khi export.
+sẽ đổi hẳn khi unfreeze backbone (Giai đoạn 2), số 0.30 chỉ đúng cho
+checkpoint `phobert-offensive-1` (weights không đổi từ Giai đoạn 1) với
+text_normalize đã bật.
 """
 
-TOXIC_THRESHOLD = 0.25
+TOXIC_THRESHOLD = 0.30
