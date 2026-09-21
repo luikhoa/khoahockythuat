@@ -51,16 +51,20 @@ class TestPredictEndpoint:
         r = client.post("/predict", json={"content": 12345})
         assert r.status_code == 422
 
-    def test_predict_empty_string_is_accepted(self, client: TestClient):
+    def test_predict_empty_string_is_rejected(self, client: TestClient):
+        """TextRequest.content có min_length=1 -> chuỗi rỗng bị từ chối ở tầng
+        validate, không tới predictor.predict()."""
         r = client.post("/predict", json={"content": ""})
-        assert r.status_code == 200
+        assert r.status_code == 422
 
-    def test_predict_no_length_limit_enforced(self, client: TestClient):
-        """LỖ HỔNG GHI NHẬN: TextRequest.content không có max_length -> input
-        gần như không giới hạn kích thước được BE chấp nhận (xem Phần 2, mục
-        'Không giới hạn độ dài input'). Test xác nhận payload 500KB vẫn 200."""
-        r = client.post("/predict", json={"content": "a" * 500_000})
+    def test_predict_oversized_payload_is_rejected(self, client: TestClient):
+        """TextRequest.content có max_length=1200 (khớp MAX_CONTENT_LENGTH bên
+        extension/src/inference/model-runtime.ts). Payload vượt ngưỡng bị 422,
+        đúng 1200 ký tự vẫn được chấp nhận."""
+        r = client.post("/predict", json={"content": "a" * 1200})
         assert r.status_code == 200
+        r = client.post("/predict", json={"content": "a" * 1201})
+        assert r.status_code == 422
 
     def test_predict_malformed_json_returns_4xx(self, client: TestClient):
         r = client.post(
@@ -79,10 +83,10 @@ class TestPredictEndpoint:
 
 
 class TestCORSConfig:
-    def test_cors_allows_any_origin(self, client: TestClient):
-        """LỖ HỔNG GHI NHẬN (High, xem Phần 2): allow_origins=["*"] kết hợp
-        không có xác thực (auth) nghĩa là BẤT KỲ trang web nào người dùng mở
-        cũng có thể gọi thẳng backend cục bộ này từ JS phía trình duyệt."""
+    def test_cors_rejects_arbitrary_origin(self, client: TestClient):
+        """allow_origins chỉ liệt kê localhost:8080/127.0.0.1:8080 (origin của
+        extension dev server) — một trang bất kỳ không được cấp header CORS,
+        trình duyệt sẽ chặn response phía JS gọi từ đó."""
         r = client.options(
             "/predict",
             headers={
@@ -90,7 +94,19 @@ class TestCORSConfig:
                 "Access-Control-Request-Method": "POST",
             },
         )
-        assert r.headers.get("access-control-allow-origin") == "*"
+        assert r.status_code == 400
+        assert "access-control-allow-origin" not in r.headers
+
+    def test_cors_allows_configured_origin(self, client: TestClient):
+        r = client.options(
+            "/predict",
+            headers={
+                "Origin": "http://localhost:8080",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+        assert r.status_code == 200
+        assert r.headers.get("access-control-allow-origin") == "http://localhost:8080"
 
 
 class TestEventsEndpoint:

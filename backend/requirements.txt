@@ -9,3 +9,4 @@ onnxruntime>=1.20.0,<2.0.0
 onnxscript>=0.2.0,<1.0.0
 pytest>=9.0.0,<10.0.0
 requests>=2.32.0,<3.0.0
+pandas>=2.0.0
