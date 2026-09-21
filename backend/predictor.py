@@ -16,6 +16,8 @@ import torch
 from pydantic import BaseModel, Field
 
 from model import FrozenBackboneClassifier, ModelConfig, build_model, build_tokenizer
+from text_normalize import normalize_text
+from threshold import TOXIC_THRESHOLD
 
 # Bỏ nhãn "đe doạ", chuyển hoàn toàn về 2 nhãn Binary
 LABELS = ("an toàn", "độc hại")
@@ -28,7 +30,8 @@ LOCAL_TOKENIZER_DIR = (
     Path(__file__).resolve().parent.parent
     / "phobert_experiment_complete" / "artifacts" / "models" / "phobert_offensive_classifier"
 )
-NGƯỠNG_ĐỘC_HẠI = 0.4  # p1 >= ngưỡng này -> label 1, tối ưu recall
+# Nguồn sự thật duy nhất cho ngưỡng quyết định — xem backend/threshold.py.
+NGƯỠNG_ĐỘC_HẠI = TOXIC_THRESHOLD
 
 
 class Prediction(BaseModel):
@@ -84,6 +87,20 @@ def _load() -> None:
         tokenizer = build_tokenizer(cfg)
 
     model = build_model(cfg)
+    # Nếu checkpoint được train với backbone unfreeze một phần
+    # (cfg.unfreeze_last_n_layers > 0), artifact PHẢI có backbone_state_dict
+    # đã fine-tune — nếu không, build_model() ở trên chỉ nạp backbone gốc
+    # chưa fine-tune từ HF Hub/cache, âm thầm vứt bỏ toàn bộ phần train
+    # backbone (xem OffensiveTextClassifier trong
+    # phobert_experiment_complete/train.py).
+    backbone_state_dict = getattr(artifact, "backbone_state_dict", None)
+    if backbone_state_dict is not None:
+        model.backbone.load_state_dict(backbone_state_dict)
+    elif not model.backbone_is_frozen():
+        raise RuntimeError(
+            "cfg.unfreeze_last_n_layers > 0 nhưng artifact không có backbone_state_dict "
+            "— checkpoint hỏng hoặc được lưu bởi phiên bản train.py cũ."
+        )
     model.head.load_state_dict(artifact.head_state_dict)
     model.eval()
 
@@ -103,7 +120,12 @@ def predict(text: str) -> Prediction:
     Parameters
     ----------
     text : str
-        Text thô từ DOM (`el.textContent.trim()`). Chưa qua normalize.
+        Text thô từ DOM (`el.textContent.trim()`). Được chuẩn hoá qua
+        `text_normalize.normalize_text()` bên trong hàm này trước khi
+        tokenize (NFC, gỡ zero-width, gộp ký tự chèn, lowercase, teencode
+        cơ bản) — xem docstring của module đó để biết kỹ thuật né lọc nào
+        được xử lý và kỹ thuật nào cố tình để lại cho việc train/augment dữ
+        liệu (no_diacritics, leetspeak).
 
     Returns
     -------
@@ -118,7 +140,7 @@ def predict(text: str) -> Prediction:
 
     try:
         enc = _tokenizer(
-            text,
+            normalize_text(text),
             truncation=True,
             max_length=_cfg.max_length,
             return_tensors="pt",

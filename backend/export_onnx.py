@@ -16,8 +16,10 @@ from torch import nn
 
 try:
     from .model_contract import REQUIRED_FILES, validate_artifact
+    from .threshold import TOXIC_THRESHOLD
 except ImportError:  # Support running from backend/ as a flat module.
     from model_contract import REQUIRED_FILES, validate_artifact
+    from threshold import TOXIC_THRESHOLD
 
 
 class ExportableClassifier(nn.Module):
@@ -52,7 +54,8 @@ def write_metadata(output_dir: Path, model_version: str) -> Path:
         "exportedAt": datetime.now(timezone.utc).isoformat(),
         "labels": ["an toàn", "độc hại"],
         "maxLength": 128,
-        "toxicThreshold": 0.4,
+        "toxicThreshold": TOXIC_THRESHOLD,
+        "textNormalizeVersion": 1,
         "files": files,
     }
     destination = output_dir / "metadata.json"
@@ -123,6 +126,19 @@ def export_model(artifact_path: Path, output_dir: Path, model_version: str, offl
         local_files_only=offline,
     )
     backbone = AutoModel.from_pretrained(cfg.pretrained_name, local_files_only=offline)
+    # Nếu checkpoint được train với backbone unfreeze một phần, phải nạp lại
+    # trọng số backbone ĐÃ FINE-TUNE trước khi export — nếu không, ONNX
+    # xuất ra sẽ chứa backbone gốc chưa fine-tune, âm thầm vứt bỏ toàn bộ
+    # phần train backbone dù head vẫn đúng (xem backend/predictor.py::_load()
+    # có cùng logic, và phobert_experiment_complete/train.py::OffensiveTextClassifier).
+    backbone_state_dict = getattr(artifact, "backbone_state_dict", None)
+    if backbone_state_dict is not None:
+        backbone.load_state_dict(backbone_state_dict)
+    elif getattr(cfg, "unfreeze_last_n_layers", 0) > 0:
+        raise RuntimeError(
+            "cfg.unfreeze_last_n_layers > 0 nhưng artifact không có backbone_state_dict "
+            "— checkpoint hỏng hoặc được lưu bởi phiên bản train.py cũ."
+        )
     head = AdapterMLPHead(
         backbone.config.hidden_size,
         cfg.hidden_dim,

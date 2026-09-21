@@ -68,14 +68,20 @@ describe("DOM scanner", () => {
     await vi.waitFor(() => expect(link.classList.contains("cs-link-danger")).toBe(true));
   });
 
-  it("giữ threshold 60% và reveal không bị quét lại", async () => {
+  it("blur theo đúng label model trả về, không còn dead-zone ngưỡng riêng (QA-006/W6)", async () => {
+    // Trước khi sửa QA-006/W6: content.ts tự đòi confidence >= 0.6 để blur,
+    // trong khi model (model-runtime.ts) đã quyết định label=1 ở ngưỡng
+    // thấp hơn nhiều (0.25) — mọi confidence trong khoảng giữa hai ngưỡng
+    // đó bị coi là "độc hại" ở tầng model nhưng không bao giờ hiện cảnh báo.
+    // Nay content.ts tin thẳng theo `label`, nên một confidence thấp như
+    // 0.26 (ngay trên ngưỡng model, xa dưới ngưỡng blur cũ 0.6) vẫn phải blur.
     api.predict
-      .mockResolvedValueOnce({ label: 1, name: "độc hại", confidence: 0.59, proba: [0.41, 0.59] })
-      .mockResolvedValueOnce({ label: 1, name: "độc hại", confidence: 0.6, proba: [0.4, 0.6] });
-    await start("<p id='low'>Độc hại dưới ngưỡng</p><p id='hit'>Độc hại đúng ngưỡng</p>");
+      .mockResolvedValueOnce({ label: 1, name: "độc hại", confidence: 0.26, proba: [0.74, 0.26] })
+      .mockResolvedValueOnce({ label: 0, name: "an toàn", confidence: 0.9, proba: [0.9, 0.1] });
+    await start("<p id='hit'>Độc hại ngay trên ngưỡng model</p><p id='safe'>An toàn</p>");
     await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(2));
-    expect(document.querySelector("#low")!.classList.contains("cs-blur")).toBe(false);
     await vi.waitFor(() => expect(document.querySelector("#hit")!.classList.contains("cs-blur")).toBe(true));
+    expect(document.querySelector("#safe")!.classList.contains("cs-blur")).toBe(false);
     (document.querySelector(".cs-reveal") as HTMLButtonElement).click();
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(document.querySelector("#hit")!.classList.contains("cs-blur")).toBe(false);

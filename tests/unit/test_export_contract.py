@@ -13,7 +13,12 @@ from onnx import TensorProto, helper, numpy_helper
 from torch import nn
 
 from export_onnx import ExportableClassifier, convert_to_fp16, write_metadata
-from model_contract import ArtifactValidationError, validate_artifact
+from model_contract import (
+    CURRENT_TEXT_NORMALIZE_VERSION,
+    ArtifactValidationError,
+    validate_artifact,
+)
+from threshold import TOXIC_THRESHOLD
 
 
 REQUIRED_FILES = (
@@ -37,7 +42,8 @@ def _write_artifact(root: Path, *, labels=None) -> Path:
         "modelVersion": "test-model",
         "labels": labels or ["an toàn", "độc hại"],
         "maxLength": 128,
-        "toxicThreshold": 0.4,
+        "toxicThreshold": TOXIC_THRESHOLD,
+        "textNormalizeVersion": CURRENT_TEXT_NORMALIZE_VERSION,
         "files": {name: _sha256(root / name) for name in REQUIRED_FILES},
     }
     (root / "metadata.json").write_text(json.dumps(metadata), encoding="utf-8")
@@ -53,7 +59,8 @@ def test_validate_artifact_returns_typed_metadata(tmp_path: Path):
     assert metadata.model_version == "test-model"
     assert metadata.labels == ("an toàn", "độc hại")
     assert metadata.max_length == 128
-    assert metadata.toxic_threshold == 0.4
+    assert metadata.toxic_threshold == TOXIC_THRESHOLD
+    assert metadata.text_normalize_version == CURRENT_TEXT_NORMALIZE_VERSION
 
 
 @pytest.mark.parametrize("missing", [*REQUIRED_FILES, "metadata.json"])

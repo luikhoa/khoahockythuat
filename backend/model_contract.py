@@ -8,6 +8,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
+try:
+    from .threshold import TOXIC_THRESHOLD
+except ImportError:
+    from threshold import TOXIC_THRESHOLD
+
 
 REQUIRED_FILES = (
     "model.onnx",
@@ -21,6 +26,12 @@ class ArtifactValidationError(ValueError):
     """Raised when a deployable model artifact violates its contract."""
 
 
+CURRENT_TEXT_NORMALIZE_VERSION = 1
+"""Bump khi text_normalize.py đổi hành vi theo cách phá tương thích, và cập
+nhật đồng thời extension/src/lib/textNormalize.ts (bản JS port thủ công,
+không có cách nào tự phát hiện lệch nhau ngoài rà tay + review)."""
+
+
 @dataclass(frozen=True)
 class ModelMetadata:
     schema_version: int
@@ -28,6 +39,7 @@ class ModelMetadata:
     labels: tuple[str, str]
     max_length: int
     toxic_threshold: float
+    text_normalize_version: int
     files: Mapping[str, str]
 
 
@@ -60,7 +72,8 @@ def validate_artifact(path: Path) -> ModelMetadata:
     _require(raw.get("schemaVersion"), 1, "schemaVersion")
     _require(raw.get("labels"), ["an toàn", "độc hại"], "labels")
     _require(raw.get("maxLength"), 128, "maxLength")
-    _require(raw.get("toxicThreshold"), 0.4, "toxicThreshold")
+    _require(raw.get("toxicThreshold"), TOXIC_THRESHOLD, "toxicThreshold")
+    _require(raw.get("textNormalizeVersion"), CURRENT_TEXT_NORMALIZE_VERSION, "textNormalizeVersion")
     model_version = raw.get("modelVersion")
     if not isinstance(model_version, str) or not model_version.strip():
         raise ArtifactValidationError("metadata.json: invalid modelVersion")
@@ -80,6 +93,7 @@ def validate_artifact(path: Path) -> ModelMetadata:
         model_version=model_version,
         labels=("an toàn", "độc hại"),
         max_length=128,
-        toxic_threshold=0.4,
+        toxic_threshold=TOXIC_THRESHOLD,
+        text_normalize_version=CURRENT_TEXT_NORMALIZE_VERSION,
         files=dict(files),
     )

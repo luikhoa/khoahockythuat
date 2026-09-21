@@ -1,6 +1,7 @@
 import { AutoTokenizer, env, type PreTrainedTokenizer } from "@huggingface/transformers";
 import * as ort from "onnxruntime-web/webgpu";
 
+import { normalizeText } from "../lib/textNormalize";
 import {
   ModelRuntime,
   ModelRuntimeError,
@@ -31,7 +32,9 @@ class BrowserTokenizerAdapter implements TokenizerAdapter {
   constructor(private readonly tokenizer: PreTrainedTokenizer) {}
 
   async encode(text: string): Promise<EncodedInput> {
-    const encoded = this.tokenizer(text, {
+    // Phải khớp backend/predictor.py::predict() (normalize_text trước khi
+    // tokenize) — xem extension/src/lib/textNormalize.ts để biết lý do.
+    const encoded = this.tokenizer(normalizeText(text), {
       truncation: true,
       max_length: 128,
       return_tensor: false,

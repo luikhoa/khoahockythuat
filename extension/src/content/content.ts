@@ -3,7 +3,6 @@ import { CyberShieldModel } from "../lib/api";
 import { CyberShieldLink } from "../lib/linkcheck";
 import type { EventType, Prediction, StatsSnapshot } from "../lib/types";
 
-const NGƯỠNG = 0.6;
 const ĐỘ_DÀI_TỐI_THIỂU = 2;
 const ĐỘ_DÀI_TỐI_ĐA = 1200;
 const BỎ_QUA = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "CODE", "PRE", "SVG"]);
@@ -230,7 +229,14 @@ async function chạyHàngĐợi(): Promise<void> {
       }
       textĐãXửLý.set(el, key);
       stats.scanned++;
-      if (kết.label !== 0 && kết.confidence >= NGƯỠNG) bọcNộiDung(el, kết);
+      // QA-006/W6 (đã sửa): trước đây có 2 ngưỡng độc lập — model quyết
+      // định label ở ngưỡng 0.4 (nay 0.25, xem extension/src/inference/
+      // model-runtime.ts), nhưng ở đây lại đòi confidence >= 0.6 mới blur.
+      // Mọi kết quả label=1 với confidence trong [ngưỡng model, 0.6) bị
+      // model báo "độc hại" nhưng người dùng không bao giờ thấy cảnh báo.
+      // Sửa: tin hoàn toàn theo `label` model đã trả về, không áp thêm
+      // ngưỡng UI riêng.
+      if (kết.label !== 0) bọcNộiDung(el, kết);
       lưuTrễ();
     }
   } finally { đangXửLý = false; }

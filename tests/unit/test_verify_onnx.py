@@ -4,14 +4,17 @@ from verify_onnx import ParityCase, compare_predictions
 
 
 def test_compare_predictions_reports_drift_and_threshold_crossings():
+    # LABEL_THRESHOLD và BLUR_THRESHOLD giờ CÙNG một giá trị (backend/threshold.py,
+    # xem QA-006/W6: extension không còn ngưỡng blur riêng nữa) nên một cú
+    # crossing luôn kéo theo cả labelCrossed và blurCrossed cùng lúc — khác
+    # với hành vi cũ (2 ngưỡng độc lập 0.4/0.6) mà test này từng minh hoạ.
     rows = [
         ParityCase("same-toxic", "a", 1),
         ParityCase("same-safe", "b", 0),
-        ParityCase("label-cross", "c", 1),
-        ParityCase("blur-cross", "d", 1),
+        ParityCase("crossing", "c", 1),
     ]
-    python_scores = {"a": 0.70, "b": 0.20, "c": 0.39, "d": 0.59}
-    onnx_scores = {"a": 0.69, "b": 0.25, "c": 0.41, "d": 0.61}
+    python_scores = {"a": 0.70, "b": 0.10, "c": 0.24}
+    onnx_scores = {"a": 0.69, "b": 0.12, "c": 0.26}
 
     summary = compare_predictions(
         rows,
@@ -19,27 +22,20 @@ def test_compare_predictions_reports_drift_and_threshold_crossings():
         lambda text: onnx_scores[text],
     ).as_dict()
 
-    assert summary["count"] == 4
-    assert summary["labelAgreement"] == 0.75
-    assert summary["blurAgreement"] == 0.75
-    assert math.isclose(summary["p1ErrorMean"], 0.025)
-    assert math.isclose(summary["p1ErrorP95"], 0.05)
-    assert math.isclose(summary["p1ErrorMax"], 0.05)
-    assert math.isclose(summary["f1Python"], 0.8)
+    assert summary["count"] == 3
+    assert math.isclose(summary["labelAgreement"], 2 / 3)
+    assert math.isclose(summary["blurAgreement"], 2 / 3)
+    assert math.isclose(summary["p1ErrorMean"], (0.01 + 0.02 + 0.02) / 3)
+    assert math.isclose(summary["p1ErrorP95"], 0.02)
+    assert math.isclose(summary["p1ErrorMax"], 0.02)
+    assert math.isclose(summary["f1Python"], 2 / 3)
     assert math.isclose(summary["f1Onnx"], 1.0)
     assert summary["thresholdCrossings"] == [
         {
-            "id": "label-cross",
-            "pythonP1": 0.39,
-            "onnxP1": 0.41,
+            "id": "crossing",
+            "pythonP1": 0.24,
+            "onnxP1": 0.26,
             "labelCrossed": True,
-            "blurCrossed": False,
-        },
-        {
-            "id": "blur-cross",
-            "pythonP1": 0.59,
-            "onnxP1": 0.61,
-            "labelCrossed": False,
             "blurCrossed": True,
         },
     ]

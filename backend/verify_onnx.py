@@ -15,12 +15,21 @@ import numpy as np
 
 try:
     from .model_contract import validate_artifact
+    from .text_normalize import normalize_text
+    from .threshold import TOXIC_THRESHOLD
 except ImportError:
     from model_contract import validate_artifact
+    from text_normalize import normalize_text
+    from threshold import TOXIC_THRESHOLD
 
 
-LABEL_THRESHOLD = 0.4
-BLUR_THRESHOLD = 0.6
+# Trước đây có hai ngưỡng khác nhau (label 0.4 vs blur 0.6) phản ánh đúng lỗi
+# QA-006/W6 sống trong sản phẩm; nay cả hai đều lấy từ backend/threshold.py
+# — content.ts không còn tự áp ngưỡng blur riêng nữa (tin theo `label`), nên
+# labelCrossed/blurCrossed dưới đây sẽ luôn bằng nhau, giữ lại cả hai field
+# để không phá schema JSON đang được doc hoá trong LOCAL_MODEL_WORKFLOW.md.
+LABEL_THRESHOLD = TOXIC_THRESHOLD
+BLUR_THRESHOLD = TOXIC_THRESHOLD
 
 
 @dataclass(frozen=True)
@@ -153,7 +162,10 @@ class OnnxPredictor:
         )
 
     def __call__(self, text: str) -> float:
-        encoded = self.tokenizer(text, truncation=True, max_length=128, return_tensors="np")
+        # Phải normalize giống hệt backend/predictor.py (oracle Python), nếu
+        # không parity gate sẽ so sánh hai pipeline tiền xử lý khác nhau chứ
+        # không phải hai runtime (Python vs ONNX) trên cùng một input.
+        encoded = self.tokenizer(normalize_text(text), truncation=True, max_length=128, return_tensors="np")
         feeds = {
             "input_ids": np.asarray(encoded["input_ids"], dtype=np.int64),
             "attention_mask": np.asarray(encoded["attention_mask"], dtype=np.int64),

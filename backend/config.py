@@ -16,6 +16,13 @@ HIDDEN_DIM = 256
 DROPOUT = 0.1
 SEED = 42
 
+# Phải khớp phobert_experiment_complete/config.py — chỉ dùng ở đây để dựng
+# lại đúng kiến trúc ModelConfig lúc unpickle checkpoint train từ Kaggle
+# (xem backend/model.py, backend/predictor.py::_load()). Giá trị thật của
+# checkpoint đã train nằm trong chính artifact.cfg được pickle kèm, hằng số
+# này chỉ là default khi tạo ModelConfig() rỗng.
+UNFREEZE_LAST_N_LAYERS = 6
+
 # Fallback column names if auto-detection fails (per the ViHSD paper).
 FALLBACK_TEXT_COL = "free_text"
 FALLBACK_LABEL_COL = "label_id"
