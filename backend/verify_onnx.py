@@ -2,6 +2,18 @@
 
 from __future__ import annotations
 
+import os
+
+# torch và onnxruntime trong cùng một tiến trình đều bundle sẵn một bản
+# OpenMP runtime riêng (libomp/libiomp) — trên macOS, khi cả hai load, tiến
+# trình exit với "libc++abi: ... recursive_mutex lock failed" (SIGABRT,
+# exit code 134) NGAY SAU KHI kết quả đã in xong, khiến CI đọc exit code sẽ
+# thấy fail giả dù parity gate thực chất pass. Đặt trước khi torch/
+# onnxruntime được import (cả hai đều lazy-import bên dưới) để tránh đăng
+# ký trùng OpenMP runtime — cách khắc phục chuẩn cho lớp lỗi này, không che
+# giấu lỗi thật nào khác.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import argparse
 import importlib.util
 import json
@@ -234,4 +246,14 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _exit_code = main()
+    sys.stdout.flush()
+    sys.stderr.flush()
+    # torch + onnxruntime trong cùng tiến trình có thể SIGABRT lúc dọn dẹp
+    # interpreter (destructor C++ xung đột OpenMP, "recursive_mutex lock
+    # failed" trên macOS) — không ổn định, tái hiện dù đã set
+    # KMP_DUPLICATE_LIB_OK=TRUE. Toàn bộ kết quả đã in/ghi file xong ở
+    # main() phía trên trước dòng này, nên thoát ngay bằng os._exit() (bỏ
+    # qua atexit/__del__ gây crash) là an toàn — không có tài nguyên nào
+    # cần dọn dẹp thêm sau đây.
+    os._exit(_exit_code)

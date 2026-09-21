@@ -42,7 +42,7 @@ Kiểm tra kích thước sau khi export:
 du -sh extension/model
 ```
 
-Ngân sách là **dưới 300 MB** cho riêng phần model FP16 (không tính WASM runtime của ONNX Runtime Web hay nguồn TypeScript). Bản build ngày 20/09/2026 cho `phobert-offensive-1`: **262 MB**.
+Ngân sách là **dưới 300 MB** cho riêng phần model FP16 (không tính WASM runtime của ONNX Runtime Web hay nguồn TypeScript). Bản build ngày 20/09/2026 cho `phobert-offensive-1`: **262 MB**. Bản `phobert-offensive-1.1` (21/09/2026, cùng trọng số PhoBERT, chỉ đổi `toxicThreshold`/`textNormalizeVersion` trong metadata — xem mục 3): **262 MB** (269.427.260 byte), không đổi vì kiến trúc/trọng số model không đổi.
 
 ## 3. Parity gate — bắt buộc trước khi build phát hành
 
@@ -53,9 +53,18 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
   --output tests/results/onnx_parity_summary.json
 ```
 
+**Ghi chú môi trường (macOS):** torch và onnxruntime trong cùng một tiến
+trình đều bundle riêng một bản OpenMP runtime — tiến trình có thể `SIGABRT`
+lúc dọn dẹp interpreter (`libc++abi: ... recursive_mutex lock failed`,
+không ổn định, tái hiện dù đã set `KMP_DUPLICATE_LIB_OK=TRUE`) NGAY SAU KHI
+kết quả đã in/ghi file xong. `verify_onnx.py` đã tự gọi `os._exit()` ngay
+sau `main()` để thoát tiến trình trước khi native teardown chạy — không cần
+làm gì thêm, exit code phản ánh đúng kết quả gate (đã xác nhận 3/3 lần chạy
+liên tiếp cho exit code đúng).
+
 So sánh 1.000 câu trong `tests/results/blackbox_raw.csv` giữa `predictor.predict` (Python/PyTorch, oracle) và ONNX Runtime CPU chạy trên đúng artifact vừa export. CLI thoát khác 0 nếu label agreement dưới 99% hoặc F1 giảm quá 0.01 so với Python — đừng hạ ngưỡng phân loại để "qua" gate này; nếu gate fail, chỉnh lại pipeline export.
 
-Kết quả đo được cho `phobert-offensive-1` (20/09/2026):
+Kết quả đo được cho `phobert-offensive-1` (20/09/2026, ngưỡng cũ 0.4, chưa có text normalize):
 
 ```json
 {
@@ -71,7 +80,25 @@ Kết quả đo được cho `phobert-offensive-1` (20/09/2026):
 }
 ```
 
-**Đọc kết quả này thế nào:** `labelAgreement`/`blurAgreement` = 1.0 và `f1Python == f1Onnx` chứng minh việc *đổi runtime* (Python → ONNX chạy trong trình duyệt) không làm thay đổi hành vi phân loại — đây là **parity của quá trình di trú**, không phải điểm chất lượng mô hình. `f1 ≈ 0.65` là điểm của chính checkpoint `phobert-offensive-1` trên bộ black-box 1.000 câu, phản ánh mô hình hiện tại còn bỏ sót nhiều nội dung độc hại (xem `tests/results/blackbox_summary.json` và `AI_TESTING_REPORT_VI.md`). Cải thiện con số 0.65 này là một đợt huấn luyện/đánh giá riêng, không thuộc phạm vi quy trình export/build trong tài liệu này.
+**Đọc kết quả này thế nào:** `labelAgreement`/`blurAgreement` = 1.0 và `f1Python == f1Onnx` chứng minh việc *đổi runtime* (Python → ONNX chạy trong trình duyệt) không làm thay đổi hành vi phân loại — đây là **parity của quá trình di trú**, không phải điểm chất lượng mô hình. `f1 ≈ 0.65` là điểm của chính checkpoint `phobert-offensive-1` trên bộ black-box 1.000 câu, phản ánh mô hình hiện tại còn bỏ sót nhiều nội dung độc hại (xem `tests/results/blackbox_summary.json` và `AI_TESTING_REPORT_VI.md`).
+
+Kết quả đo được cho `phobert-offensive-1.1` (21/09/2026, **cùng trọng số PhoBERT y hệt** `phobert-offensive-1` — không retrain — chỉ thêm `text_normalize.py` trước tokenize và đổi ngưỡng 0.4 → 0.25, xem `backend/text_normalize.py` và `backend/threshold.py`):
+
+```json
+{
+  "count": 1000,
+  "labelAgreement": 1.0,
+  "blurAgreement": 1.0,
+  "p1ErrorMean": 0.0002343,
+  "p1ErrorP95": 0.0006905,
+  "p1ErrorMax": 0.0021734,
+  "f1Python": 0.8775,
+  "f1Onnx": 0.8775,
+  "thresholdCrossings": []
+}
+```
+
+`f1` tăng từ 0.6526 lên **0.8775** chỉ nhờ tiền xử lý + hiệu chỉnh ngưỡng — không đổi một trọng số nào của model. Đây vẫn là *parity của quá trình di trú* (Python và ONNX cho cùng kết quả), phần cải thiện chất lượng thực chất đến từ mục 0 (0.65 → 0.6526 trước đó phản ánh model gốc; retrain thật với backbone unfreeze — xem `phobert_experiment_complete/`, chưa chạy — mới là bước tiếp theo để cải thiện thêm, đặc biệt trên phân phối dữ liệu tự nhiên hơn ngoài bộ blackbox 1.000 câu này).
 
 ## 4. Build extension với artifact đã kiểm chứng
 
