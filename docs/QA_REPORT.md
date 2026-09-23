@@ -1,6 +1,6 @@
 # CyberShield — Báo cáo tiến độ và QA
 
-**Cập nhật:** 13/09/2026, bổ sung mục 0 ngày 20/09/2026. **Cơ sở:** source trong working tree hiện tại, không chỉ phiên bản đã commit.
+**Cập nhật:** 13/09/2026, bổ sung mục 0 ngày 20/09/2026 và mục 0.1 ngày 22/09/2026. **Cơ sở:** source trong working tree hiện tại, không chỉ phiên bản đã commit.
 
 ## 0. Cập nhật 20/09/2026 — Di trú AI sang chạy cục bộ trong extension
 
@@ -15,6 +15,16 @@ Kể từ commit "packed into extention", phần còn lại của mục 1–6 d�
 **Kết luận:** việc chuyển AI vào chạy cục bộ trong extension đã hoàn tất và được kiểm chứng không làm thay đổi hành vi phân loại so với bản Python trước đó (đây là *migration parity*, tức "giữ nguyên", không phải "cải thiện"). Các finding AI cũ trong mục 3 (QA-001, QA-002 — "Chờ tích hợp AI") **vẫn giữ nguyên trạng thái chờ**: chúng nói về đúng/sai của bản thân phép biến đổi logits→xác suất và readiness, những vấn đề này không được tái đánh giá bởi đợt di trú runtime này. Số liệu F1/độ chính xác trong bảng ở mục 1 (nếu có) không nên được đọc là đã cải thiện; xem `AI_TESTING_REPORT_VI.md` cho đánh giá chất lượng model độc lập với việc chuyển runtime.
 
 Các mục 1–6 dưới đây giữ nguyên nội dung 13/09/2026 để không mất lịch sử; nơi nào nhắc tới FastAPI như thành phần runtime của sản phẩm (ví dụ mục 2, mục 5) cần đọc là **kiến trúc tại thời điểm 13/09/2026**, đã được thay thế theo mục 0 này — không áp dụng cho bản hiện tại.
+
+### 0.1. Cập nhật 22/09/2026 — Blur tối giản và reset theo tab
+
+- Content script chỉ can thiệp khi `p_toxic = proba[1] >= 0.60`; `label` (ngưỡng model 0.30) và `confidence` không quyết định hoặc hiển thị blur.
+- Đã xoá badge absolute, chuỗi xác suất và nút **Vẫn xem**. Người dùng click trực tiếp vùng blur hoặc dùng Enter/Space; lần thao tác đầu chỉ reveal và không kích hoạt link/nút bên dưới.
+- Popup có nút **Che lại nội dung trên trang này**. Message đi thẳng tới content script của tab active, dùng prediction giữ theo phần tử nên không phụ thuộc eviction của cache văn bản, không reload/inference lại và không đổi counters lịch sử.
+- QA-015 được đóng bằng cách loại bỏ cơ chế badge/parent positioning gây lỗi, thay vì cố sửa tọa độ trên DOM của website.
+- Vitest bao phủ biên 0.5999/0.60, click/keyboard, restore thuộc tính, reset cache/tab và lỗi popup. Playwright bao phủ reveal/reset độc lập giữa hai tab trong chế độ offline.
+
+Các bảng bên dưới vẫn là snapshot lịch sử tại thời điểm ghi; mục 0.1 là trạng thái mới hơn khi có xung đột.
 
 ## 1. Kết luận về tiến độ
 
@@ -105,7 +115,7 @@ Build note cũ đã được xử lý ở công cụ và hướng dẫn: `npm ru
 | QA-005 / Medium | `backend/server.py: analyze_text` là async nhưng gọi trực tiếp hàm predict đồng bộ; scanner tuần tự từng phần tử. Chưa đo tải. | Tách công việc nặng qua worker/queue có giới hạn và kiểm tra health/stats khi có nhiều predict. Không đánh giá tốc độ AI trong đợt này. |
 | QA-011 / Medium | `lưuTrễ` debounce 1,5 giây; chưa có durable outbox hoặc flush lúc đóng tab. Lỗi events bị nuốt; nếu không có lần lưu tiếp theo thì delta chưa được tự gửi lại. | Lưu bền delta trước khi trì hoãn mạng; retry độc lập; test đóng tab, event lỗi rồi phục hồi, service worker khởi động lại. |
 | QA-012 / Medium | Popup ưu tiên backend nhưng nút xoá chỉ xoá key local và vẽ 0; mở lại vẫn thấy SQLite, tab đang chạy cũng có thể ghi lại local. | Chốt phạm vi xoá và thực hiện theo nguồn thật, hoặc đổi nhãn/ẩn nút; kiểm thử mở lại popup và tab đang chạy. |
-| QA-015 / Medium | `bọcNộiDung` gắn các badge vào cùng parent; CSS absolute chung góc dưới trái. Inline position của parent chưa được phục hồi. | Badge gắn đúng từng mục, không chồng nhau; restore style khi reveal/re-evaluate; test layout nhiều sibling và zoom. |
+| QA-015 / Medium — **Đã đóng 22/09/2026** | Cơ chế badge absolute và việc sửa `position` của parent đã bị loại bỏ. | UI chỉ blur chính target; click/keyboard trực tiếp để reveal; popup reblur theo tab. Unit + E2E khóa hành vi, không còn bài toán định vị badge. |
 | QA-018 / Low | `server.py` dùng `import storage`, `from predictor import ...`; không hỗ trợ import package chuẩn từ root theo cấu trúc hiện tại. | Sửa package imports và test lệnh chạy/import được công bố. README đã ghi cách chạy từ backend, không coi sửa hướng dẫn là sửa lỗi code. |
 | QA-019 / Low | `git ls-files` vẫn có `.DS_Store` và ba file `backend/__pycache__/*.pyc`, dù ignore đã có. | Bỏ track các artifact trong thay đổi code/repo riêng. Đợt này không xoá file ngoài hai tài liệu được phép. |
 

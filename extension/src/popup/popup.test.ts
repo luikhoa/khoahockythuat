@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const api = vi.hoisted(() => ({
   status: vi.fn(),
@@ -11,6 +11,11 @@ const api = vi.hoisted(() => ({
 
 vi.mock("../lib/api", () => ({ CyberShieldModel: api }));
 
+const tabs = {
+  query: vi.fn(),
+  sendMessage: vi.fn(),
+};
+
 function popupBody(): string {
   return `
     <h1>Tấm chắn đang bật</h1>
@@ -18,6 +23,8 @@ function popupBody(): string {
     <button id="thử-lại" hidden>Thử lại</button>
     <div id="thanh"><i></i><i></i><i></i></div>
     <span id="s-quét"></span><span id="s-che"></span><span id="s-link"></span><span id="s-mở"></span>
+    <button id="che-lại">Che lại nội dung trên trang này</button>
+    <p id="trạng-thái-che-lại" role="status" aria-live="polite"></p>
     <button id="xoá">Xoá thống kê</button>
   `;
 }
@@ -40,6 +47,13 @@ beforeEach(() => {
   api.retryModel.mockResolvedValue({ state: "ready-wasm", provider: "wasm" });
   api.clearStats.mockResolvedValue({ ok: true });
   api.loadMetadata.mockResolvedValue(metadata);
+  tabs.query.mockResolvedValue([{ id: 42 }]);
+  tabs.sendMessage.mockResolvedValue({ ok: true, count: 3 });
+  vi.stubGlobal("chrome", { tabs });
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 async function render(): Promise<void> {
@@ -80,6 +94,46 @@ describe("popup model status", () => {
 
     await vi.waitFor(() => expect(api.clearStats).toHaveBeenCalledWith("day"));
     await vi.waitFor(() => expect(document.getElementById("s-quét")!.textContent).toBe("0"));
+    expect(tabs.sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("che lại nội dung đã mở trên tab hiện tại và báo số lượng", async () => {
+    await render();
+    const button = document.getElementById("che-lại") as HTMLButtonElement;
+
+    button.click();
+
+    expect(button.disabled).toBe(true);
+    await vi.waitFor(() => expect(tabs.query).toHaveBeenCalledWith({ active: true, currentWindow: true }));
+    await vi.waitFor(() => expect(tabs.sendMessage).toHaveBeenCalledWith(42, { type: "rehide-revealed" }));
+    await vi.waitFor(() => expect(document.getElementById("trạng-thái-che-lại")!.textContent)
+      .toBe("Đã che lại 3 nội dung"));
+    expect(button.disabled).toBe(false);
+  });
+
+  it("báo rõ khi tab hiện tại không có nội dung cần che lại", async () => {
+    tabs.sendMessage.mockResolvedValue({ ok: true, count: 0 });
+    await render();
+
+    (document.getElementById("che-lại") as HTMLButtonElement).click();
+
+    await vi.waitFor(() => expect(document.getElementById("trạng-thái-che-lại")!.textContent)
+      .toBe("Không có nội dung cần che lại"));
+  });
+
+  it.each([
+    ["không có tab id", async () => tabs.query.mockResolvedValueOnce([{}])],
+    ["content script không phản hồi", async () => tabs.sendMessage.mockRejectedValueOnce(new Error("No receiver"))],
+  ])("không để lỗi %s thoát khỏi popup", async (_name, arrange) => {
+    await arrange();
+    await render();
+    const button = document.getElementById("che-lại") as HTMLButtonElement;
+
+    button.click();
+
+    await vi.waitFor(() => expect(document.getElementById("trạng-thái-che-lại")!.textContent)
+      .toBe("Trang này không hỗ trợ thao tác này"));
+    expect(button.disabled).toBe(false);
   });
 
   it("hiển thị metadata PhoBERT đóng gói, không hiển thị metric cũ", async () => {

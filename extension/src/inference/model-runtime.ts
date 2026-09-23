@@ -43,10 +43,10 @@ const MAX_CONTENT_LENGTH = 1_200;
 // backend/threshold.py::TOXIC_THRESHOLD (TypeScript không import được file
 // Python đó). Xem rationale đầy đủ + PR-curve đo trên cả ViHSD lẫn blackbox ở
 // backend/threshold.py: 0.30 cho F1 cao nhất trên CẢ HAI tập cùng lúc (áp đảo
-// 0.25 của Giai đoạn 1, chứ không phải đánh đổi). content.ts không còn tự áp
-// ngưỡng blur riêng (QA-006/W6) — chỉ tin theo `label` được tính ở đây, nên
-// đây là ngưỡng THẬT SỰ duy nhất còn lại phía runtime extension. Hiệu chỉnh
-// lại sau mỗi lần retrain.
+// 0.25 của Giai đoạn 1, chứ không phải đánh đổi). Đây là ngưỡng tạo `label`
+// của model. Chính sách sản phẩm trong content.ts đọc trực tiếp proba[1] và
+// chỉ blur từ 0.60; không dùng label/confidence để quyết định UI. Hiệu chỉnh
+// ngưỡng model này sau mỗi lần retrain.
 const TOXIC_THRESHOLD = 0.30;
 
 export class ModelRuntimeError extends Error implements InferenceError {

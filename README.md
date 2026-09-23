@@ -1,15 +1,15 @@
 # CyberShield for Teens
 
-Tiện ích Chrome/Edge hỗ trợ làm mờ nội dung tiếng Việt có khả năng gây tổn thương và cảnh báo liên kết đáng ngờ. Người dùng có thể chọn **Vẫn xem** để mở lại nội dung.
+Tiện ích Chrome/Edge hỗ trợ làm mờ nội dung tiếng Việt có khả năng gây tổn thương và cảnh báo liên kết đáng ngờ. Người dùng bấm trực tiếp vùng mờ để xem nội dung.
 
-> **Trạng thái ngày 20/09/2026:** AI phân loại (PhoBERT) chạy **hoàn toàn cục bộ trong extension** qua ONNX Runtime Web — không còn FastAPI, không cần Internet lúc dùng. Đây là bản di trú runtime; **chất lượng phân loại của model không đổi** so với trước (F1 ≈ 0.65 trên bộ black-box 1.000 câu, xem `AI_TESTING_REPORT_VI.md`), cải thiện model là việc riêng. Frontend đang ở giai đoạn hoàn thiện MVP và QA; xem [docs/QA_REPORT.md](docs/QA_REPORT.md) để biết phần nào đã kiểm chứng và phần nào còn mở.
+> **Trạng thái ngày 22/09/2026:** AI phân loại (PhoBERT) chạy **hoàn toàn cục bộ trong extension** qua ONNX Runtime Web — không còn FastAPI, không cần Internet lúc dùng. Đây là bản di trú runtime; **chất lượng phân loại của model không đổi** so với trước (F1 ≈ 0.65 trên bộ black-box 1.000 câu, xem `AI_TESTING_REPORT_VI.md`), cải thiện model là việc riêng. Frontend đang ở giai đoạn hoàn thiện MVP và QA; xem [docs/QA_REPORT.md](docs/QA_REPORT.md) để biết phần nào đã kiểm chứng và phần nào còn mở.
 
 ## Tính năng và giao diện hiện có
 
 | Thành phần | Đã có | Phần cần hoàn thiện |
 | --- | --- | --- |
 | Quét nội dung trên trang | Quét ban đầu, nội dung được thêm/sửa, cache theo văn bản, hàng đợi và thử lại khi model chưa sẵn sàng | Văn bản xen thẻ con, nội dung chuyển từ ẩn sang hiện, thay đổi chỉ xóa node |
-| Làm mờ và mở lại | Blur, badge hiển thị độ tin cậy, nút **Vẫn xem** | Badge của các phần tử cùng cha có thể chồng lên nhau; chưa phục hồi style của trang |
+| Làm mờ và mở lại | Blur trực tiếp phần tử khi `p_toxic >= 0.60`; click/Enter/Space để xem; popup có nút che lại nội dung đã mở trên tab hiện tại | Chưa có tuỳ chọn ngưỡng hoặc ngoại lệ theo website |
 | Cảnh báo liên kết | Gạch chân, biểu tượng cảnh báo, tooltip giải thích và hộp xác nhận khi bấm; kiểm tra lại khi đổi `href` | Chưa có bộ kiểm thử riêng đánh giá các quy tắc URL |
 | Popup | Thống kê hôm nay, thanh tỷ lệ, bốn bộ đếm, trạng thái model (loading/WebGPU/WASM/lỗi + nút thử lại), nút **Xoá thống kê** | Còn giao diện ba nhãn; chưa có lựa chọn xem tuần |
 | AI cục bộ | PhoBERT + đầu phân loại tuỳ biến, export ONNX FP16, chạy trong offscreen document + Web Worker, ưu tiên WebGPU rồi tự rơi về WASM | Chất lượng phân loại (F1 ≈ 0.65) chưa được cải thiện trong đợt này |
@@ -32,6 +32,7 @@ Trang web
                                         + model.onnx đóng gói sẵn trong extension
 
 Popup → chrome.runtime message → service worker → chrome.storage.local (thống kê theo ngày)
+Popup → chrome.tabs message → content script của tab hiện tại (che lại nội dung đã mở)
 
 Demo độc lập (không có chrome.runtime) → tự tạo Worker suy luận riêng, dùng cùng
   model/WASM tĩnh qua HTTP server, không gọi bất kỳ backend nào
@@ -43,7 +44,7 @@ Content script chuẩn hoá khoảng trắng và chọn các phần tử dạng 
 
 Mỗi tab xử lý hàng đợi tuần tự và cache dự đoán theo văn bản chuẩn hoá, tối đa 4.000 mục mỗi tab (cache không chia sẻ giữa các tab; suy luận thực tế chạy lại ở tab mới). Observer theo dõi `childList`, `characterData` và `href`, quét vùng thay đổi thay vì quét lại toàn bộ trang mỗi lần.
 
-Điều kiện làm mờ hiện tại là `label === 1 && confidence >= 0.60`; model tự gán `label = 1` khi `sigmoid(logit) >= 0.4`. Kiểm tra liên kết chạy cục bộ bằng các quy tắc URL, không dùng AI.
+Model tính `p_toxic = sigmoid(toxic_logit)` và gán `label = 1` từ ngưỡng phân loại 0.30. Chính sách giao diện độc lập chỉ làm mờ khi `p_toxic >= 0.60`; `label` và `confidence` không tham gia quyết định hoặc hiển thị blur. Kiểm tra liên kết chạy cục bộ bằng các quy tắc URL, không dùng AI.
 
 ## Cấu trúc dự án
 
@@ -161,7 +162,7 @@ interface Prediction {
 }
 ```
 
-`p1 = sigmoid(toxic_logit)`, `label = 1` khi `p1 >= 0.4`, `confidence = proba[label]`. Content script chỉ làm mờ khi `label === 1 && confidence >= 0.6`. Input rỗng hoặc dài hơn 1.200 ký tự bị từ chối trước khi tới model; tokenizer truncate ở 128 token. Scanner kiểm tra label, miền giá trị confidence và hai xác suất trước khi sử dụng.
+`p1 = sigmoid(toxic_logit)`, `label = 1` khi `p1 >= 0.30`, `confidence = proba[label]`. Content script đọc trực tiếp `p1 = proba[1]` và chỉ làm mờ khi `p1 >= 0.60`; `confidence` được giữ trong contract tương thích nhưng không dùng cho UI. Input rỗng hoặc dài hơn 1.200 ký tự bị từ chối trước khi tới model; tokenizer truncate ở 128 token. Scanner kiểm tra label, miền giá trị confidence và hai xác suất trước khi sử dụng.
 
 ### Sự kiện và thống kê
 
@@ -177,7 +178,7 @@ interface Prediction {
 - `threat`: field còn từ schema cũ; scanner nhị phân hiện không tăng bộ đếm này.
 - `day` là hôm nay theo giờ Việt Nam (`Asia/Ho_Chi_Minh`); `week` là hôm nay và sáu ngày trước đó.
 
-Service worker sở hữu duy nhất việc ghi `chrome.storage.local` theo khoá `cs_stats_YYYY-MM-DD`; mỗi tab chỉ gửi **delta** (không ghi đè snapshot đầy đủ), nên nhiều tab cộng dồn đúng và không tab nào ghi đè tab khác. Việc gửi event dùng debounce 1,5 giây phía content script. Nút **Xoá thống kê** gọi `clear-stats("day")`, xoá đúng bucket hôm nay trong `chrome.storage.local` (không còn khái niệm SQLite).
+Service worker sở hữu duy nhất việc ghi `chrome.storage.local` theo khoá `cs_stats_YYYY-MM-DD`; mỗi tab chỉ gửi **delta** (không ghi đè snapshot đầy đủ), nên nhiều tab cộng dồn đúng và không tab nào ghi đè tab khác. Việc gửi event dùng debounce 1,5 giây phía content script. Nút **Che lại nội dung trên trang này** gửi message thẳng tới content script của tab active, dùng prediction được giữ cùng phần tử đã mở (không phụ thuộc cache văn bản có thể bị loại) và không thay đổi thống kê. Nút **Xoá thống kê** gọi `clear-stats("day")`, xoá đúng bucket hôm nay trong `chrome.storage.local` (không còn khái niệm SQLite).
 
 ## Kiểm thử
 
@@ -191,7 +192,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Hoặc dùng `npm run verify` thay cho ba lệnh đầu. `test:e2e` nạp extension thật vào Chromium, **không khởi động FastAPI hay bất kỳ backend nào**, chặn mọi request ra ngoài trừ `chrome-extension://` và một fixture tĩnh cục bộ, rồi xác nhận: model đạt trạng thái sẵn sàng hoàn toàn từ asset đóng gói, nội dung độc hại/an toàn được phân loại đúng, draft input không bị gửi đi phân loại, nhiều tab cộng dồn thống kê đúng, số liệu sống sót qua việc service worker bị Chrome thu hồi và tái khởi động, và xoá thống kê ngày hoạt động đúng. Test dùng bundle trong `dist/`, vì vậy cần build trước — kể cả model thật, không dùng `CS_SKIP_MODEL=1` cho lần chạy E2E.
+Hoặc dùng `npm run verify` thay cho ba lệnh đầu. `test:e2e` nạp extension thật vào Chromium, **không khởi động FastAPI hay bất kỳ backend nào**, chặn mọi request ra ngoài trừ `chrome-extension://` và một fixture tĩnh cục bộ, rồi xác nhận: model đạt trạng thái sẵn sàng hoàn toàn từ asset đóng gói, nội dung độc hại/an toàn được phân loại đúng, draft input không bị gửi đi phân loại, click trực tiếp mở vùng blur, popup chỉ che lại nội dung trên tab active, nhiều tab cộng dồn thống kê đúng, số liệu sống sót qua việc service worker bị Chrome thu hồi và tái khởi động, và xoá thống kê ngày hoạt động đúng. Test dùng bundle trong `dist/`, vì vậy cần build trước — kể cả model thật, không dùng `CS_SKIP_MODEL=1` cho lần chạy E2E.
 
 Test Python (export/parity/predictor/server API), không bắt buộc cho việc dùng extension nhưng cần trước khi phát hành model mới:
 
@@ -203,13 +204,13 @@ python -m pytest tests/unit -q
 
 Ba test trong `tests/unit/test_server_api.py` (`TestPredictEndpoint::test_predict_empty_string_is_accepted`, `test_predict_no_length_limit_enforced`, `TestCORSConfig::test_cors_allows_any_origin`) hiện **fail theo thiết kế**: đây là các test ghi nhận lỗ hổng bảo mật cũ của `backend/server.py` (không giới hạn độ dài, CORS wildcard); các lỗ hổng đó đã được vá nên assertion cũ (mong đợi hành vi không an toàn) không còn đúng. `backend/server.py` không chạy trong flow người dùng nên các test này không chặn phát hành extension; chúng cần được viết lại để phản ánh hành vi đã vá, thuộc việc dọn dẹp `backend/` riêng.
 
-Kết quả kiểm tra ngày **20/09/2026** (checkpoint `phobert-offensive-1`): `npm run verify` đạt (typecheck, 50/50 test Vitest, build); parity gate Python↔ONNX **100% label agreement** trên 1.000 câu, F1 không đổi (≈0.6526); **1/1** smoke test Chromium offline đạt. Xem [tests/results/onnx_parity_summary.json](tests/results/onnx_parity_summary.json) và [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md) cho chi tiết đo đạc. Chưa nghiệm thu WebGPU trên GPU thật (môi trường CI/headless dùng ở đây rơi về WASM), popup trên Chrome/Edge thực tế ngoài Chromium test, hoặc cải thiện chất lượng phân loại.
+Kết quả kiểm tra ngày **22/09/2026** (checkpoint `phobert-offensive-1`): `npm run verify` đạt (typecheck, 61/61 test Vitest, build); parity gate Python↔ONNX **100% label agreement** trên 1.000 câu, F1 không đổi (≈0.6526); **1/1** smoke test Chromium offline đạt, gồm cả chặn hành động website ở click mở đầu tiên và che lại riêng tab hiện tại. Xem [tests/results/onnx_parity_summary.json](tests/results/onnx_parity_summary.json) và [docs/LOCAL_MODEL_WORKFLOW.md](docs/LOCAL_MODEL_WORKFLOW.md) cho chi tiết đo đạc. Chưa nghiệm thu WebGPU trên GPU thật (smoke test headless cố định dùng WASM để tránh khởi tạo GPU không ổn định), popup trên Chrome/Edge thực tế ngoài Chromium test, hoặc cải thiện chất lượng phân loại.
 
 ## Giới hạn và công việc tiếp theo
 
 Model hiện tại có F1 ≈ 0.65 trên bộ black-box 1.000 câu — bỏ sót một phần đáng kể nội dung độc hại; đây là giới hạn của **model**, không phải của việc chuyển sang chạy cục bộ (parity 100% với bản Python trước đó). Cải thiện độ chính xác là một đợt huấn luyện/đánh giá riêng, xem `AI_TESTING_REPORT_VI.md`.
 
-Ưu tiên tiếp theo phía frontend: sửa các khoảng trống quét DOM (văn bản xen thẻ con, nội dung ẩn→hiện, mutation chỉ xoá node — xem `docs/QA_REPORT.md`), hoàn thiện bố trí badge khi nhiều phần tử cùng cha, thêm lựa chọn xem thống kê tuần vào popup.
+Ưu tiên tiếp theo phía frontend: sửa các khoảng trống quét DOM (văn bản xen thẻ con, nội dung ẩn→hiện, mutation chỉ xoá node — xem `docs/QA_REPORT.md`) và thêm lựa chọn xem thống kê tuần vào popup.
 
 `extension/dist/` sau build hiện khoảng 350 MB tổng cộng (model FP16 ~260 MB + toàn bộ biến thể WASM của ONNX Runtime Web + source map); một bản đóng gói phát hành nên loại source map và chỉ giữ biến thể WASM thực sự cần cho tập trình duyệt mục tiêu — chưa thực hiện trong đợt di trú này.
 

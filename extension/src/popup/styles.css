@@ -74,6 +74,22 @@ h1 {
 .số { font-size: 21px; font-weight: 640; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .ô .nhãn-nhỏ { font-size: 9.5px; letter-spacing: 0.12em; }
 
+.điều-khiển-trang {
+  margin: 0 0 14px;
+}
+.điều-khiển-trang button {
+  width: 100%;
+  padding: 9px 12px;
+  color: var(--chữ);
+  background: var(--tấm);
+}
+#trạng-thái-che-lại {
+  min-height: 1.5em;
+  margin-top: 6px;
+  color: var(--mờ);
+  font-size: 10.5px;
+}
+
 footer {
   margin-top: 13px;
   padding-top: 11px;

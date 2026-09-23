@@ -40,7 +40,10 @@ test.beforeAll(async () => {
       response.end(readFileSync(path.resolve(__dirname, "../../../demo/feed_demo.html")));
       return;
     }
-    response.end(`<!doctype html><html><body><main>
+    response.end(`<!doctype html><html><head><script>
+      window.earlyWebsiteClicks = 0;
+      window.addEventListener("click", () => { window.earlyWebsiteClicks += 1; }, true);
+    </script></head><body><main>
       <p id="safe">${SAFE_TEXT}</p>
       <p id="toxic">${TOXIC_TEXT}</p>
       <input id="draft" aria-label="draft">
@@ -59,7 +62,14 @@ async function launchExtension(userDataDir: string, blocked: string[]): Promise<
   const context = await chromium.launchPersistentContext(userDataDir, {
     headless: true,
     channel: "chromium",
-    args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`],
+    // This smoke test verifies the deterministic offline WASM fallback. Headless
+    // Chromium can expose WebGPU while never completing adapter/session startup,
+    // which leaves the model in `loading` until the test timeout.
+    args: [
+      "--disable-gpu",
+      `--disable-extensions-except=${extensionPath}`,
+      `--load-extension=${extensionPath}`,
+    ],
   });
   await context.route("**/*", (route) => {
     const url = route.request().url();
@@ -86,7 +96,15 @@ async function sendMessage<T>(page: Page, message: unknown): Promise<T> {
 async function waitModelReady(page: Page): Promise<string> {
   let state = "";
   await expect.poll(async () => {
-    const response = await sendMessage<{ ok: boolean; data?: { state: string; error?: unknown } }>(page, { type: "model-status" });
+    const response = await sendMessage<{
+      ok: boolean;
+      data?: { state: string; error?: unknown };
+      error?: unknown;
+    }>(page, { type: "model-status" });
+    if (!response.ok) throw new Error(`model-status failed: ${JSON.stringify(response.error)}`);
+    if (response.data?.state === "error") {
+      throw new Error(`model initialization failed: ${JSON.stringify(response.data.error)}`);
+    }
     state = response.data?.state ?? "";
     return state;
   }, { timeout: 120_000, intervals: [1_000] }).toMatch(/^ready-(webgpu|wasm)$/);
@@ -135,6 +153,12 @@ test("offline local inference: scan, reveal, multi-tab stats, service-worker res
     const statsPopupA = await context.newPage();
     await statsPopupA.goto(popupUrl);
     expect(await readStats(statsPopupA)).toEqual(ZERO_STATS);
+    const fixturePrediction = await sendMessage<{
+      ok: boolean;
+      data?: { proba: [number, number] };
+    }>(statsPopupA, { type: "predict", content: TOXIC_TEXT });
+    expect(fixturePrediction.ok).toBe(true);
+    expect(fixturePrediction.data?.proba[1]).toBeGreaterThanOrEqual(0.60);
 
     // --- Tab A: initial scan, draft privacy, dynamic content, node mutation, reveal ---
     const tabA = await context.newPage();
@@ -148,7 +172,7 @@ test("offline local inference: scan, reveal, multi-tab stats, service-worker res
     // A draft/input value must never be scanned or sent for classification.
     await tabA.locator("#draft").fill("BẢN NHÁP RIÊNG TƯ KHÔNG GỬI");
     expect(await readStats(statsPopupA)).toEqual(statsAfterInitialScan);
-    await expect(tabA.locator("main > [data-cs-ui='badge']")).toHaveCount(1);
+    await expect(tabA.locator("[data-cs-ui='badge']")).toHaveCount(0);
 
     await tabA.locator("#dynamic").evaluate((node, text) => {
       const message = document.createElement("p");
@@ -164,19 +188,40 @@ test("offline local inference: scan, reveal, multi-tab stats, service-worker res
     const statsAfterDynamicAndMutation = await readStats(statsPopupA);
     expect(statsAfterDynamicAndMutation).toEqual({ ...ZERO_STATS, scanned: 4, toxic: 3 });
 
-    await tabA.locator("main > [data-cs-ui='badge'] .cs-reveal").first().focus();
-    await tabA.keyboard.press("Enter");
+    await tabA.locator("#toxic").click();
     await expect(tabA.locator("#toxic")).not.toHaveClass(/cs-blur/);
+    await expect(tabA.locator("#toxic")).toHaveAttribute("data-cs-revealed", "true");
+    expect(await tabA.evaluate(() => (window as Window & { earlyWebsiteClicks: number }).earlyWebsiteClicks)).toBe(0);
+    await tabA.locator("#toxic").click();
+    expect(await tabA.evaluate(() => (window as Window & { earlyWebsiteClicks: number }).earlyWebsiteClicks)).toBe(1);
 
     const statsAfterTabA = await readStats(statsPopupA);
     expect(statsAfterTabA).toEqual({ ...statsAfterDynamicAndMutation, revealed: 1 });
 
-    // --- Tab B: a second tab scanning the same page contributes its own delta, never overwrites tab A's ---
+    // --- Tab B: a second tab contributes its own delta and keeps independent reveal state ---
     const tabB = await context.newPage();
     await tabB.goto("http://127.0.0.1:8080");
     await expect(tabB.locator("#toxic")).toHaveClass(/cs-blur/, { timeout: 60_000 });
+    await tabB.locator("#toxic").click();
+    await expect(tabB.locator("#toxic")).not.toHaveClass(/cs-blur/);
     const statsAfterTabB = await readStats(statsPopupA);
-    expect(statsAfterTabB).toEqual({ ...statsAfterTabA, scanned: statsAfterTabA.scanned + 2, toxic: statsAfterTabA.toxic + 1 });
+    expect(statsAfterTabB).toEqual({
+      ...statsAfterTabA,
+      scanned: statsAfterTabA.scanned + 2,
+      toxic: statsAfterTabA.toxic + 1,
+      revealed: statsAfterTabA.revealed + 1,
+    });
+
+    // Trigger the popup action without bringing its extension page to front;
+    // tabs.query() must therefore target tab A only.
+    await tabA.bringToFront();
+    await statsPopupA.evaluate(() => {
+      document.querySelector<HTMLButtonElement>("#che-lại")?.click();
+    });
+    await expect(statsPopupA.locator("#trạng-thái-che-lại")).toHaveText("Đã che lại 1 nội dung");
+    await expect(tabA.locator("#toxic")).toHaveClass(/cs-blur/);
+    await expect(tabB.locator("#toxic")).not.toHaveClass(/cs-blur/);
+    expect(await readStats(statsPopupA)).toEqual(statsAfterTabB);
 
     // --- Alternate host alias and the bundled feed demo still classify locally ---
     await tabB.goto("http://localhost:8080");

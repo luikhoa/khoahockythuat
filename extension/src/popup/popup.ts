@@ -1,6 +1,11 @@
 import { CyberShieldModel } from "../lib/api";
 import type { ModelStatus } from "../inference/protocol";
-import type { ModelMetadata, StatsSnapshot } from "../lib/types";
+import type {
+  ContentControlMessage,
+  ModelMetadata,
+  RehideRevealedResponse,
+  StatsSnapshot,
+} from "../lib/types";
 
 const emptyStats: StatsSnapshot = { toxic: 0, threat: 0, links: 0, revealed: 0, scanned: 0 };
 
@@ -42,6 +47,19 @@ function renderMetadata(metadata: ModelMetadata): void {
   document.getElementById("mô-hình")!.textContent = `PhoBERT · ${metadata.modelVersion}`;
 }
 
+export async function cheLạiTabHiệnTại(): Promise<number> {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tab?.id === undefined) throw new Error("active-tab-unavailable");
+  const response = await chrome.tabs.sendMessage<ContentControlMessage, RehideRevealedResponse>(
+    tab.id,
+    { type: "rehide-revealed" },
+  );
+  if (!response?.ok || !Number.isInteger(response.count) || response.count < 0) {
+    throw new Error("invalid-content-response");
+  }
+  return response.count;
+}
+
 async function loadPopup(): Promise<void> {
   const [stats, status, metadata] = await Promise.allSettled([
     CyberShieldModel.stats("day"),
@@ -71,6 +89,23 @@ document.getElementById("thử-lại")!.addEventListener("click", async () => {
         message: error instanceof Error ? error.message : "Không thể thử lại",
       },
     });
+  } finally {
+    button.disabled = false;
+  }
+});
+
+document.getElementById("che-lại")!.addEventListener("click", async () => {
+  const button = document.getElementById("che-lại") as HTMLButtonElement;
+  const status = document.getElementById("trạng-thái-che-lại")!;
+  button.disabled = true;
+  status.textContent = "";
+  try {
+    const count = await cheLạiTabHiệnTại();
+    status.textContent = count === 0
+      ? "Không có nội dung cần che lại"
+      : `Đã che lại ${count.toLocaleString("vi-VN")} nội dung`;
+  } catch {
+    status.textContent = "Trang này không hỗ trợ thao tác này";
   } finally {
     button.disabled = false;
   }

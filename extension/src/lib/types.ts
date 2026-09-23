@@ -39,6 +39,13 @@ export interface EventPayload {
   ts?: string;
 }
 
+export type ContentControlMessage = { type: "rehide-revealed" };
+
+export interface RehideRevealedResponse {
+  ok: true;
+  count: number;
+}
+
 export type ClearStatsRange = "day" | "all";
 
 export type ExtensionMessage =

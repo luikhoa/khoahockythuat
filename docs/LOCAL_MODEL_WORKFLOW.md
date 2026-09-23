@@ -80,7 +80,7 @@ Kết quả đo được cho `phobert-offensive-1` (20/09/2026, ngưỡng cũ 0.
 }
 ```
 
-**Đọc kết quả này thế nào:** `labelAgreement`/`blurAgreement` = 1.0 và `f1Python == f1Onnx` chứng minh việc *đổi runtime* (Python → ONNX chạy trong trình duyệt) không làm thay đổi hành vi phân loại — đây là **parity của quá trình di trú**, không phải điểm chất lượng mô hình. `f1 ≈ 0.65` là điểm của chính checkpoint `phobert-offensive-1` trên bộ black-box 1.000 câu, phản ánh mô hình hiện tại còn bỏ sót nhiều nội dung độc hại (xem `tests/results/blackbox_summary.json` và `AI_TESTING_REPORT_VI.md`).
+**Đọc kết quả này thế nào:** `labelAgreement`/`blurAgreement` = 1.0 và `f1Python == f1Onnx` chứng minh việc *đổi runtime* (Python → ONNX chạy trong trình duyệt) không làm thay đổi hành vi phân loại — đây là **parity của quá trình di trú**, không phải điểm chất lượng mô hình. `blurAgreement` là tên field lịch sử của parity gate và dùng ngưỡng label của model; từ 22/09/2026 nó không đại diện cho chính sách blur sản phẩm 0.60 ở `content.ts`. `f1 ≈ 0.65` là điểm của chính checkpoint `phobert-offensive-1` trên bộ black-box 1.000 câu, phản ánh mô hình hiện tại còn bỏ sót nhiều nội dung độc hại (xem `tests/results/blackbox_summary.json` và `AI_TESTING_REPORT_VI.md`).
 
 Kết quả đo được cho `phobert-offensive-1.1` (21/09/2026, **cùng trọng số PhoBERT y hệt** `phobert-offensive-1` — không retrain — chỉ thêm `text_normalize.py` trước tokenize và đổi ngưỡng 0.4 → 0.25, xem `backend/text_normalize.py` và `backend/threshold.py`):
 
@@ -148,5 +148,5 @@ Hợp đồng bắt buộc giữa checkpoint và runtime extension: cùng hai in
 ## 7. Những gì KHÔNG nằm trong quy trình này
 
 - Không huấn luyện lại hoặc tự động cải thiện chất lượng mô hình — đó là một đợt việc riêng.
-- Không tự ý đổi `TOXIC_THRESHOLD` (hiện 0.30, xem `backend/threshold.py`) như một phần của quy trình export — đổi ngưỡng phải đi kèm đo lại PR-curve trên cả ViHSD lẫn blackbox và ghi lại lý do. Từ Giai đoạn 1, `content.ts` không còn ngưỡng blur riêng — nó tin thẳng theo `label` mà model/`threshold.py` đã quyết định (xem QA-006/W6).
+- Không tự ý đổi `TOXIC_THRESHOLD` của model (hiện 0.30, xem `backend/threshold.py`) như một phần của quy trình export — đổi ngưỡng phải đi kèm đo lại PR-curve trên cả ViHSD lẫn blackbox và ghi lại lý do. Đây là ngưỡng tạo `label`, không phải ngưỡng can thiệp UI: từ 22/09/2026, `content.ts` đọc trực tiếp `proba[1]` và chỉ blur khi `p_toxic >= 0.60`. Parity gate kiểm chứng model/ONNX ở 0.30; Vitest và Playwright kiểm chứng hành vi blur sản phẩm ở 0.60.
 - Không tải hoặc cập nhật model từ xa sau khi extension đã cài — mọi bản cập nhật model đi qua một bản build/phát hành extension mới.
