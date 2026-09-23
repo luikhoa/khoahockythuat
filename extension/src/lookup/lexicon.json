@@ -1,0 +1,899 @@
+{
+  "version": "1.0",
+  "hard_words": [
+    {
+      "value": "địt",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ",
+      "category": "profanity"
+    },
+    {
+      "value": "đéo",
+      "category": "profanity"
+    },
+    {
+      "value": "đm",
+      "category": "profanity"
+    },
+    {
+      "value": "clgt",
+      "category": "profanity"
+    },
+    {
+      "value": "cmm",
+      "category": "profanity"
+    },
+    {
+      "value": "cmn",
+      "category": "profanity"
+    },
+    {
+      "value": "cặc",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cac",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cak",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cặk",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "buồi",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "lồn",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "lol",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "dái",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "đĩ",
+      "category": "sexualized"
+    },
+    {
+      "value": "điếm",
+      "category": "sexualized"
+    },
+    {
+      "value": "phò",
+      "category": "sexualized"
+    },
+    {
+      "value": "nứng",
+      "category": "sexualized"
+    },
+    {
+      "value": "sục",
+      "category": "sexualized"
+    },
+    {
+      "value": "cút",
+      "category": "dismissive"
+    },
+    {
+      "value": "biến",
+      "category": "dismissive"
+    },
+    {
+      "value": "xéo",
+      "category": "dismissive"
+    },
+    {
+      "value": "xiên",
+      "category": "violence"
+    },
+    {
+      "value": "fuck",
+      "category": "english"
+    },
+    {
+      "value": "fucking",
+      "category": "english"
+    },
+    {
+      "value": "motherfucker",
+      "category": "english"
+    },
+    {
+      "value": "mf",
+      "category": "english"
+    },
+    {
+      "value": "bullshit",
+      "category": "english"
+    },
+    {
+      "value": "bitch",
+      "category": "english"
+    },
+    {
+      "value": "asshole",
+      "category": "english"
+    },
+    {
+      "value": "dick",
+      "category": "english"
+    },
+    {
+      "value": "dickhead",
+      "category": "english"
+    },
+    {
+      "value": "pussy",
+      "category": "english"
+    },
+    {
+      "value": "cunt",
+      "category": "english"
+    },
+    {
+      "value": "bastard",
+      "category": "english"
+    }
+  ],
+  "hard_phrases": [
+    {
+      "value": "địt mẹ",
+      "category": "profanity"
+    },
+    {
+      "value": "địt mẹ mày",
+      "category": "profanity"
+    },
+    {
+      "value": "địt con mẹ",
+      "category": "profanity"
+    },
+    {
+      "value": "địt con mẹ mày",
+      "category": "profanity"
+    },
+    {
+      "value": "địt cụ",
+      "category": "profanity"
+    },
+    {
+      "value": "địt bà",
+      "category": "profanity"
+    },
+    {
+      "value": "địt bố",
+      "category": "profanity"
+    },
+    {
+      "value": "địt cha",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ má",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ mẹ",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ mẹ mày",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ cha",
+      "category": "profanity"
+    },
+    {
+      "value": "đụ bà",
+      "category": "profanity"
+    },
+    {
+      "value": "đéo mẹ",
+      "category": "profanity"
+    },
+    {
+      "value": "đéo mẹ mày",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi lồn",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi lol",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi loz",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi cứt",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi đái",
+      "category": "profanity"
+    },
+    {
+      "value": "vãi shit",
+      "category": "profanity"
+    },
+    {
+      "value": "cặc gì",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cặc nhé",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cặc tao",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "cặc mày",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "buồi gì",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "buồi nhé",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "hòn dái",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "ngu lồn",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu lol",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu như chó",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu như bò",
+      "category": "abuse"
+    },
+    {
+      "value": "óc chó",
+      "category": "abuse"
+    },
+    {
+      "value": "óc cứt",
+      "category": "abuse"
+    },
+    {
+      "value": "đầu buồi",
+      "category": "abuse"
+    },
+    {
+      "value": "mặt lồn",
+      "category": "abuse"
+    },
+    {
+      "value": "mặt lol",
+      "category": "abuse"
+    },
+    {
+      "value": "mặt cặc",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng lồn",
+      "category": "abuse"
+    },
+    {
+      "value": "con lồn",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng cặc",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ chó",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng chó",
+      "category": "abuse"
+    },
+    {
+      "value": "con chó",
+      "category": "abuse"
+    },
+    {
+      "value": "chó đẻ",
+      "category": "abuse"
+    },
+    {
+      "value": "chó má",
+      "category": "abuse"
+    },
+    {
+      "value": "chó chết",
+      "category": "abuse"
+    },
+    {
+      "value": "súc vật",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ súc vật",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ rác rưởi",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ khốn",
+      "category": "abuse"
+    },
+    {
+      "value": "khốn nạn",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng khốn",
+      "category": "abuse"
+    },
+    {
+      "value": "con khốn",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ mất dạy",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng mất dạy",
+      "category": "abuse"
+    },
+    {
+      "value": "con mất dạy",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ vô học",
+      "category": "abuse"
+    },
+    {
+      "value": "óc bò",
+      "category": "abuse"
+    },
+    {
+      "value": "não phẳng",
+      "category": "abuse"
+    },
+    {
+      "value": "đần độn",
+      "category": "abuse"
+    },
+    {
+      "value": "đồ ngu",
+      "category": "abuse"
+    },
+    {
+      "value": "thằng ngu",
+      "category": "abuse"
+    },
+    {
+      "value": "con ngu",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu si",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu xuẩn",
+      "category": "abuse"
+    },
+    {
+      "value": "thiểu năng",
+      "category": "abuse"
+    },
+    {
+      "value": "con đĩ",
+      "category": "sexualized"
+    },
+    {
+      "value": "đĩ chó",
+      "category": "sexualized"
+    },
+    {
+      "value": "đĩ mẹ",
+      "category": "sexualized"
+    },
+    {
+      "value": "con điếm",
+      "category": "sexualized"
+    },
+    {
+      "value": "con phò",
+      "category": "sexualized"
+    },
+    {
+      "value": "nứng lồn",
+      "category": "sexualized"
+    },
+    {
+      "value": "nứng cặc",
+      "category": "sexualized"
+    },
+    {
+      "value": "bú cặc",
+      "category": "sexualized"
+    },
+    {
+      "value": "bú cu",
+      "category": "sexualized"
+    },
+    {
+      "value": "bú lồn",
+      "category": "sexualized"
+    },
+    {
+      "value": "liếm lồn",
+      "category": "sexualized"
+    },
+    {
+      "value": "liếm cặc",
+      "category": "sexualized"
+    },
+    {
+      "value": "sục cặc",
+      "category": "sexualized"
+    },
+    {
+      "value": "quay tay",
+      "category": "sexualized"
+    },
+    {
+      "value": "cút mẹ",
+      "category": "dismissive"
+    },
+    {
+      "value": "cút mẹ mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "cút đi",
+      "category": "dismissive"
+    },
+    {
+      "value": "biến mẹ đi",
+      "category": "dismissive"
+    },
+    {
+      "value": "xéo đi",
+      "category": "dismissive"
+    },
+    {
+      "value": "xéo mẹ đi",
+      "category": "dismissive"
+    },
+    {
+      "value": "im mẹ mồm",
+      "category": "dismissive"
+    },
+    {
+      "value": "câm mồm",
+      "category": "dismissive"
+    },
+    {
+      "value": "ngậm mồm",
+      "category": "dismissive"
+    },
+    {
+      "value": "ngậm mẹ mồm",
+      "category": "dismissive"
+    },
+    {
+      "value": "đéo ai hỏi",
+      "category": "dismissive"
+    },
+    {
+      "value": "ai hỏi",
+      "category": "dismissive"
+    },
+    {
+      "value": "kệ mẹ mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "mặc mẹ mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "mẹ mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "bố mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "ông nội mày",
+      "category": "dismissive"
+    },
+    {
+      "value": "giết mày",
+      "category": "violence"
+    },
+    {
+      "value": "tao giết mày",
+      "category": "violence"
+    },
+    {
+      "value": "giết chết",
+      "category": "violence"
+    },
+    {
+      "value": "chết đi",
+      "category": "violence"
+    },
+    {
+      "value": "chết mẹ đi",
+      "category": "violence"
+    },
+    {
+      "value": "đập chết",
+      "category": "violence"
+    },
+    {
+      "value": "đập mày",
+      "category": "violence"
+    },
+    {
+      "value": "đánh chết",
+      "category": "violence"
+    },
+    {
+      "value": "chém chết",
+      "category": "violence"
+    },
+    {
+      "value": "chém mày",
+      "category": "violence"
+    },
+    {
+      "value": "xiên chết",
+      "category": "violence"
+    },
+    {
+      "value": "đâm chết",
+      "category": "violence"
+    },
+    {
+      "value": "đâm mày",
+      "category": "violence"
+    },
+    {
+      "value": "bóp cổ",
+      "category": "violence"
+    },
+    {
+      "value": "bẻ cổ",
+      "category": "violence"
+    },
+    {
+      "value": "cắt cổ",
+      "category": "violence"
+    },
+    {
+      "value": "cho mày chết",
+      "category": "violence"
+    },
+    {
+      "value": "tao xử mày",
+      "category": "violence"
+    },
+    {
+      "value": "xử mày",
+      "category": "violence"
+    },
+    {
+      "value": "đấm chết",
+      "category": "violence"
+    },
+    {
+      "value": "đấm vỡ mồm",
+      "category": "violence"
+    },
+    {
+      "value": "đập vỡ mồm",
+      "category": "violence"
+    },
+    {
+      "value": "fuck you",
+      "category": "english"
+    },
+    {
+      "value": "fuck off",
+      "category": "english"
+    },
+    {
+      "value": "son of a bitch",
+      "category": "english"
+    }
+  ],
+  "context_sensitive": [
+    {
+      "value": "ngu",
+      "category": "context"
+    },
+    {
+      "value": "đần",
+      "category": "context"
+    },
+    {
+      "value": "chó",
+      "category": "context"
+    },
+    {
+      "value": "bò",
+      "category": "context"
+    },
+    {
+      "value": "lợn",
+      "category": "context"
+    },
+    {
+      "value": "giết",
+      "category": "context"
+    },
+    {
+      "value": "chết",
+      "category": "context"
+    },
+    {
+      "value": "đập",
+      "category": "context"
+    },
+    {
+      "value": "đánh",
+      "category": "context"
+    },
+    {
+      "value": "chém",
+      "category": "context"
+    },
+    {
+      "value": "đâm",
+      "category": "context"
+    },
+    {
+      "value": "chim",
+      "category": "context"
+    },
+    {
+      "value": "cu",
+      "category": "context"
+    },
+    {
+      "value": "bùi",
+      "category": "context"
+    },
+    {
+      "value": "cave",
+      "category": "context"
+    },
+    {
+      "value": "shit",
+      "category": "context"
+    },
+    {
+      "value": "sex",
+      "category": "context"
+    },
+    {
+      "value": "quan hệ",
+      "category": "context"
+    },
+    {
+      "value": "thẩm du",
+      "category": "context"
+    },
+    {
+      "value": "tinh hoàn",
+      "category": "context"
+    },
+    {
+      "value": "âm hộ",
+      "category": "context"
+    }
+  ],
+  "obfuscation_variants": [
+    {
+      "value": "đcm",
+      "category": "profanity"
+    },
+    {
+      "value": "dcm",
+      "category": "profanity"
+    },
+    {
+      "value": "đkm",
+      "category": "profanity"
+    },
+    {
+      "value": "dkm",
+      "category": "profanity"
+    },
+    {
+      "value": "dm",
+      "category": "profanity"
+    },
+    {
+      "value": "clm",
+      "category": "profanity"
+    },
+    {
+      "value": "clmm",
+      "category": "profanity"
+    },
+    {
+      "value": "vcl",
+      "category": "profanity"
+    },
+    {
+      "value": "vkl",
+      "category": "profanity"
+    },
+    {
+      "value": "vl",
+      "category": "profanity"
+    },
+    {
+      "value": "loz",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "l0n",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "l0z",
+      "category": "sexual_profanity"
+    },
+    {
+      "value": "ngu vl",
+      "category": "abuse"
+    },
+    {
+      "value": "ngu vcl",
+      "category": "abuse"
+    },
+    {
+      "value": "djt",
+      "category": "obfuscation"
+    },
+    {
+      "value": "dit",
+      "category": "obfuscation"
+    },
+    {
+      "value": "đjt",
+      "category": "obfuscation"
+    },
+    {
+      "value": "đ!t",
+      "category": "obfuscation"
+    },
+    {
+      "value": "d!t",
+      "category": "obfuscation"
+    },
+    {
+      "value": "djtme",
+      "category": "obfuscation"
+    },
+    {
+      "value": "ditme",
+      "category": "obfuscation"
+    },
+    {
+      "value": "dmm",
+      "category": "obfuscation"
+    },
+    {
+      "value": "dmmm",
+      "category": "obfuscation"
+    },
+    {
+      "value": "vllll",
+      "category": "obfuscation"
+    },
+    {
+      "value": "cc",
+      "category": "obfuscation"
+    },
+    {
+      "value": "c.c",
+      "category": "obfuscation"
+    },
+    {
+      "value": "c a c",
+      "category": "obfuscation"
+    },
+    {
+      "value": "c.a.c",
+      "category": "obfuscation"
+    },
+    {
+      "value": "cặ.c",
+      "category": "obfuscation"
+    },
+    {
+      "value": "l.o.n",
+      "category": "obfuscation"
+    },
+    {
+      "value": "l o n",
+      "category": "obfuscation"
+    },
+    {
+      "value": "l.ồ.n",
+      "category": "obfuscation"
+    },
+    {
+      "value": "n.g.u",
+      "category": "obfuscation"
+    },
+    {
+      "value": "n g u",
+      "category": "obfuscation"
+    },
+    {
+      "value": "ng.u",
+      "category": "obfuscation"
+    },
+    {
+      "value": "f*ck",
+      "category": "obfuscation"
+    },
+    {
+      "value": "fck",
+      "category": "obfuscation"
+    },
+    {
+      "value": "fuk",
+      "category": "obfuscation"
+    },
+    {
+      "value": "fu*k",
+      "category": "obfuscation"
+    },
+    {
+      "value": "b*tch",
+      "category": "obfuscation"
+    },
+    {
+      "value": "sh*t",
+      "category": "obfuscation"
+    }
+  ]
+}

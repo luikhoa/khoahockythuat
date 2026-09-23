@@ -6,6 +6,9 @@
 export type Label = 0 | 1;
 
 export interface Prediction {
+  source?: "lookup" | "model";
+  matchedEntry?: string;
+  category?: string;
   label: Label;
   name: string;
   confidence: number;

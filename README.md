@@ -217,3 +217,5 @@ Model hiện tại có F1 ≈ 0.65 trên bộ black-box 1.000 câu — bỏ sót
 Các tiện ích debug `window.CyberShield.quét/stats/cache/dừng` không phải công tắc điều khiển dành cho người dùng; việc không thấy TODO/FIXME chính thức không đồng nghĩa với việc dự án đã hoàn tất.
 
 Nội dung văn bản được chọn được phân loại hoàn toàn trên máy người dùng, không rời khỏi thiết bị. Module thống kê chỉ lưu bộ đếm cục bộ (`chrome.storage.local`), không đồng bộ giữa các thiết bị và không có tài khoản người dùng. Chưa có hỗ trợ duyệt Shadow DOM, quét tất cả iframe hoặc tuỳ chọn loại trừ website. Extension chỉ chạy trên những trang mà trình duyệt cho phép content script hoạt động.
+
+Deterministic pre-model safety policy, offline lexicon editing, and benchmark instructions: [Lookup safety layer](docs/LOOKUP_SAFETY.md).
