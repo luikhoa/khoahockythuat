@@ -1,0 +1,7 @@
+# 11 — Kiểm tra toàn bộ và bàn giao cho tôi
+
+Tôi muốn biết CyberShield hiện đã làm được những gì trước khi coi là hoàn thành. Hãy kiểm tra từ đầu đến cuối bằng bản tiện ích thật và AI thật: cài được trong Chrome/Edge; cảnh báo link; tự kiểm tra bình luận mới và bình luận bị sửa; không đọc ô đang gõ; che/mở/che lại; số liệu nhiều tab; xóa số hôm nay; vẫn phân loại khi không có Internet. Nếu phần nào không chạy được trong môi trường của bạn, nói rõ để tôi tự thử, đừng đánh dấu đạt thay.
+
+Hãy chạy các bài kiểm tra sẵn có và tạo thêm một bài thử trong trình duyệt kiểm tra rằng lúc sử dụng không có yêu cầu tới dịch vụ AI, trang tải model hoặc máy chủ nào khác. So sánh lại bản AI dùng trong tiện ích với kết quả gốc sau Kaggle. Phân biệt rõ “hai bản AI trả lời giống nhau” với “AI trả lời đúng người thật”: tôi muốn thấy cả độ khớp giữa hai bản và kết quả đúng/sai trên câu kiểm tra riêng. Nếu có lỗi, hãy sửa lỗi trong phạm vi dự án rồi kiểm tra lại. Không tự hạ tiêu chí hoặc thay AI bằng dữ liệu giả.
+
+Viết hướng dẫn sử dụng cho một học sinh: cần cài gì, mở chỗ nào để cài tiện ích, thử trên trang mẫu ra sao, khi thấy “đang nạp” hoặc “lỗi” thì làm gì, cách xem và xóa số liệu. Viết thêm một bảng “đã kiểm tra / chưa kiểm tra / lỗi còn lại”, dùng kết quả thật. Nếu có thao tác cần tôi tự làm trên trình duyệt hoặc Kaggle, trình bày từng bước. Kết thúc bằng vài câu ngắn: sản phẩm đang ở trạng thái nào và bước tiếp theo của tôi là gì. Đừng tự đăng hay phát hành sản phẩm.
