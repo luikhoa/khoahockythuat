@@ -1,4 +1,5 @@
 /** Quét nội dung đã hiển thị, phân loại qua service worker và theo dõi DOM động. */
+import { matchLookup } from "../lookup/matcher";
 import { CyberShieldModel } from "../lib/api";
 import { CyberShieldLink } from "../lib/linkcheck";
 import type { ContentControlMessage, EventType, Prediction, RehideRevealedResponse, StatsSnapshot } from "../lib/types";
@@ -95,7 +96,7 @@ function predictionHợpLệ(value: Prediction): boolean {
 }
 
 function nênChe(kết: Prediction): boolean {
-    return kết.proba[1] >= NGƯỠNG_CHE_P_TOXIC;
+    return kết.source === "lookup" || kết.proba[1] >= NGƯỠNG_CHE_P_TOXIC;
 }
 
 async function phânLoại(text: string): Promise<Prediction> {
@@ -344,14 +345,7 @@ async function chạyHàngĐợi(): Promise<void> {
                 if (el.isConnected) hàngĐợi.add(el);
                 continue;
             }
-            textĐãXửLý.set(el, key);
-            predictionTheoElement.set(el, { fingerprint: key, prediction: kết });
-            stats.scanned++;
-            if (nênChe(kết)) {
-                ápDụngBlur(el);
-                stats.toxic++;
-            }
-            lưuTrễ();
+            applyPrediction(el, key, kết);
         }
     } finally {
         đangXửLý = false;
@@ -362,9 +356,31 @@ function xửLýHàngĐợi(): void {
     queueMicrotask(() => void chạyHàngĐợi());
 }
 
+function applyPrediction(el: HTMLElement, key: string, prediction: Prediction): void {
+    textĐãXửLý.set(el, key);
+    predictionTheoElement.set(el, { fingerprint: key, prediction });
+    stats.scanned++;
+    if (nênChe(prediction)) {
+        ápDụngBlur(el);
+        stats.toxic++;
+    }
+    lưuTrễ();
+}
+
 export function quét(gốc: Node = document.body): void {
     if (!gốc || gốc.nodeType !== Node.ELEMENT_NODE) return;
-    for (const el of thuThậpKhối(gốc)) hàngĐợi.add(el);
+    for (const el of thuThậpKhối(gốc)) {
+        const key = fingerprint(el.textContent ?? "");
+        if (textĐãXửLý.get(el) === key) continue;
+        const hardMatch = matchLookup(key);
+        if (hardMatch) {
+            hàngĐợi.delete(el);
+            if (textĐãXửLý.has(el)) bỏCanThiệp(el);
+            applyPrediction(el, key, hardMatch);
+        } else {
+            hàngĐợi.add(el);
+        }
+    }
     if (gốc instanceof HTMLAnchorElement && gốc.matches("a[href]")) đánhDấuLink(gốc);
     if (gốc instanceof Element) gốc.querySelectorAll<HTMLAnchorElement>("a[href]").forEach(đánhDấuLink);
     xửLýHàngĐợi();

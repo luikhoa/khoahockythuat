@@ -33,13 +33,13 @@ const belowUiThreshold = {
   label: 1 as const,
   name: "độc hại",
   confidence: 0.99,
-  proba: [0.4001, 0.5999] as [number, number],
+  proba: [0.5001, 0.4999] as [number, number],
 };
 const atUiThreshold = {
   label: 1 as const,
   name: "độc hại",
   confidence: 0.01,
-  proba: [0.4, 0.6] as [number, number],
+  proba: [0.5, 0.5] as [number, number],
 };
 
 async function start(html: string): Promise<void> {
@@ -103,7 +103,7 @@ describe("DOM scanner", () => {
     await vi.waitFor(() => expect(link.classList.contains("cs-link-danger")).toBe(true));
   });
 
-  it("chỉ blur theo p_toxic từ 0.60, không theo label hoặc confidence", async () => {
+  it("chỉ blur theo p_toxic từ 0.50, không theo label hoặc confidence", async () => {
     api.predict
       .mockResolvedValueOnce(belowUiThreshold)
       .mockResolvedValueOnce(atUiThreshold);
@@ -293,5 +293,55 @@ describe("DOM scanner", () => {
     });
     expect(storageSet).not.toHaveBeenCalled();
     expect(api.event.mock.calls.every(([event]) => !Object.prototype.hasOwnProperty.call(event, "scanned"))).toBe(true);
+  });
+});
+
+
+describe("lookup intervention integration", () => {
+  it("hard matches skip model and repeated scans do not duplicate intervention or counters", async () => {
+    await start("<p id='hard'>tao sẽ địt mẹ mày</p><p id='context'>giết</p><p id='safe'>Xin chào bạn</p>");
+    await vi.waitFor(() => expect(window.CyberShield.stats().scanned).toBe(3));
+    const hard = document.querySelector("#hard") as HTMLElement;
+    expect(hard.classList.contains("cs-blur")).toBe(true);
+    expect(document.querySelector("#context")!.classList.contains("cs-blur")).toBe(false);
+    expect(document.querySelector("#safe")!.classList.contains("cs-blur")).toBe(false);
+    expect(api.predict.mock.calls.map(([text]) => text)).toEqual(["giết", "Xin chào bạn"]);
+    const stats = { ...window.CyberShield.stats() };
+    const { quét } = await import("./content");
+    quét(); quét();
+    await new Promise(resolve => setTimeout(resolve, 20));
+    expect(window.CyberShield.stats()).toEqual(stats);
+    expect(document.querySelectorAll(".cs-blur")).toHaveLength(1);
+    expect(document.querySelectorAll(".cs-badge")).toHaveLength(0);
+    hard.click();
+    expect(hard.classList.contains("cs-blur")).toBe(false);
+    expect(window.CyberShield.stats().revealed).toBe(1);
+  });
+
+  it("hard matches work while model is paused", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    api.predict.mockRejectedValue(Object.assign(new Error("model-load"), { retryable: false }));
+    await start("<p>Nội dung cần AI</p>");
+    await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(1));
+    const hard = document.createElement("p");
+    hard.textContent = "ĐỤ MÁ";
+    document.body.appendChild(hard);
+    await vi.waitFor(() => expect(hard.classList.contains("cs-blur")).toBe(true));
+    expect(api.predict).toHaveBeenCalledTimes(1);
+  });
+
+  it("hard matches do not wait for pending model and stale results cannot override them", async () => {
+    let resolve!: (value: typeof safe) => void;
+    api.predict.mockImplementation(() => new Promise(done => { resolve = done; }));
+    await start("<p id='target'>Nội dung chờ</p>");
+    await vi.waitFor(() => expect(api.predict).toHaveBeenCalledTimes(1));
+    const target = document.querySelector("#target") as HTMLElement;
+    target.textContent = "địt mẹ";
+    await vi.waitFor(() => expect(target.classList.contains("cs-blur")).toBe(true));
+    resolve(safe);
+    await new Promise(done => setTimeout(done, 20));
+    expect(target.classList.contains("cs-blur")).toBe(true);
+    expect(window.CyberShield.stats().scanned).toBe(1);
+    expect(api.predict).toHaveBeenCalledTimes(1);
   });
 });
